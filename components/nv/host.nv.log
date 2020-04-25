@@ -1,0 +1,4 @@
+make -f Makefile ARCH=host 
+make[1]: Entering directory '/home/debian/PocketBeagleApp/components/nv'
+Creating Lib: objs/host/libnv.a
+make[1]: Leaving directory '/home/debian/PocketBeagleApp/components/nv'

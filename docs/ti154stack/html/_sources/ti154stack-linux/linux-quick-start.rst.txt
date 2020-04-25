@@ -1,0 +1,112 @@
+.. _get-started-introduction:
+
+Linux Quick Start Guide
+***********************
+
+This section serves as a road map for users developing applications and
+products using a TI SimpleLink wireless MCU platform using |TIMAC|. Whether a
+seasoned developer or just getting started, TI has created a variety of
+resources to simplify development. These resources will enhance your experience
+with the |TIMAC| from the out-of-the-box demo to production.
+
+:numref:`fig-suggested-workflow` shows the suggested work-flow for getting
+started with |TIMAC| development environment.
+
+.. _fig-suggested-workflow:
+.. figure:: resources/suggestedworkflow.png
+    :align: center
+
+    Suggested Workflow
+
+.. _get-started-learn:
+
+Learn
+=====
+
+Resources contained in the Learn track of :numref:`fig-suggested-workflow` are
+intended for users who are new to |TIMAC|. These modules demonstrate
+how to quickly get started with |TIMAC|.
+
+-  **SimpleLink Academy** |SLA|
+
+.. _get-started-develop:
+
+Develop
+=======
+
+The develop track of :numref:`fig-suggested-workflow` is intended for
+programmers who are ready to start developing an end product using |TIMAC|.
+To begin:
+
+#.  **Download the TI 15.4-Stack Linux SDK** `TI 15.4-Stack Linux SDK
+    <http://www.ti.com/tool/ti-15.4-stack-gateway-linux-sdk>`_ contains the
+    code necessary to create a complete IEEE 802.15.4g compliant Linux
+    application. These examples should be considered as starting points for end
+    product designs. To install |TIMAC|, run the installer downloaded above.
+    See :ref:`chap-development-environment` for help installing the TI
+    15.4-Stack Linux SDK.
+
+
+#.  **Get Familiar with the Users Guide** The Users Guide is meant to be used
+    alongside the |TIMAC| when developing an end product. It contains
+    documentation on the stack architecture, APIs, and suggestions for
+    developing applications. To jump to the Table of Contents, click here:
+    :ref:`ldg-overview`
+
+#.  **Select an Example Project** The Linux Collector Example Application
+    interfaces with a SimpleLink™ /CC26x2 device running the |TIMAC| CoProcessor
+    firmware through UART. The Linux Collector Example Application provides the
+    same functionality as the Embedded Collector Application with the addition
+    of providing a socket server interface to the Linux Gateway Application.
+    The Linux Gateway Application is implemented within the Node.js® framework
+    and connects as a client to the socket server created by the Linux
+    Collector Example Application and establishes a local web server to which
+    the user can connect through a web browser (in the local network) to
+    monitor and control the network devices. The Collector and Gateway
+    Applications are a great starting point for creating Internet of Things
+    (IoT) applications with TI 15.4-Stack. For more details on these and all
+    other included projects, see
+    :ref:`chap-linux-example-applications`.
+
+
+#.  **Troubleshooting Help** While developing your custom application, you may
+    run into issues that require the use of a debugger.
+    The :ref:`sec-troubleshooting` chapter provides help with understanding
+    common problems.
+    If you are still having problems after reading through the Troubleshooting
+    chapter, see the :ref:`get-started-support` track for more options.
+
+.. _get-started-enhance:
+
+Enhance
+=======
+
+The enhance track of :numref:`fig-suggested-workflow` is intended to take your
+product to the next level by leveraging TI’s web-based collateral. Additional
+resources found in these pages include application-specific source code
+examples and complete sub-system designs.
+
+**TI Designs™**
+
+-   `Sensor To Cloud Linux <http://www.ti.com/tool/TIDEP0084>`_
+-   `Sensor To Cloud Embedded <http://www.ti.com/tool/TIDC-01002>`_
+-   `Energy Harvesting Environmental Sensor <http://www.ti.com/tool/tida-00488>`_
+-   `Wireless PIR Motion Detector <http://www.ti.com/tool/TIDA-00489>`_
+-   `Door and Window Sensor <http://www.ti.com/tool/TIDA-01066>`_
+
+Examples of system designs containing complete hardware and
+software examples, using |TIMAC|.
+
+.. _get-started-support:
+
+Support
+=======
+
+The support track of :numref:`fig-suggested-workflow` is intended to provide
+you additional help and resources that aren't contained in the previous tracks.
+
+- **E2E Forums** `www.e2e.ti.com <https://e2e.ti.com/support/wireless-connectivity/>`_
+
+A support community providing answers to questions relating to |TIMAC|. You can
+browse questions from other developers or ask your own questions if you run
+into issues developing with the |TIMAC|.

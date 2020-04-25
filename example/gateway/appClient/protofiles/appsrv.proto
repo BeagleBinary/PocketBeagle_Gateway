@@ -1,0 +1,2290 @@
+/******************************************************************************
+
+ @file appsrv.proto
+
+ @brief TIMAC 2.0 - Protobuf definitions. 
+                    These are the messages between the example
+                    application server and the appClient interface
+                                        
+                    
+ Group: WCS LPC
+ $Target Device: DEVICES $
+
+ ******************************************************************************
+ $License: BSD3 2016 $
+ ******************************************************************************
+ $Release Name: PACKAGE NAME $
+ $Release Date: PACKAGE RELEASE DATE $
+ *****************************************************************************/
+
+/* 
+
+NOTE: This file includes the definitions from all the 
+*.proto files under "/collector" directory 
+as the "protocol-buffers" package used for parsing and 
+encoding proto messages does not support "import" 
+at this time.
+
+Updates to the proto files under "/collector" directory
+should be done in this file as well
+ 
+*/
+
+syntax = "proto2";
+
+
+/*!
+  Message IDs for Sensor data messages.  When sent over-the-air in a message,
+  this field is one byte.
+*/
+enum Smsgs_cmdIds
+{
+    /*! Configuration message, sent from the collector to the sensor */
+    Smsgs_cmdIds_configReq = 1;
+    /*! Configuration Response message, sent from the sensor to the collector */
+    Smsgs_cmdIds_configRsp = 2;
+    /*! Tracking request message, sent from the the collector to the sensor */
+    Smsgs_cmdIds_trackingReq = 3;
+    /*! Tracking response message, sent from the sensor to the collector */
+    Smsgs_cmdIds_trackingRsp = 4;
+    /*! Sensor data message, sent from the sensor to the collector */
+    Smsgs_cmdIds_sensorData = 5;
+    /* Toggle LED message, sent from the collector to the sensor */
+    Smsgs_cmdIds_toggleLedReq = 6;
+    /* Toggle LED response msg, sent from the sensor to the collector */
+    Smsgs_cmdIds_toggleLedRsp = 7; 
+} 
+
+/*!
+  Frame Control field states what data fields are included in reported
+  sensor data, each value is a bit mask value so that they can be combined
+  (OR'd together) in a control field.
+  When sent over-the-air in a message this field is 2 bytes.
+*/
+enum Smsgs_dataFields
+{
+    /*! Temperature Sensor */
+    Smsgs_dataFields_tempSensor = 0x0001;
+    /*! Light Sensor */
+    Smsgs_dataFields_lightSensor = 0x0002;
+    /*! Humidity Sensor */
+    Smsgs_dataFields_humiditySensor = 0x0004;
+    /*! Message Statistics */
+    Smsgs_dataFields_msgStats = 0x0008;
+    /*! Config Settings */
+    Smsgs_dataFields_configSettings = 0x0010;
+    /*! Toggle Settings */
+    /*Smsgs_dataFields_toggleSettings = 0x0020;*/
+    Smsgs_dataFields_hallEffectSensor = 0x0020;
+    Smsgs_dataFields_accelSensor = 0x0040;
+}
+
+/*!
+  Status values for the over-the-air messages
+*/
+enum Smsgs_statusValues
+{
+    /*! Success */
+    Smsgs_statusValues_success = 0;
+    /*! Message was invalid and ignored */
+    Smsgs_statusValues_invalid = 1;
+    /*!
+      Config message was received but only some frame control fields
+      can be sent or the reportingInterval or pollingInterval fail
+      range checks.
+    */
+    Smsgs_statusValues_partialSuccess = 2;
+}
+
+/******************************************************************************
+ Structures - Building blocks for the over-the-air sensor messages
+*****************************************************************************/
+
+/*!
+  Configuration Request message: sent from controller to the sensor.
+*/
+message Smsgs_configReqMsg
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+    /*! Frame Control field - bit mask of Smsgs_dataFields */
+    required uint32 frameControl = 2;
+    /*! Reporting Interval */
+    required uint32 reportingInterval = 3;
+    /*! Polling Interval */
+    required uint32 pollingInterval = 4;
+}
+
+/*!
+  Configuration Response message: sent from the sensor to the collector
+  in response to the Configuration Request message.
+*/
+message Smsgs_configRspMsg
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+    /*! Response Status - 1 byte */
+    required Smsgs_statusValues status = 2;
+    /*! Frame Control field - bit mask of Smsgs_dataFields */
+    required uint32 frameControl = 3;
+    /*! Reporting Interval */
+    required uint32 treportingInterval = 4;
+    /*! Polling Interval */
+    required uint32 pollingInterval = 5;
+}
+
+/*!
+ Toggle Request message: sent from controller to the sensor.
+ */
+message Smsgs_toggleLedReqMsg 
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+} 
+
+/*!
+ Toggle Response message: sent from sensor to the controller.
+ */
+message Smsgs_toggleLedRspMsg
+{
+    /*! Command ID - 1 byte */
+    required Smsgs_cmdIds cmdId = 1;
+    /*! Response Status - 2 bytes */
+    required uint32 ledState = 2;
+} 
+
+/*!
+  Temp Sensor Field
+*/
+message Smsgs_tempSensorField
+{
+    /*!
+      Ambience Chip Temperature - each value represents a 0.01 C
+      degree, so a value of 2475 represents 24.75 C.
+    */
+    required uint32 ambienceTemp = 1;
+    /*!
+      Object Temperature - each value represents a 0.01 C
+      degree, so a value of 2475 represents 24.75 C.
+    */
+    required uint32 objectTemp = 2;
+}
+
+/*!
+  Light Sensor Field
+*/
+message Smsgs_lightSensorField
+{
+    /*! Raw Sensor Data read out of the OPT2001 light sensor */
+    required uint32 rawData = 1;
+}
+
+/*!
+  Humidity Sensor Field
+*/
+message Smsgs_humiditySensorField
+{
+    /*! Raw Temp Sensor Data from the TI HCD1000 humidity sensor. */
+    required uint32 temp = 1;
+    /*! Raw Humidity Sensor Data from the TI HCD1000 humidity sensor. */
+    required uint32 humidity = 2;
+}
+message Smsgs_hallEffectSensor
+{
+    required float flux = 1;
+}
+/*!
+  Message Statistics Field
+*/
+message Smsgs_msgStatsField
+{
+    /*! total number of join attempts (associate request sent) */
+    required uint32 joinAttempts = 1;
+    /*! total number of join attempts failed */
+    required uint32 joinFails = 2;
+    /*! total number of sensor data messages attempted. */
+    required uint32 msgsAttempted = 3;
+    /*! total number of sensor data messages sent. */
+    required uint32 msgsSent = 4;
+    /*! total number of tracking requests received */
+    required uint32 trackingRequests = 5;
+    /*! total number of tracking response attempted */
+    required uint32 trackingResponseAttempts = 6;
+    /*! total number of tracking response success */
+    required uint32 trackingResponseSent = 7;
+    /*!
+      Total number of Channel Access Failures.  These are indicated in MAC data
+      confirms for MAC data requests.
+    */
+    required uint32 channelAccessFailures = 8;
+    /*!
+      Total number of MAC ACK failures. These are indicated in MAC data
+      confirms for MAC data requests.
+    */
+    required uint32 macAckFailures = 9;
+    /*!
+      Total number of MAC data request failures, other than channel access
+      failure or MAC ACK failures.
+    */
+    required uint32 otherDataRequestFailures = 10;
+    /*! Total number of sync loss failures received for sleepy devices. */
+    required uint32 syncLossIndications = 11;
+}
+
+/*!
+  Message Statistics Field
+*/
+message Smsgs_configSettingsField
+{
+    /*!
+      Reporting Interval - in millseconds, how often to report, 0
+      means reporting is off
+    */
+    required uint32 reportingInterval = 1;
+    /*!
+      Polling Interval - in millseconds (32 bits) - If the sensor device is
+      a sleep device, this states how often the device polls its parent for
+      data. This field is 0 if the device doesn't sleep.
+    */
+    required uint32 pollingInterval = 2;
+}
+
+/*!
+  Sensor Data message: sent from the sensor to the collector
+*/
+message Smsgs_sensorMsg
+{
+    /*! Command ID */
+    required Smsgs_cmdIds cmdId = 1;
+    /*! Dummy value so we have a fixed item */
+    required uint32 frameControl = 2; /*uint16_t*/
+    /*!
+      Temp Sensor field 
+    */
+    optional Smsgs_tempSensorField tempSensor = 3;
+    /*!
+      Light Sensor field
+      is set in frameControl.
+    */
+    optional Smsgs_lightSensorField lightSensor = 4;
+    /*!
+      Humidity Sensor field
+    */
+    optional Smsgs_humiditySensorField humiditySensor = 5;
+    /*!
+      Message Statistics field
+    */
+    optional Smsgs_msgStatsField msgStats = 6;
+    /*!
+      Configuration Settings field
+    */
+    optional Smsgs_configSettingsField configSettings = 7;
+
+    optional Smsgs_hallEffectSensor hallEffectSensor = 8;
+}
+
+/* From API_MAC.H */
+/*! Associate Response status types */
+enum ApiMac_assocStatus
+{
+    /*! Success, join allowed */
+    ApiMac_assocStatus_success = 0;
+    /*! PAN at capacity */
+    ApiMac_assocStatus_panAtCapacity = 1;
+    /*! PAN access denied */
+    ApiMac_assocStatus_panAccessDenied = 2;
+} 
+
+/*!
+ Address types - used to set addrMode field of the ApiMac_sAddr_t structure.
+ */
+enum ApiMac_addrType
+{
+    /*! Address not present */
+    ApiMac_addrType_none = 0;
+    /*! Short Address (16 bits) */
+    ApiMac_addrType_short = 2;
+    /*! Extended Address (64 bits) */
+    ApiMac_addrType_extended = 3;
+}
+
+/*! Beacon types in the ApiMac_mlmeBeaconNotifyInd_t structure. */
+enum ApiMac_beaconType
+{
+    /*! normal beacon type */
+    ApiMac_beaconType_normal = 0;
+    /*! enhanced beacon type */
+    ApiMac_beaconType_enhanced = 1;
+}
+
+/*! Disassociate Reasons */
+enum ApiMac_disassociateReason
+{
+    /*! The coordinator wishes the device to disassociate */
+    ApiMac_disassocateReason_coord = 1;
+    /*! The device itself wishes to disassociate */
+    ApiMac_disassocateReason_device = 2;
+}
+
+/*! Comm Status Indication Reasons */
+enum ApiMac_commStatusReason
+{
+    /*!
+     Reason for comm status indication was in response to an Associate Response
+     */
+    ApiMac_commStatusReason_assocRsp = 0;
+    /*!
+     Reason for comm status indication was in response to an Orphan Response
+     */
+    ApiMac_commStatusReason_orphanRsp = 1;
+    /*!
+     Reason for comm status indication was result of recieving a secure frame
+     */
+    ApiMac_commStatusReason_rxSecure = 2;
+}
+
+/*! General MAC Status values */
+enum ApiMac_status
+{
+    /*! Operation successful */
+    ApiMac_status_success = 0;
+
+    /*! The AUTOPEND pending all is turned on */
+    ApiMac_status_autoAckPendingAllOn = 0xFE;
+    /*! The AUTOPEND pending all is turned off */
+    ApiMac_status_autoAckPendingAllOff = 0xFF;
+    /*! The beacon was lost following a synchronization request */
+    ApiMac_status_beaconLoss = 0xE0;
+    /*!
+     The operation or data request failed because of activity on the channel
+     */
+    ApiMac_status_channelAccessFailure = 0xE1;
+    /*!
+     The frame counter puportedly applied by the originator of the received
+     frame is invalid
+     */
+    ApiMac_status_counterError = 0xDB;
+    /*! The MAC was not able to enter low power mode */
+    ApiMac_status_denied = 0xE2;
+    /*! Unused */
+    ApiMac_status_disabledTrxFailure = 0xE3;
+    /*!
+     The received frame or frame resulting from an operation
+     or data request is too long to be processed by the MAC
+     */
+    ApiMac_status_frameTooLong = 0xE5;
+    /*!
+     The key purportedly applied by the originator of the
+     received frame is not allowed
+     */
+    ApiMac_status_improperKeyType = 0xDC;
+    /*!
+     The security level purportedly applied by the originator of
+     the received frame does not meet the minimum security level
+     */
+    ApiMac_status_improperSecurityLevel = 0xDD;
+    /*!
+     The data request failed because neither the source address nor
+     destination address parameters were present
+     */
+    ApiMac_status_invalidAddress = 0xf5;
+    /*! Unused */
+    ApiMac_status_invalidGts = 0xE6;
+    /*! The purge request contained an invalid handle */
+    ApiMac_status_invalidHandle = 0xE7;
+    /*! Unused */
+    ApiMac_status_invalidIndex = 0xF9;
+    /*! The API function parameter is out of range */
+    ApiMac_status_invalidParameter = 0xE8;
+    /*!
+     The scan terminated because the PAN descriptor storage limit
+     was reached
+     */
+    ApiMac_status_limitReached = 0xFA;
+    /*!
+     The operation or data request failed because no
+     acknowledgement was received
+     */
+    ApiMac_status_noAck = 0xE9;
+    /*!
+     The scan request failed because no beacons were received or the
+     orphan scan failed because no coordinator realignment was received
+     */
+    ApiMac_status_noBeacon = 0xEA;
+    /*!
+     The associate request failed because no associate response was received
+     or the poll request did not return any data
+     */
+    ApiMac_status_noData = 0xEB;
+    /*! The short address parameter of the start request was invalid */
+    ApiMac_status_noShortAddress = 0xEC;
+    /*! Unused */
+    ApiMac_status_onTimeTooLong = 0xF6;
+    /*! Unused */
+    ApiMac_status_outOfCap = 0xED;
+    /*!
+     A PAN identifier conflict has been detected and
+     communicated to the PAN coordinator
+     */
+    ApiMac_status_panIdConflict = 0xEE;
+    /*! Unused */
+    ApiMac_status_pastTime = 0xF7;
+    /*! A set request was issued with a read-only identifier */
+    ApiMac_status_readOnly = 0xFB;
+    /*! A coordinator realignment command has been received */
+    ApiMac_status_realignment = 0xEF;
+    /*! The scan request failed because a scan is already in progress */
+    ApiMac_status_scanInProgress = 0xFC;
+    /*! Cryptographic processing of the received secure frame failed */
+    ApiMac_status_securityError = 0xE4;
+    /*! The beacon start time overlapped the coordinator transmission time */
+    ApiMac_status_superframeOverlap = 0xFD;
+    /*!
+     The start request failed because the device is not tracking
+     the beacon of its coordinator
+     */
+    ApiMac_status_trackingOff = 0xF8;
+    /*!
+     The associate response; disassociate request; or indirect
+     data transmission failed because the peer device did not respond
+     before the transaction expired or was purged
+     */
+    ApiMac_status_transactionExpired = 0xF0;
+    /*! The request failed because MAC data buffers are full */
+    ApiMac_status_transactionOverflow = 0xF1;
+    /*! Unused */
+    ApiMac_status_txActive = 0xF2;
+    /*!
+     The operation or data request failed because the
+     security key is not available
+     */
+    ApiMac_status_unavailableKey = 0xF3;
+    /*! The set or get request failed because the attribute is not supported */
+    ApiMac_status_unsupportedAttribute = 0xF4;
+    /*!
+     The received frame was secured with legacy security which is
+     not supported
+     */
+    ApiMac_status_unsupportedLegacy = 0xDE;
+    /*! The security of the received frame is not supported */
+    ApiMac_status_unsupportedSecurity = 0xDF;
+    /*! The operation is not supported in the current configuration */
+    ApiMac_status_unsupported = 0x18;
+    /*! The operation could not be performed in the current state */
+    ApiMac_status_badState = 0x19;
+    /*!
+     The operation could not be completed because no
+     memory resources were available
+     */
+    ApiMac_status_noResources = 0x1A;
+    /*! For internal use only */
+    ApiMac_status_ackPending = 0x1B;
+    /*! For internal use only */
+    ApiMac_status_noTime = 0x1C;
+    /*! For internal use only */
+    ApiMac_status_txAborted = 0x1D;
+    /*!
+     For internal use only - A duplicated entry is added to the source
+     matching table
+     */
+    ApiMac_status_duplicateEntry = 0x1E;
+}
+
+/*! MAC Security Levels */
+enum  ApiMac_secLevel
+{
+    /*! No security is used */
+    ApiMac_secLevel_none = 0;
+    /*! MIC-32 authentication is used */
+    ApiMac_secLevel_mic32 = 1;
+    /*! MIC-64 authentication is used */
+    ApiMac_secLevel_mic64 = 2;
+    /*! MIC-128 authentication is used */
+    ApiMac_secLevel_mic128 = 3;
+    /*! AES encryption is used */
+    ApiMac_secLevel_enc = 4;
+    /*! AES encryption and MIC-32 authentication are used */
+    ApiMac_secLevel_encMic32 = 5;
+    /*! AES encryption and MIC-64 authentication are used */
+    ApiMac_secLevel_encMic64 = 6;
+    /*! AES encryption and MIC-128 authentication are used */
+    ApiMac_secLevel_encMic128 = 7;
+}
+
+/*! Key Identifier Mode */
+enum ApiMac_keyIdMode
+{
+    /*! Key is determined implicitly */
+    ApiMac_keyIdMode_implicit = 0;
+    /*! Key is determined from the 1-byte key index */
+    ApiMac_keyIdMode_1 = 1;
+    /*! Key is determined from the 4-byte key index */
+    ApiMac_keyIdMode_4 = 2;
+    /*! Key is determined from the 8-byte key index */
+    ApiMac_keyIdMode_8 = 3;
+}
+
+/*! Standard PIB Get and Set Attributes - size bool */
+enum  ApiMac_attribute_bool
+{
+    /*! TRUE if a coordinator is currently allowing association */
+    ApiMac_attribute_associatePermit = 0x41;
+    /*!
+     TRUE if a device automatically sends a data request if its address
+     is listed in the beacon frame
+     */
+    ApiMac_attribute_autoRequest = 0x42;
+    /*! TRUE if battery life extension is enabled */
+    ApiMac_attribute_battLifeExt = 0x43;
+    /*! TRUE if the PAN coordinator accepts GTS requests */
+    ApiMac_attribute_gtsPermit = 0x4D;
+    /*! TRUE if the MAC is in promiscuous mode */
+    ApiMac_attribute_promiscuousMode = 0x51;
+    /*! TRUE if the MAC enables its receiver during idle periods */
+    ApiMac_attribute_RxOnWhenIdle = 0x52;
+    /*! TRUE if the device is associated to the PAN coordinator */
+    ApiMac_attribute_associatedPanCoord = 0x56;
+    /*! TRUE if the MAC supports RX and TX timestamps */
+    ApiMac_attribute_timestampSupported = 0x5C;
+    /*! TRUE if security is enabled */
+    ApiMac_attribute_securityEnabled = 0x5D;
+    /*! TRUE if MPM IE needs to be included */
+    ApiMac_attribute_includeMPMIE = 0x62;
+    /*! FCS type */
+    ApiMac_attribute_fcsType = 0xE9;
+}
+
+/*! Standard PIB Get and Set Attributes - size uint8_t */
+enum ApiMac_attribute_uint8
+{
+    /*! The maximum number of symbols to wait for an acknowledgment frame */
+    ApiMac_attribute_ackWaitDuration = 0x40;
+    /*!
+     The number of backoff periods during which the receiver is
+     enabled following a beacon in battery life extension mode
+     */
+    ApiMac_attribute_battLifeExtPeriods = 0x44;
+    /*! The length in bytes of the beacon payload */
+    ApiMac_attribute_beaconPayloadLength = 0x46;
+    /*! How often the coordinator transmits a beacon */
+    ApiMac_attribute_beaconOrder = 0x47;
+    /*! The beacon sequence number */
+    ApiMac_attribute_bsn = 0x49;
+    /*! The data or MAC command frame sequence number */
+    ApiMac_attribute_dsn = 0x4C;
+    /*!
+     The maximum number of backoffs the CSMA-CA algorithm will attempt
+     before declaring a channel failure
+     */
+    ApiMac_attribute_maxCsmaBackoffs = 0x4E;
+    /*!
+     The minimum value of the backoff exponent in the CSMA-CA algorithm.
+     If this value is set to 0, collision avoidance is disabled during
+     the first iteration of the algorithm. Also for the slotted version
+     of the CSMA-CA algorithm with the battery life extension enabled;
+     the minimum value of the backoff exponent will be at least 2
+     */
+    ApiMac_attribute_backoffExponent = 0x4F;
+    /*! This specifies the length of the active portion of the superframe */
+    ApiMac_attribute_superframeOrder = 0x54;
+    /*! The maximum value of the backoff exponent in the CSMA-CA algorithm */
+    ApiMac_attribute_maxBackoffExponent = 0x57;
+    /*! The maximum number of retries allowed after a transmission failure */
+    ApiMac_attribute_maxFrameRetries = 0x59;
+    /*!
+     The maximum number of symbols a device shall wait for a response
+     command to be available following a request command in multiples
+     of aBaseSuperframeDuration
+     */
+    ApiMac_attribute_responseWaitTime = 0x5A;
+    /*! The timestamp offset from SFD in symbols */
+    ApiMac_attribute_syncSymbolOffset = 0x5B;
+    /*! Enhanced beacon sequence number */
+    ApiMac_attribute_eBeaconSequenceNumber = 0x5E;
+    /*! Enhanced beacon order in a beacon enabled network */
+    ApiMac_attribute_eBeaconOrder = 0x5F;
+    /*! Offset time slot from the beacon */
+    ApiMac_attribute_offsetTimeslot = 0x61;
+    /*!
+     Duplicate transmit power attribute in signed
+     (2's complement) dBm unit
+     */
+    ApiMac_attribute_phyTransmitPowerSigned = 0xE0;
+    /*! The logical channel */
+    ApiMac_attribute_logicalChannel = 0xE1;
+    /*! alternate minimum backoff exponent */
+    ApiMac_attribute_altBackoffExponent = 0xE3;
+    /*! Device beacon order */
+    ApiMac_attribute_deviceBeaconOrder = 0xE4;
+    /*! valid values are true and false */
+    ApiMac_attribute_rf4cePowerSavings = 0xE5;
+    /*!
+     Currently supports 0 and 1.
+     If 0, frame Version is always 0 and set to 1 only for secure frames.
+     If 1, frame version will be set to 1 only if packet len > 102 or
+     for secure frames
+     */
+    ApiMac_attribute_frameVersionSupport = 0xE6;
+    /*! Channel Page */
+    ApiMac_attribute_channelPage = 0xE7;
+    /*!
+     PHY Descriptor ID, used to support channel page number and index into
+     descriptor table
+     */
+    ApiMac_attribute_phyCurrentDescriptorId = 0xE8;
+}
+
+/*! Standard PIB Get and Set Attributes - size uint16_t */
+enum ApiMac_attribute_uint16
+{
+    /*!
+     The short address assigned to the coordinator with which the
+     device is associated.  A value of MAC_ADDR_USE_EXT indicates
+     that the coordinator is using its extended address
+     */
+    ApiMac_attribute_coordShortAddress = 0x4B;
+    /*!
+     The PAN identifier.  If this value is 0xffff, the device is
+     not associated
+     */
+    ApiMac_attribute_panId = 0x50;
+    /*!
+     The short address that the device uses to communicate in the PAN.
+     If the device is a PAN coordinator, this value shall be set before
+     calling MAC_StartReq().  Otherwise the value is allocated during
+     association.  Value MAC_ADDR_USE_EXT indicates that the device is
+     associated but not using a short address
+     */
+    ApiMac_attribute_shortAddress = 0x53;
+    /*!
+     The maximum time in beacon intervals that a transaction is stored by
+     a coordinator and indicated in the beacon
+     */
+    ApiMac_attribute_transactionPersistenceTime = 0x55;
+    /*!
+     The maximum number of CAP symbols in a beacon-enabled PAN, or
+     symbols in a non beacon-enabled PAN, to wait for a frame intended
+     as a response to a data request frame
+     */
+    ApiMac_attribute_maxFrameTotalWaitTime = 0x58;
+    /*! Enhanced beacon order in a non-beacon enabled network */
+    ApiMac_attribute_eBeaconOrderNBPAN = 0x60;
+} 
+
+
+/*! Standard PIB Get and Set Attributes - size uint32_t */
+enum ApiMac_attribute_uint32
+{
+    /*!
+     The time the device transmitted its last beacon frame,
+     in backoff period units
+     */
+    ApiMac_attribute_beaconTxTime = 0x48;
+    /*! Diagnostics PIB - Received CRC pass counter */
+    ApiMac_attribute_diagRxCrcPass = 0xEA;
+    /*! Diagnostics PIB - Received CRC fail counter */
+    ApiMac_attribute_diagRxCrcFail = 0xEB;
+    /*! Diagnostics PIB - Received broadcast counter */
+    ApiMac_attribute_diagRxBroadcast = 0xEC;
+    /*! Diagnostics PIB - Transmitted broadcast counter */
+    ApiMac_attribute_diagTxBroadcast = 0xED;
+    /*! Diagnostics PIB - Received unicast counter */
+    ApiMac_attribute_diagRxUnicast = 0xEE;
+    /*! Diagnostics PIB - Transmitted unicast counter */
+    ApiMac_attribute_diagTxUnicast = 0xEF;
+    /*! Diagnostics PIB - Transmitted unicast retry counter */
+    ApiMac_attribute_diagTxUnicastRetry = 0xF0;
+    /*! Diagnostics PIB - Transmitted unicast fail counter */
+    ApiMac_attribute_diagTxUnicastFail = 0xF1;
+}
+
+/*! Standard PIB Get and Set Attributes - these attributes are array of bytes */
+enum ApiMac_attribute_array
+{
+    /*! The contents of the beacon payload */
+    ApiMac_attribute_beaconPayload = 0x45;
+    /*!
+     The extended address of the coordinator with which the device
+     is associated
+     */
+    ApiMac_attribute_coordExtendedAddress = 0x4A;
+    /*! The extended address of the device */
+    ApiMac_attribute_extendedAddress = 0xE2;
+}
+
+/*! Security PIB Get and Set Attributes - size uint8_t  */
+enum ApiMac_securityAttribute_uint8
+{
+    /*! The number of entries in macKeyTable */
+    ApiMac_securityAttribute_keyTableEntries = 0x81;
+    /*! The number of entries in macDeviceTable */
+    ApiMac_securityAttribute_deviceTableEntries = 0x82;
+    /*! The number of entries in macSecurityLevelTable */
+    ApiMac_securityAttribute_securityLevelTableEntries = 0x83;
+    /*! The security level used for automatic data requests */
+    ApiMac_securityAttribute_autoRequestSecurityLevel = 0x85;
+    /*!The key identifier mode used for automatic data requests */
+    ApiMac_securityAttribute_autoRequestKeyIdMode = 0x86;
+    /*! The index of the key used for automatic data requests */
+    ApiMac_securityAttribute_autoRequestKeyIndex = 0x88;
+}
+
+/*! Security PIB Get and Set Attributes - size uint16_t  */
+enum ApiMac_securityAttribute_uint16
+{
+    /*!The 16-bit short address assigned to the PAN coordinator */
+    ApiMac_securityAttribute_panCoordShortAddress = 0x8B;
+}
+
+/*! Security PIB Get and Set Attributes - array of bytes */
+enum ApiMac_securityAttrbute_array
+{
+    /*! The originator of the key used for automatic data requests */
+    ApiMac_securityAttribute_autoRequestKeySource = 0x87;
+    /*! The originator of the default key used for key ID mode 0x01 */
+    ApiMac_securityAttribute_defaultKeySource = 0x89;
+    /*! The 64-bit address of the PAN coordinator */
+    ApiMac_securityAttribute_panCoordExtendedAddress = 0x8A;
+}
+
+/*! Security PIB Get and Set Attributes - these attributes are structures */
+enum ApiMac_securityAttribute_struct
+{
+    /*!
+     A table of KeyDescriptor, entries, each containing keys and related
+     information required for secured communications.  This is a SET only
+     attribute.  Call ApiMac_mlmeSetSecurityReqStruct() with pValue set to
+     ApiMac_keyDescriptor_t to set up the key table, if you set pValue
+     to NULL, the MAC will build the table.
+     */
+    ApiMac_securityAttribute_keyTable = 0x71;
+    /*!
+     A table of Device-Descriptor entries, each indicating a remote device
+     with which this device securely communicates. This is a SET only
+     attribute.  Call ApiMac_mlmeSetSecurityReqStruct() with pValue set to
+     ApiMac_securityDeviceDescriptor_t to set up the device table.
+     */
+    ApiMac_securityAttribute_deviceTable = 0x72;
+    /*!
+     A table of SecurityLevel-Descriptor entries, each with information
+     about the minimum security level expected depending on incoming frame
+     type and subtype. This is a SET only
+     attribute.  Call ApiMac_mlmeSetSecurityReqStruct() with pValue set to
+     ApiMac_securityLevelDescriptor_t to set up the security level table.
+     */
+    ApiMac_securityAttribute_securityLevelTable = 0x73;
+    /*!
+     The key lookup table entry, part of an entry of the key table.
+     To GET or SET to this attribute, setup the keyIndex and keyIdLookupIndex
+     fields of ApiMac_securityPibKeyIdLookupEntry_t, call
+     ApiMac_mlmeGetSecurityReqStruct() or ApiMac_mlmeSetSecurityReqStruct()
+     with a pointer to the ApiMac_securityPibKeyIdLookupEntry_t structure.
+     For the GET, the lookupEntry field will contain the required data.
+     */
+    ApiMac_securityAttribute_keyIdLookupEntry = 0xD0;
+    /*!
+     The key device entry, part of an entry of the key table.
+     To GET or SET to this attribute, setup the keyIndex and keyDeviceIndex
+     fields of ApiMac_securityPibKeyDeviceEntry_t, call
+     ApiMac_mlmeGetSecurityReqStruct() or ApiMac_mlmeSetSecurityReqStruct()
+     with a pointer to the ApiMac_securityPibKeyDeviceEntry_t structure.
+     For the GET, the deviceEntry field will contain the required data.
+     */
+    ApiMac_securityAttribute_keyDeviceEntry = 0xD1;
+    /*!
+     The key usage entry, part of an entry of the key table.
+     To GET or SET to this attribute, setup the keyIndex and keyUsageIndex
+     fields of ApiMac_securityPibKeyUsageEntry_t, call
+     ApiMac_mlmeGetSecurityReqStruct() or ApiMac_mlmeSetSecurityReqStruct()
+     with a pointer to the ApiMac_securityPibKeyUsageEntry_t structure.
+     For the GET, the usageEntry field will contain the required data.
+     */
+    ApiMac_securityAttribute_keyUsageEntry = 0xD2;
+    /*!
+     The MAC key entry, an entry of the key table.
+     To GET or SET to this attribute, setup the keyIndex
+     field of ApiMac_securityPibKeyEntry_t, call
+     ApiMac_mlmeGetSecurityReqStruct() or ApiMac_mlmeSetSecurityReqStruct()
+     with a pointer to the ApiMac_securityPibKeyEntry_t structure.
+     For the GET, the rest of the fields will contain the required data.
+     */
+    ApiMac_securityAttribute_keyEntry = 0xD3;
+    /*!
+     The MAC device entry, an entry of the device table.
+     To GET or SET to this attribute, setup the deviceIndex
+     field of ApiMac_securityPibDeviceEntry_t, call
+     ApiMac_mlmeGetSecurityReqStruct() or ApiMac_mlmeSetSecurityReqStruct()
+     with a pointer to the ApiMac_securityPibDeviceEntry_t structure.
+     For the GET, the deviceEntry field will contain the required data.
+     */
+    ApiMac_securityAttribute_deviceEntry = 0xD4;
+    /*! The MAC security level entry, an entry of the security level table */
+    /*!
+     The MAC security level entry, an entry of the security level table.
+     To GET or SET to this attribute, setup the levelIndex
+     field of ApiMac_securityPibSecurityLevelEntry_t, call
+     ApiMac_mlmeGetSecurityReqStruct() or ApiMac_mlmeSetSecurityReqStruct()
+     with a pointer to the ApiMac_securityPibSecurityLevelEntry_t structure.
+     For the GET, the levelEntry field will contain the required data.
+     */
+    ApiMac_securityAttribute_securityLevelEntry = 0xD5;
+}
+
+/*! Frequency Hopping PIB Get and Set Attributes - size uint8_t */
+enum ApiMac_FHAttribute_uint8
+{
+    /*! Duration of node's unicast slot (in milliseconds) - uint8_t */
+    ApiMac_FHAttribute_unicastDwellInterval = 0x2004;
+    /*! Duration of node's broadcast slot (in milliseconds) - uint8_t */
+    ApiMac_FHAttribute_broadcastDwellInterval = 0x2005;
+    /*! Clock drift in PPM - uint8_t */
+    ApiMac_FHAttribute_clockDrift = 0x2006;
+    /*! Timing accuracy in 10 microsecond resolution - uint8_t */
+    ApiMac_FHAttribute_timingAccuracy = 0x2007;
+    /*! Unicast channel hopping function - uint8_t */
+    ApiMac_FHAttribute_unicastChannelFunction = 0x2008;
+    /*! Broadcast channel hopping function - uint8_t */
+    ApiMac_FHAttribute_broadcastChannelFunction = 0x2009;
+    /*! Node is propagating parent's BS-IE - uint8_t */
+    ApiMac_FHAttribute_useParentBSIE = 0x200A;
+    /*! Estimate of routing path ETX to the PAN coordinator - uint8_t */
+    ApiMac_FHAttribute_routingCost = 0x200F;
+    /*! RPL(1), MHDS(0) - uint8_t */
+    ApiMac_FHAttribute_routingMethod = 0x2010;
+    /*! Node can accept EAPOL message - uint8_t */
+    ApiMac_FHAttribute_eapolReady = 0x2011;
+    /*! Wi-SUN FAN version - uint8_t */
+    ApiMac_FHAttribute_fanTPSVersion = 0x2012;
+    /*!
+     Low order 64 bits of SHA256 hash of GTK
+     - APIMAC_FH_NET_NAME_SIZE_MAX uint8_t
+     */
+    ApiMac_FHAttribute_gtk0Hash = 0x2015;
+    /*!
+     Next low order 64 bits of SHA256 hash of GTK
+     - APIMAC_FH_NET_NAME_SIZE_MAX uint8_t
+     */
+    ApiMac_FHAttribute_gtk1Hash = 0x2016;
+    /*!
+     Next low order 64 bits of SHA256 hash of GTK
+     - APIMAC_FH_NET_NAME_SIZE_MAX uint8_t
+     */
+    ApiMac_FHAttribute_gtk2Hash = 0x2017;
+    /*!
+     Next low order 64 bits of SHA256 hash of GTK
+     - APIMAC_FH_NET_NAME_SIZE_MAX uint8_t
+     */
+    ApiMac_FHAttribute_gtk3Hash = 0x2018;
+}
+
+/*! Frequency Hopping PIB Get and Set Attributes - size uint16_t */
+enum ApiMac_FHAttribute_uint16
+{
+    /*!
+     Broadcast schedule ID for broadcast channel hopping sequence - uint16_t
+     */
+    ApiMac_FHAttribute_broadcastSchedId = 0x200B;
+    /*! Unicast channel number when no hopping - uint16_t */
+    ApiMac_FHAttribute_unicastFixedChannel = 0x200C;
+    /*! Broadcast channel number when no hopping - uint16_t */
+    ApiMac_FHAttribute_broadcastFixedChannel = 0x200D;
+    /*! Number of nodes in the PAN - uint16_t */
+    ApiMac_FHAttribute_panSize = 0x200E;
+    /*! PAN version to notify PAN configuration changes - uint16_t */
+    ApiMac_FHAttribute_panVersion = 0x2014;
+    /*! Time in min during which the node info considered as valid - uint16_t */
+    ApiMac_FHAttribute_neighborValidTime = 0x2019;
+}
+
+/*! Frequency Hopping PIB Get and Set Attributes - size uint32_t */
+enum ApiMac_FHAttribute_uint32
+{
+    /*!
+     Time between start of two broadcast slots (in milliseconds) - uint32_t
+     */
+    ApiMac_FHAttribute_BCInternal = 0x2001;
+}
+
+/*! Frequency Hopping PIB Get and Set Attributes - array of bytes */
+enum ApiMac_FHAttriibute_array
+{
+    /*! The parent EUI address - ApiMac_sAddrExt_t */
+    ApiMac_FHAttribute_trackParentEUI = 0x2000;
+    /*! Unicast excluded channels - APIMAC_FH_MAX_BIT_MAP_SIZE */
+    ApiMac_FHAttribute_unicastExcludedChannels = 0x2002;
+    /*! Broadcast excluded channels - APIMAC_FH_MAX_BIT_MAP_SIZE */
+    ApiMac_FHAttribute_broadcastExcludedChannels = 0x2003;
+    /*! Network Name - APIMAC_FH_NET_NAME_SIZE_MAX uint8_t */
+    ApiMac_FHAttribute_netName = 0x2013;
+}
+
+/*! FH Frame Types */
+enum ApiMac_fhFrameType
+{
+    /*! WiSUN PAN advertisement */
+    ApiMac_fhFrameType_panAdvert = 0x00;
+    /*! WiSUN PAN advertisement solicit */
+    ApiMac_fhFrameType_panAdvertSolicit = 0x01;
+    /*! WiSUN PAN config */
+    ApiMac_fhFrameType_config = 0x02;
+    /*! WiSUN PAN config solicit */
+    ApiMac_fhFrameType_configSolicit = 0x03;
+    /*! WiSUN Data frame */
+    ApiMac_fhFrameType_data = 0x04;
+    /*! WiSUN Ack frame */
+    ApiMac_fhFrameType_ack = 0x05;
+    /*! WiSUN Ack frame */
+    ApiMac_fhFrameType_eapol = 0x06;
+    /*! Internal: WiSUN Invalid frame */
+    ApiMac_fhFrameType_invalid = 0xFF;
+}
+
+/*! Payload IE Group IDs */
+enum ApiMac_payloadIEGroup
+{
+    /*! Payload ESDU IE Group ID */
+    ApiMac_payloadIEGroup_ESDU = 0x00;
+    /*! Payload MLME IE Group ID */
+    ApiMac_payloadIEGroup_MLME = 0x01;
+    /*! Payload WiSUN IE Group ID */
+    ApiMac_payloadIEGroup_WiSUN = 0x04;
+    /*! Payload Termination IE Group ID */
+    ApiMac_payloadIEGroup_term = 0x0F;
+}
+
+/*! MLME Sub IEs */
+enum ApiMac_MLMESubIE
+{
+    /*! MLME Sub IEs - short format - Coexistence IE */
+    ApiMac_MLMESubIE_coexist = 0x21;
+    /*! MLME Sub IEs - short format - SUN Device capabilities IE */
+    ApiMac_MLMESubIE_sunDevCap = 0x22;
+    /*! MLME Sub IEs - short format - SUN FSK Generic PHY IE */
+    ApiMac_MLMESubIE_sunFSKGenPhy = 0x23;
+}
+
+/*! WiSUN Sub IEs */
+enum ApiMac_wisUNSubIE
+{
+    /*! WiSUN Sub IE - Long format - Unicast Schedule IE */
+    ApiMac_wisunSubIE_USIE = 1;
+    /*! WiSUN Sub IE - Long format - Broadcast Schedule IE */
+    ApiMac_wisunSubIE_BSIE = 2;
+    /*! WiSUN Sub IE - Short format - PAN IE */
+    ApiMac_wisunSubIE_PANIE = 4;
+    /*! WiSUN Sub IE - Short format - Network Name IE */
+    ApiMac_wisunSubIE_netNameIE = 5;
+    /*! WiSUN Sub IE - Short format - PAN Version IE */
+    ApiMac_wisunSubIE_PANVersionIE = 6;
+    /*! WiSUN Sub IE - Short format - GTK Hash IE */
+    ApiMac_wisunSubIE_GTKHashIE = 7;
+}
+
+/*! Scan Types */
+enum ApiMac_scanType
+{
+    /*!
+     Energy detect scan.  The device will tune to each channel and
+     perform and energy measurement.  The list of channels and their
+     associated measurements will be returned at the end of the scan
+     */
+    ApiMac_scantype_energyDetect = 0;
+    /*!
+     Active scan.  The device tunes to each channel, sends a beacon
+     request and listens for beacons.  The PAN descriptors are returned
+     at the end of the scan
+     */
+    ApiMac_scantype_active = 1;
+    /*!
+     Passive scan.  The device tunes to each channel and listens for
+     beacons.  The PAN descriptors are returned at the end of the scan
+     */
+    ApiMac_scantype_passive = 2;
+    /*!
+     Orphan scan.  The device tunes to each channel and sends an orphan
+     notification to try and find its coordinator.  The status is returned
+     at the end of the scan
+     */
+    ApiMac_scantype_orphan = 3;
+    /*!
+     Enhanced Active scan. In addition to Active scan, this command is also
+     used by a device to locate a subset of all coordinators within its
+     POS during an active scan
+    */
+    ApiMac_scantype_activeEnhanced = 5;
+}
+
+/*! WiSUN Async Operations */
+enum ApiMac_wisunAsyncOperation
+{
+    /*! Start Async */
+    ApiMac_wisunAsycnOperation_start = 0;
+    /*! Stop Async */
+    ApiMac_wisunAsycnOperation_stop = 1;
+}
+
+/*! WiSUN Async Frame Types */
+enum ApiMac_wisunAsyncFrame
+{
+    /*! WiSUN Async PAN Advertisement Frame type */
+    ApiMac_wisunAsyncFrame_advertisement = 1;
+    /*! WiSUN Async PAN Advertisement Solicitation Frame type */
+    ApiMac_wisunAsyncFrame_advertisementSolicit = 2;
+    /*! WiSUN Async PAN Configuration Frame type */
+    ApiMac_wisunAsyncFrame_config = 3;
+    /*! WiSUN Async PAN Configuration Solicitation Frame type */
+    ApiMac_wisunAsyncFrame_configSolicit = 4;
+}
+
+/*! Freqency Hopping Dispatch Values */
+enum ApiMac_fhDispatchType
+{
+    /*! No protocol dispatch */
+    ApiMac_fhDispatchType_none = 0;
+    /*! MHD-PDU protocol dispatch */
+    ApiMac_fhDispatchType_MHD_PDU = 1;
+    /*! 6LowPAN protocol dispatch */
+    ApiMac_fhDispatchType_6LowPAN = 2;
+}
+
+/******************************************************************************
+ Structures - Building blocks for the API for the MAC Module
+ *****************************************************************************/
+
+/*! MAC address type field structure */
+message ApiMac_sAddr
+{
+    required ApiMac_addrType addrMode = 1;
+    /*!
+     The address can be either a long address or a short address depending
+     the addrMode field.
+     */
+
+    /*! 16 bit address */
+    required uint32 shortAddr = 2;
+    /*! Extended address */
+    required fixed64 extAddr = 3;
+}
+
+/*! Data buffer structure */
+message ApiMac_sData
+{
+    /*! length of the data buffer */
+    required uint32 len = 1;
+    /*! pointer to the data buffer */
+    required bytes p = 2;
+}
+
+/*!
+ Generic PHY Descriptor.
+ We are using this structure for both Channel Page 9 and Channel Page 10.
+ */
+message ApiMac_MRFSKPHYDesc
+{
+    /*! First Channel Center frequency */
+    required uint32  firstChCentrFreq = 1;
+    /*! Number of channels defined for the particular PHY mode */
+    required uint32 numChannels = 2;
+    /*! Distance between Adjacent center channel frequencies */
+    required uint32  channelSpacing = 3;
+    /*! 2-FSK/2-GFSK/4-FSK/4-GFSK */
+    required uint32 fskModScheme = 4;
+    /*! Symbol rate selection */
+    required uint32 symbolRate = 5;
+    /*!
+     Modulation index as a value encoded in
+     MR-FSK Generic PHY Descriptor IE
+     (IEEE802.15.4g section 5.2.4.20c).
+     <BR>
+     2FSK MI = 0.25 + Modulation Index * 0.05
+     <BR>
+     4FSK MI is a third of 2FSK MI
+     */
+    required uint32 fskModIndex = 6;
+    /*! Channel clearance algorithm selection */
+    required uint32 ccaType = 7;
+}
+
+/*! Common security type */
+message ApiMac_sec
+{
+    /*! Key source */
+    required fixed64 keySource = 1;
+    /*! Security Level */
+    required uint32 securityLevel = 2;
+    /*! Key identifier mode */
+    required uint32 keyIdMode = 3;
+    /*! Key index */
+    required uint32 keyIndex = 4;
+}
+
+/*! Key ID Lookup Descriptor */
+message ApiMac_keyIdLookupDescriptor
+{
+    /*! Data used to identify the key */
+    required bytes lookupData = 1;
+    /*! 0x00 indicates 5 octets; 0x01 indicates 9 octets */
+    required uint32 lookupDataSize = 2;
+}
+
+/*! Key Device Descriptor */
+message ApiMac_keyDeviceDescriptor
+{
+    /*! Handle to the DeviceDescriptor */
+    required uint32 deviceDescriptorHandle = 1;
+    /*! True if the device is unique */
+    required uint32 uniqueDevice = 2;
+    /*! This key exhausted the frame counter. */
+    required uint32 blackListed = 3;
+}
+
+/*! Key Usage Descriptor */
+message ApiMac_keyUsageDescriptor
+{
+    /*! Frame Type */
+    required uint32 frameType = 1;
+    /*! Command Frame Identifier */
+    required uint32 cmdFrameId = 2;
+}
+
+/*! Key Descriptor */
+message ApiMac_keyDescriptor
+{
+    /*! The number of entries in KeyIdLookupList */
+    // repeated uint32 keyIdLookupEntries = 1;
+    /*! A list identifying this KeyDescriptor */
+    required ApiMac_keyIdLookupDescriptor keyIdLookupList = 1;
+    /*!
+     A list indicating which devices are currently using this key, including
+     their blacklist status.
+     */
+    repeated ApiMac_keyDeviceDescriptor keyDeviceList = 2;
+    /*! The number of entries in KeyDeviceList */
+    // required uint32 keyDeviceListEntries;
+    /*! A list indicating which frame types this key may be used with. */
+    repeated ApiMac_keyUsageDescriptor keyUsageList = 3;
+    /*! The number of entries in KeyUsageList */
+    // required uint32 keyUsageListEntries;
+    /*! The actual value of the key */
+    required bytes key = 4; /* array length: [APIMAC_KEY_MAX_LEN] */
+    /*!
+     PIB frame counter in 802.15.4 is universal across key,
+     but it makes more sense to associate a frame counter
+     with a key.
+     */
+    required uint32  frameCounter = 5;
+}
+
+/*! Device Descriptor */
+message ApiMac_deviceDescriptor
+{
+    /*! The 16-bit PAN identifier of the device */
+    required uint32 panID = 1;
+    /*! The 16-bit short address of the device */
+    required uint32 shortAddress = 2;
+    /*!
+     The 64-bit IEEE extended address of the device. This element is also
+     used inunsecuring operations on incoming frames.
+     */
+    required int64 extAddress = 3;
+}
+ 
+/*! Security Level Descriptor */
+message ApiMac_securityLevelDescriptor
+{
+    /*! Frame Type */
+    required uint32 frameType = 1;
+    /*! Command Frame ID */
+    required uint32 commandFrameIdentifier = 2;
+    /*!
+     The minimal required/expected security level for incoming MAC frames.
+     */
+    required uint32 securityMinimum = 3;
+    /*!
+     Indication of whether originating devices for which the Exempt flag is
+     set may override the minimum security level indicated by the Security
+     Minimum element. If TRUE, this indicates that for originating devices
+     with Exempt status, the incoming security level zero is acceptable.
+     */
+    required uint32 securityOverrideSecurityMinimum = 4;
+}
+
+/*! Security Device Descriptor */
+message ApiMac_securityDeviceDescriptor
+{
+    /*! Device information */
+    required ApiMac_deviceDescriptor devInfo = 1;
+    /*!
+     The incoming frame counter of the device. This value is used to
+     ensure sequential freshness of frames.
+     */
+    repeated uint32  frameCounter = 2 ; /* array: [APIMAC_MAX_KEY_TABLE_ENTRIES]; */
+    /*! Device may override the minimum security level settings. */
+    required uint32 exempt = 3;
+}
+
+/*! MAC key entry structure */
+message ApiMac_securityKeyEntry
+{
+    /*! The 128-bit key */
+    required bytes keyEntry = 1; /* array[APIMAC_KEY_MAX_LEN]; */
+    /*! the key's index - unique */
+    required uint32 keyIndex = 2;
+    /*! The key's frame counter */
+    required uint32  frameCounter = 3;
+}
+
+/*!
+ Security PIB Key ID lookup entry for a Get/Set
+ ApiMac_securityAttribute_keyIdLookupEntry
+ */
+message ApiMac_securityPibKeyIdLookupEntry
+{
+    /*! index into the macKeyIdLookupList */
+    required uint32 keyIndex = 1;
+    /*! index into macKeyIdLookupList[keyIndex] */
+    required uint32 keyIdLookupIndex = 2;
+    /*! Place to put the requested data */
+    required ApiMac_keyIdLookupDescriptor lookupEntry = 3;
+} 
+
+/*!
+ Security PIB Key ID device entry for a Get/Set
+ ApiMac_securityAttribute_keyDeviceEntry
+ */
+message ApiMac_securityPibKeyDeviceEntry
+{
+    /*! index into the macKeyDeviceList */
+    required uint32 keyIndex = 1;
+    /*! index into macKeyDeviceList[keyIndex] */
+    required uint32 keyDeviceIndex = 2;
+    /*! Place to put the requested data */
+    required ApiMac_keyDeviceDescriptor deviceEntry = 3;
+}
+
+/*!
+ Security PIB Key ID usage entry for a Get/Set
+ ApiMac_securityAttribute_keyUsageEntry
+ */
+message ApiMac_securityPibKeyUsageEnttry
+{
+    /*! index into the macKeyUsageList */
+    required uint32 keyIndex = 1;
+    /*! index into macKeyUsageList[keyIndex] */
+    required uint32 keyUsageIndex = 2;
+    /*! Place to put the requested data */
+    required ApiMac_keyUsageDescriptor usageEntry = 3;
+}
+
+/*!
+ Security PIB Key entry for a Get/Set
+ ApiMac_securityAttribute_keyEntry
+ */
+message ApiMac_securityPibKeyEntry
+{
+    /*! index into the macKeyTable */
+    required uint32 keyIndex = 1;
+    /*! key entry */
+    required bytes keyEntry = 2; /* array: [APIMAC_KEY_MAX_LEN]; */
+    /*! frame counter */
+    required uint32  frameCounter = 3;
+}
+
+/*!
+ Security PIB device entry for a Get/Set
+ ApiMac_securityAttribute_deviceEntry
+ */
+message ApiMac_securityPibDeviceEntry
+{
+    /*! index into the macDeviceTable */
+    required uint32 deviceIndex = 1;
+    /*! Place to put the requested data */
+    required ApiMac_securityDeviceDescriptor deviceEntry = 2;
+}
+
+
+/*!
+ Security PIB level entry for a Get/Set
+ ApiMac_securityAttribute_securityLevelEntry
+ */
+message ApiMac_securityPibSecurityLevelEntry
+{
+    /*! index into the macSecurityLevelTable */
+    required uint32 levelIndex = 1;
+    /*! Place to put the requested data */
+    required ApiMac_securityLevelDescriptor levelEntry = 2;
+}
+
+/*! Structure defines the Capabilities Information bit field. */
+message ApiMac_capabilityInfo
+{
+    /*! True if the device is a PAN Coordinator */
+    required uint32 panCoord = 1;
+    /*! True if the device is a full function device (FFD) */
+    required uint32 ffd = 2;
+    /*! True if the device is mains powered */
+    required uint32 mainsPower = 3;
+    /*! True if the device's RX is on when the device is idle */
+    required uint32 rxOnWhenIdle = 4;
+    /*! True if the device is capable of sending and receiving secured frames
+     */
+    required uint32 security = 5;
+    /*!
+     True if allocation of a short address in the associate procedure
+     is needed.
+     */
+    required uint32 allocAddr = 6;
+}
+
+/*! Data Request Transmit Options */
+message ApiMac_txOptions
+{
+    /*!
+     Acknowledged transmission.  The MAC will attempt to retransmit
+     the frame until it is acknowledged
+     */
+    required uint32 ack = 1;
+    /*!
+     Indirect transmission.  The MAC will queue the data and wait
+     for the destination device to poll for it.  This can only be used
+     by a coordinator device
+     */
+    required uint32 indirect = 2;
+    /*!
+     This proprietary option forces the pending bit set for direct
+     transmission
+     */
+    required uint32 pendingBit = 3;
+    /*!
+     This proprietary option prevents the frame from being retransmitted
+     */
+    required uint32 noRetransmits = 4;
+    /*!
+     This proprietary option prevents a MAC_MCPS_DATA_CNF
+     event from being sent for this frame
+     */
+    required uint32 noConfirm = 5;
+    /*!
+     Use PIB value MAC_ALT_BE for the minimum backoff exponent
+     */
+    required uint32 useAltBE = 6;
+    /*!
+     Use the power and channel values in macDataReq_t
+     instead of the PIB values
+     */
+    required uint32 usePowerAndChannel = 7;
+}
+
+/*! MCPS data request type */
+message ApiMac_mcpsDataReq 
+{
+    /*! The address of the destination device */
+    required ApiMac_sAddr dstAddr = 1;
+    /*! The PAN ID of the destination device */
+    required uint32 dstPanId = 2;
+    /*! The source address mode */
+    required ApiMac_addrType srcAddrMode = 3;
+    /*! Application-defined handle value associated with this data request */
+    required uint32 msduHandle= 4;
+    /*! TX options bit mask */
+    required ApiMac_txOptions txOptions = 5;
+    /*! Transmit the data frame on this channel */
+    required uint32 channel = 6;
+    /*! Transmit the data frame at this power level */
+    required uint32 power = 7;
+    /*! pointer to the payload IE list, excluding termination IEs */
+    required bytes pIEList = 8;
+    /*! length of the payload IE's */
+    required uint32 payloadIELen = 9;
+    /*!
+     Freq hopping Protocol Dispatch - RESERVED for future use, should
+     be cleared.
+     */
+    required ApiMac_fhDispatchType fhProtoDispatch = 10;
+    /*! Bitmap indicates which FH IE's need to be included */
+    required uint32  includeFhIEs = 11;
+    /*! Data buffer */
+    required ApiMac_sData msdu = 12;
+    /*! Security Parameters */
+    required ApiMac_sec sec = 13;
+}
+
+/* Structure a Payload information Item */
+message ApiMac_payloadIeItem
+{
+    /*! True if payload IE type is long */
+    required uint32 ieTypeLong = 1;
+    /*! IE ID */
+    required uint32 ieId = 2;
+    /*! IE Content Length - max size 2047 bytes */
+    required uint32 ieContentLen = 3;
+    /*! Pointer to the IE's content */
+    required bytes pIEContent = 4;
+}
+
+/*! MCPS data indication type */
+message ApiMac_mcpsDataInd
+{
+    /*! The address of the sending device */
+    required ApiMac_sAddr srcAddr = 1;
+    /*! The address of the destination device */
+    required ApiMac_sAddr dstAddr = 2;
+    /*! The time, in backoffs, at which the data were received */
+    required uint32  timestamp = 3;
+    /*!
+     The time, in internal MAC timer units, at which the data were received
+     */
+    required uint32 timestamp2 = 4;
+    /*! The PAN ID of the sending device */
+    required uint32 srcPanId = 5;
+    /*! The PAN ID of the destination device */
+    required uint32 dstPanId = 6;
+    /*! The link quality of the received data frame */
+    required uint32 mpduLinkQuality = 7;
+    /*! The raw correlation value of the received data frame */
+    required uint32 correlation = 8;
+    /*! The received RF power in units dBm */
+    required sint32 rssi = 9;
+    /*! The data sequence number of the received frame */
+    required uint32 dsn = 10;
+    /*! length of the payload IE buffer (pPayloadIE) */
+    required uint32 payloadIeLen = 11;
+    /*! Pointer to the start of payload IEs */
+    required bytes pPayloadIE = 12;
+    /*! Frequency Hopping Frame Type */
+    required ApiMac_fhFrameType fhFrameType = 13;
+    /*! Frequency hopping protocol dispatch - RESERVED for future use. */
+    required ApiMac_fhDispatchType fhProtoDispatch = 14;
+    /*! Frame counter value of the received data frame (if used) */
+    required uint32  frameCntr = 15;
+    /*! Security Parameters */
+    required ApiMac_sec sec = 16;
+    /*! Data Buffer */
+    required ApiMac_sData msdu = 17;
+}
+
+/*! MCPS data confirm type */
+message ApiMac_mcpsDataCnf
+{
+    /*! Contains the status of the data request operation */
+    required ApiMac_status status = 1;
+    /*! Application-defined handle value associated with the data request */
+    required uint32 msduHandle = 2;
+    /*! The time, in backoffs, at which the frame was transmitted */
+    required uint32  timestamp = 3;
+    /*!
+     The time, in internal MAC timer units, at which the frame was
+     transmitted
+     */
+    required uint32 timestamp2 = 4;
+    /*! The number of retries required to transmit the data frame */
+    required uint32 retries = 5;
+    /*! The link quality of the received ack frame */
+    required uint32 mpduLinkQuality = 6;
+    /*! The raw correlation value of the received ack frame */
+    required uint32 correlation = 7;
+    /*! The RF power of the received ack frame in units dBm */
+    required sint32 rssi = 8;
+    /*! Frame counter value used (if any) for the transmitted frame */
+    required uint32  frameCntr = 9;
+}
+
+/*! MCPS purge confirm type */
+message ApiMac_mcpsPurgeCnf
+{
+    /*! The status of the purge request operation */
+    required ApiMac_status status = 1;
+    /*! Application-defined handle value associated with the data request */
+    required uint32 msduHandle = 2;
+}
+
+/*! PAN descriptor type */
+message ApiMac_panDesc
+{
+    /*! The address of the coordinator sending the beacon */
+    required fixed64 coordAddress = 1;
+    /*! The PAN ID of the network */
+    required uint32 coordPanId  = 2;
+    /*!
+     The superframe specification of the network, this field contains
+     the beacon order, superframe order, final CAP slot, battery life
+     extension, PAN coordinator bit, and association permit flag.
+     Use the following macros to parse this field: APIMAC_SFS_BEACON_ORDER(),
+     APIMAC_SFS_SUPERFRAME_ORDER(), APIMAC_SFS_FINAL_CAP_SLOT()
+     APIMAC_SFS_BLE(), APIMAC_SFS_PAN_COORDINATOR(), and
+     APIMAC_SFS_ASSOCIATION_PERMIT().
+     */
+    required uint32 superframeSpec = 3;
+    /*! The logical channel of the network */
+    required uint32 logicalChannel = 4;
+    /*! The current channel page occupied by the network */
+    required uint32 channelPage = 5;
+    /*! TRUE if coordinator accepts GTS requests */
+    required uint32 gtsPermit = 6;
+    /*! The link quality of the received beacon */
+    required uint32 linkQuality = 7;
+    /*! The time at which the beacon was received, in backoffs */
+    required uint32  timestamp = 8;
+    /*! TRUE if there was an error in the security processing */
+    required uint32 securityFailure = 9;
+    /*! The security parameters for the received beacon frame */
+    required ApiMac_sec sec = 10;
+}
+
+/*! MLME associate request type */
+message ApiMac_mlmeAssociateReq
+{
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 1;
+    /*! The channel on which to attempt association */
+    required uint32 logicalChannel = 2;
+    /*! The channel page on which to attempt association */
+    required uint32 channelPage = 3;
+    /*! Identifier for the PHY descriptor */
+    required uint32 phyID = 4;
+    /*! Address of the coordinator with which to associate */
+    required fixed64 coordAddress = 5;
+    /*! The identifier of the PAN with which to associate */
+    required uint32 coordPanId = 6;
+    /*! The operational capabilities of this device */
+    required ApiMac_capabilityInfo capabilityInformation = 7;
+}
+
+/*! MLME associate response type */
+message ApiMac_mlmeAssociateRsp
+{
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 1;
+    /*! The address of the device requesting association */
+    required fixed64 deviceAddress = 2;
+    /*! The short address allocated to the device */
+    required uint32 assocShortAddress = 3;
+    /*! The status of the association attempt */
+    required ApiMac_assocStatus status = 4;
+}
+
+/*! MLME disassociate request type */
+message ApiMac_mlmeDisassociateReq
+{
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 1;
+    /*! The address of the device with which to disassociate */
+    required fixed64 deviceAddress = 2;
+    /*! The PAN ID of the device */
+    required uint32 devicePanId = 3;
+    /*! The disassociate reason */
+    required ApiMac_disassociateReason disassociateReason = 4;
+    /*! Transmit Indirect */
+    required uint32 txIndirect = 5;
+}
+
+/*! MLME orphan response type */
+message ApiMac_mlmeOrphanRsp
+{
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 1;
+    /*! The extended address of the device sending the orphan notification */
+    required fixed64 orphanAddress = 2;
+    /*! The short address of the orphaned device */
+    required uint32 shortAddress = 3;
+    /*!
+     TRUE if the orphaned device is associated with this coordinator
+     */
+    required uint32 associatedMember = 4;
+}
+
+/*! MLME poll request type */
+message ApiMac_mlmePollReq
+{
+    /*! The address of the coordinator device to poll */
+    required fixed64 coordAddress = 1;
+    /*! The PAN ID of the coordinator */
+    required uint32 coordPanId = 2;
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 3;
+}
+
+/*! MLME scan request type */
+message ApiMac_mlmeScanReq
+{
+    /*! Bit mask indicating which channels to scan */
+    required bytes scanChannels = 1; /* bitmask [APIMAC_154G_CHANNEL_BITMAP_SIZ]; */
+    /*! The type of scan */
+    required ApiMac_scanType scanType = 2;
+    /*! The exponent used in the scan duration calculation */
+    required uint32 scanDuration = 3;
+    /*! The channel page on which to perform the scan */
+    required uint32 channelPage = 4;
+    /*! PHY ID corresponding to the PHY descriptor to use */
+    required uint32 phyID = 5;
+    /*!
+     The maximum number of PAN descriptor results, these
+     results will be returned in the scan confirm.
+     */
+    required uint32 maxResults = 6;
+    /*!
+     Only devices with permit joining enabled respond to the enhanced
+     beacon request
+     */
+    required uint32 permitJoining = 7;
+    /*!
+     The device will respond to the enhanced beacon request
+     if mpduLinkQuality is equal or higher than this value
+     */
+    required uint32 linkQuality = 8;
+    /*!
+     The device will then randomly determine if it is to
+     respond to the enhanced beacon request based on meeting
+     this probability (0 to 100%).
+     */
+    required uint32 percentFilter = 9;
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 10;
+    /*!
+     When TRUE, scanDuration is ignored. When FALSE, scan duration
+     shall be set to scanDuration; MPMScanDuration is ignored
+     */
+    required uint32 MPMScan = 11;
+    /*! BPAN or NBPAN */
+    required uint32 MPMScanType = 12;
+    /*!
+     If MPMScanType is BPAN, MPMScanDuration values are 0-14.
+     It is used in determining the max time spent scanning
+     for an EB in a beacon enabled PAN on the channel.
+     [aBaseSuperframeDuration * 2^n symbols], where
+     n is the MPMScanDuration.
+     If MPMScanType is NBPAN, valid values are 1 - 16383.
+     It is used in determining the max time spent scanning for an
+     EB in nonbeacon-enabled PAN on the channel.
+     [aBaseSlotDuration * n] symbols, where n
+     is MPMScanDuration.
+     */
+    required uint32 MPMScanDuration = 13;
+}
+
+/*! MPM(Multi-PHY layer management) parameters */
+message ApiMac_mpmParams
+{
+    /*!
+     The exponent used to calculate the enhanced beacon interval.
+     A value of 15 indicates no EB in a beacon enabled PAN
+     */
+    required uint32 eBeaconOrder = 1;
+    /*!
+     Indicates the time diff between the EB and the preceeding
+     periodic Beacon
+     */
+    required uint32 offsetTimeSlot = 2;
+    /*!
+     Indicates how often the EB to tx in a non-beacon enabled PAN. A value of
+     16383 indicates no EB in a non-beacon enabled PAN
+     */
+    required uint32 NBPANEBeaconOrder = 3;
+    /*!
+     pointer to the buffer containing the Information element IDs which needs
+     to be sent in Enhanced Beacon.
+     */
+    required bytes pIEIDs = 4;
+    /*!
+     The number of Information Elements in the buffer (size of buffer
+     at pIEIDs
+     */
+    required uint32 numIEs =  5;
+}
+
+/*! MLME start request type */
+message ApiMac_mlmeStartReq
+{
+    /*!
+     The time to begin transmitting beacons relative to the received beacon
+     */
+    required uint32  startTime = 1;
+    /*!
+     The PAN ID to use.  This parameter is ignored if panCoordinator is FALSE
+     */
+    required uint32 panId = 2;
+    /*!
+     The logical channel to use.  This parameter is ignored if panCoordinator
+     is FALSE
+     */
+    required uint32 logicalChannel = 3;
+    /*!
+     The channel page to use.  This parameter is ignored if panCoordinator
+     is FALSE
+     */
+    required uint32 channelPage = 4;
+    /*! PHY ID corresponding to the PHY descriptor to use */
+    required uint32 phyID = 5;
+    /*! The exponent used to calculate the beacon interval */
+    required uint32 beaconOrder = 6;
+    /*! The exponent used to calculate the superframe duration */
+    required uint32 superframeOrder = 7;
+    /*! Set to TRUE to start a network as PAN coordinator */
+    required uint32 panCoordinator = 8;
+    /*!
+     If this value is TRUE, the receiver is disabled after
+     MAC_BATT_LIFE_EXT_PERIODS full backoff periods following the interframe
+     spacing period of the beacon frame
+     */
+    required uint32 batteryLifeExt = 9;
+    /*!
+     Set to TRUE to transmit a coordinator realignment prior to changing
+     the superframe configuration
+     */
+    required uint32 coordRealignment = 10;
+    /*! Security parameters for the coordinator realignment frame */
+    required ApiMac_sec realignSec = 11;
+    /*! Security parameters for the beacon frame */
+    required ApiMac_sec beaconSec = 12;
+    /*! MPM (multi-PHY layer management) parameters */
+    required ApiMac_mpmParams mpmParams = 13;
+    /*! Indicates whether frequency hopping needs to be enabled */
+    required uint32 startFH = 14;
+}
+
+/*! MAC_MlmeSyncReq type */
+message ApiMac_syncReq
+{
+    /*! The logical channel to use */
+    required uint32 logicalChannel = 1;
+    /*! The channel page to use */
+    required uint32 channelPage = 2;
+    /*! PHY ID corresponding to the PHY descriptor to use */
+    required uint32 phyID = 3;
+    /*!
+     Set to TRUE to continue tracking beacons after synchronizing with the
+     first beacon.  Set to FALSE to only synchronize with the first beacon
+     */
+    required uint32 trackBeacon = 4;
+} 
+
+/*! MLME WiSUN Async request type */
+message ApiMac_mlmeWSAsyncReq
+{
+    /*! Start or Stop Async operation */
+    required ApiMac_wisunAsyncOperation operation = 1;
+    /*! Async frame type */
+    required ApiMac_wisunAsyncFrame frameType = 2;
+    /*!
+     Bit Mask indicating which channels to send the Async frames for the
+     start operation
+     */
+    required bytes channels = 3; /* bitmap array [APIMAC_154G_CHANNEL_BITMAP_SIZ]; */
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 4;
+}
+
+/*! MAC_MLME_ASSOCIATE_IND type */
+message ApiMac_mlmeAssociateInd
+{
+    /*! The address of the device requesting association */
+    required fixed64 deviceAddress = 1;
+    /*! The operational capabilities of the device requesting association */
+    required ApiMac_capabilityInfo capabilityInformation = 2;
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 3;
+}
+
+/*! MAC_MLME_ASSOCIATE_CNF type */
+message ApiMac_mlmeAssociateCnf
+{
+    /*! Status of associate attempt */
+    required ApiMac_assocStatus status = 1;
+    /*! If successful, the short address allocated to this device */
+    required uint32 assocShortAddress = 2;
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 3;
+}
+
+/*! MAC_MLME_DISASSOCIATE_IND type */
+message ApiMac_mlmeDisassociateInd
+{
+    /*! The address of the device sending the disassociate command */
+    required fixed64 deviceAddress = 1;
+    /*! The disassociate reason */
+    required ApiMac_disassociateReason disassociateReason = 2;
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 3;
+} 
+
+/*! MAC_MLME_DISASSOCIATE_CNF type */
+message ApiMac_mlmeDisassociateCnf
+{
+    /*! status of the disassociate attempt */
+    required ApiMac_status status = 1;
+    /*!
+     The address of the device that has either requested disassociation
+     or been instructed to disassociate by its coordinator
+     */
+    required fixed64 deviceAddress = 2;
+    /*!
+     The pan ID of the device that has either requested disassociation
+     or been instructed to disassociate by its coordinator
+     */
+    required uint32 panId = 3;
+} 
+
+/*! MAC Beacon data type */
+message ApiMac_beaconData
+{
+    /*! The PAN descriptor for the received beacon */
+    required ApiMac_panDesc pPanDesc = 1;
+    /*! The number of pending short addresses */
+    required uint32 numPendShortAddr = 2;
+    /*!
+     The list of device short addresses for which the sender of the beacon
+     has data
+     */
+    repeated uint32 pShortAddrList = 3;
+    /*! The number of pending extended addresses */
+    required uint32 numPendExtAddr = 4;
+    /*!
+     The list of device short addresses for which the sender of the beacon
+     has data
+     */
+    repeated uint32 pExtAddrList = 5;
+    /*! The number of bytes in the beacon payload of the beacon frame */
+    required uint32 sduLength = 6;
+    /*! The beacon payload */
+    required bytes pSdu = 7;
+}
+
+/*! Coexistence Information element content type */
+message ApiMac_coexist
+{
+    /*!
+     Beacon Order field shall specify the transmission interval of the beacon
+     */
+    required uint32 beaconOrder = 1;
+    /*!
+     Superframe Order field shall specify the length of time during which the
+     superframe is active (i.e., receiver enabled), including the Beacon
+     frametransmission time
+     */
+    required uint32 superFrameOrder = 2;
+    /*! Final CAP slot */
+    required uint32 finalCapSlot = 3;
+    /*!
+     Enhanced Beacon Order field specifies the transmission interval
+     of the Enhanced Beacon frames in a beacon enabled network
+     */
+    required uint32 eBeaconOrder = 4;
+    /*! time offset between periodic beacon and the Enhanced Beacon */
+    required uint32 offsetTimeSlot = 5;
+    /*!
+     Actual slot position in which the Enhanced Beacon frame is
+     transmitted due to the backoff procedure in the CAP
+     */
+    required uint32 capBackOff = 6;
+    /*!
+     NBPAN Enhanced Beacon Order field specifies the transmission interval
+     between consecutive Enhanced Beacon frames in the nonbeacon-enabled mode
+     */
+    required uint32 eBeaconOrderNBPAN = 7;
+}
+
+/*! MAC Enhanced beacon data type */
+message ApiMac_eBeaconData
+{
+    /*! Beacon Coexist data */
+    required ApiMac_coexist coexist = 1;
+}
+
+/*! MAC_MLME_BEACON_NOTIFY_IND type */
+message ApiMac_mlmeBeaconNotifyInd
+{
+    /*! Indicates the beacon type: beacon or enhanced beacon */
+    required ApiMac_beaconType beaconType = 1;
+    /*! The beacon sequence number or enhanced beacon sequence number */
+    required uint32 bsn = 2;
+    /*!
+     Beacon data union depending on beaconType, select beaconData or
+     or eBeaconData.
+     */
+
+    /*! beacon data */
+    optional ApiMac_beaconData beacon = 3;
+    /*! enhanced beacon data */
+    optional ApiMac_eBeaconData eBeacon = 4;
+}
+
+/*! MAC_MLME_ORPHAN_IND type */
+message ApiMac_mlmeOrphanInd
+{
+    /*! The address of the orphaned device */
+    required fixed64 orphanAddress = 1;
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 2;
+}
+
+/*! MAC_MLME_SCAN_CNF type */
+message ApiMac_mlmeScanCnf
+{
+    /*! status of the  scan request */
+    required ApiMac_status status = 1;
+    /*! The type of scan requested */
+    required ApiMac_scanType scanType = 2;
+    /*! The channel page of the scan */
+    required uint32 channelPage = 3;
+    /*! PHY ID corresponding to the PHY descriptor used during scan */
+    required uint32 phyId = 4;
+    /*! Bit mask of channels that were not scanned */
+    required bytes unscannedChannels = 5; /* bitmask: [APIMAC_154G_CHANNEL_BITMAP_SIZ]; */
+    /*! The number of PAN descriptors returned in the results list */
+    required uint32 resultListSize = 6;
+    /*! Depending on the scanType the results are in this union */
+        /*! The list of energy measurements, one for each channel scanned */
+         repeated uint32 pEnergyDetect = 7;
+        /*! The list of PAN descriptors, one for each beacon found */
+        repeated ApiMac_panDesc pPanDescriptor = 8;
+}
+
+/*! MAC_MLME_START_CNF type */
+message ApiMac_mlmeStartCnf
+{
+    /*! status of the  start request */
+    required ApiMac_status status = 1;
+}
+
+/*! MAC_MLME_SYNC_LOSS_IND type */
+message ApiMac_mlmeSyncLossInd
+{
+    /*! Reason that the synchronization was lost */
+    required ApiMac_status reason = 1;
+    /*! The PAN ID of the realignment */
+    required uint32 panId = 2;
+    /*! The logical channel of the realignment */
+    required uint32 logicalChannel = 3;
+    /*! The channel page of the realignment */
+    required uint32 channelPage = 4;
+    /*! PHY ID corresponding to the PHY descriptor of the realignment */
+    required uint32 phyID = 5;
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 6;
+}
+
+/* MAC_MLME_POLL_CNF type */
+message ApiMac_mlmePollCnf
+{
+    /*! status of the  poll request */
+    required ApiMac_status status = 1;
+    /*! Set if framePending bit in data packet is set */
+    required uint32 framePending = 2;
+}
+
+/* MAC_MLME_COMM_STATUS_IND type */
+message ApiMac_mlmeCommStatusInd
+{
+    /*! status of the event */
+    required ApiMac_status status = 1;
+    /*! The source address associated with the event */
+    required fixed64 srcAddr = 2;
+    /*! The destination address associated with the event */
+    required fixed64 dstAddr = 3;
+    /*! The PAN ID associated with the event */
+    required uint32 panId = 4;
+    /*! The reason the event was generated */
+    required ApiMac_commStatusReason reason = 5;
+    /*! The security parameters for this message */
+    required ApiMac_sec sec = 6;
+}
+
+/*! MAC_MLME_POLL_IND type */
+message ApiMac_mlmePollInd
+{
+    /*! Short address of the device sending the data request */
+    required fixed64 srcAddr = 1;
+    /*! Pan ID of the device sending the data request */
+    required uint32 srcPanId = 2;
+    /*!
+     indication that no MAC_McpsDataReq() is required. It is set when
+     MAC_MLME_POLL_IND is generated, to simply indicate that a received
+     data request frame was acked with pending bit cleared.
+     */
+    required uint32 noRsp = 3;
+}
+
+/*! MAC_MLME_WS_ASYNC_FRAME_IND type */
+message ApiMac_mlmeWsAsyncInd {
+    required ApiMac_mcpsDataInd data = 1;
+}
+
+/*! MAC_MLME_WS_ASYNC_FRAME_CNF type */
+message ApiMac_mlmeWsAsyncCnfK
+{
+    /*! status of the  Async request */
+    required ApiMac_status status = 1;
+}
+
+
+/*! Network Information */
+message Llc_netInfo
+{
+    /*! true if network is frequency hopping */
+	required     uint32 fh = 1;
+    /*! Channel - non FH */
+    required uint32 channel = 2;
+    /* Address information */
+    required  ApiMac_deviceDescriptor devInfo = 3;
+}
+
+/* Structure to store a device list entry in NV */
+message Llc_deviceListItem
+{
+    /* Address information */
+    required ApiMac_deviceDescriptor devInfo = 1;
+    /* Device capability */
+    required ApiMac_capabilityInfo capInfo = 2;
+    /* RX frame counter */
+    required uint32 rxFrameCounter = 3;
+}
+
+/*!
+ Coordinator State Values
+ */
+enum Cllc_states
+{
+    /*! Powered up, not started and waiting for user to start */
+    Cllc_states_initWaiting = 1;
+    /*! Starting coordinator, scanning and selecting the best parameters */
+    Cllc_states_startingCoordinator = 2;
+    /*!
+     Powered up, found network information, and restoring device in network
+     */
+    Cllc_states_initRestoringCoordinator = 3;
+    /*! Device is operating as coordinator */
+    Cllc_states_started = 4;
+    /*! Device is restored as coordinator in the network */
+    Cllc_states_restored = 5;
+    /*! Joining allowed state has changed to allowed */
+    Cllc_states_joiningAllowed = 6;
+    /*! Joining allowed state has changed to not allowed */
+    Cllc_states_joiningNotAllowed = 7;
+}
+
+
+/*!
+ Coordinator starting State Values
+ */
+enum Cllc_coord_states
+{
+    /*! Initialized state */
+    Cllc_coordStates_initialized = 0;
+    /*! MAC  coordinator is performing a active scan  */
+    Cllc_coordStates_scanActive = 1;
+    /*! active scan  confirm received*/
+    Cllc_coordStates_scanActiveCnf = 2;
+    /*! Eneergy detect scan confirm received */
+    Cllc_coordStates_scanEdCnf = 3;
+    /*! Start confirm received */
+    Cllc_coordStates_startCnf = 4;
+}
+
+/*! Building block for association table */
+message Cllc_associated_devices
+{
+    /*! Short address of associated device */
+    required uint32 shortAddr = 1;;
+    /*! capability information */
+    required ApiMac_capabilityInfo capInfo = 2;
+    /*! RSSI */
+    required sint32 rssi = 3;
+    /*! Device alive status */
+    required uint32 status = 4;
+}
+
+/*! Cllc statistics */
+message Cllc_statistics
+{
+    /*! number of PA Solicit messages received */
+    required  uint32 fhNumPASolicitReceived = 1;
+    /*! number of PA messages sent */
+    required uint32 fhNumPASent = 2;
+    /*! number of PC Solicit messages received */
+    required uint32 fhNumPANConfigSolicitsReceived = 3;
+    /*! number of PC messages sent */
+    required uint32 fhNumPANConfigSent = 4;
+    required uint32 otherStats = 5;
+}
+//import "csf.proto";
+
+/* MT System ID for TIMAC APP Server Interface Protobuf sub-system ID */
+enum timacAppSrvSysId
+{
+  RPC_SYS_PB_TIMAC_APPSRV = 10;
+}
+
+/* Command IDs - each of these are associated with Request, 
+ * Responses, Indications, and Confirm messages 
+ */
+enum appsrv_CmdId
+{
+  APPSRV_DEVICE_JOINED_IND = 1;
+  APPSRV_DEVICE_LEFT_IND = 2;
+  APPSRV_NWK_INFO_IND = 3;
+  APPSRV_GET_NWK_INFO_REQ = 4;
+  APPSRV_GET_NWK_INFO_RSP = 5;
+  APPSRV_GET_NWK_INFO_CNF = 6;
+  APPSRV_GET_DEVICE_ARRAY_REQ = 7;
+  APPSRV_GET_DEVICE_ARRAY_CNF = 8;
+  APPSRV_DEVICE_NOTACTIVE_UPDATE_IND = 9;
+  APPSRV_DEVICE_DATA_RX_IND = 10;
+  APPSRV_COLLECTOR_STATE_CNG_IND = 11;
+  APPSRV_SET_JOIN_PERMIT_REQ = 12;
+  APPSRV_SET_JOIN_PERMIT_CNF = 13;
+  APPSRV_TX_DATA_REQ = 14;
+  APPSRV_TX_DATA_CNF = 15;
+}
+
+enum nwkMode
+{
+    BEACON_ENABLED = 1;
+    NON_BEACON = 2;
+    FREQUENCY_HOPPING = 3;
+}
+
+// APPSRV_TX_DATA_REQ
+message appsrv_txDataReq
+{
+    required appsrv_CmdId cmdId = 1 [default = APPSRV_TX_DATA_REQ];  // don't change this field
+    required Smsgs_cmdIds msgId = 2;
+    required ApiMac_deviceDescriptor devDescriptor = 3;
+    optional Smsgs_configReqMsg configReqMsg = 4;
+    optional Smsgs_toggleLedReqMsg toggleLedReq = 5;
+    
+}
+
+//APPSRV_TX_DATA_CNF
+message appsrv_txDataCnf
+{
+  required appsrv_CmdId cmdId = 1 [default = APPSRV_TX_DATA_CNF]; // don't change this field
+  required int32 status = 2; 
+}
+
+// APPSRV_SET_JOIN_PERMIT_REQ
+message appsrv_setJoinPermitReq
+{
+    required appsrv_CmdId cmdId = 1 [default = APPSRV_SET_JOIN_PERMIT_REQ];  // don't change this field
+ //   duration - duration for join permit to be turned on in
+ //              milliseconds.
+ //              0 sets it Off, 0xFFFFFFFF sets it ON indefinitely
+ //              Any other non zero value sets it on for that duration */
+    required int32 duration = 2;
+    
+}
+
+// APPSRV_SET_JOIN_PERMIT_CNF
+message appsrv_setJoinPermitCnf
+{
+  // provides the result of processing of the 
+  // APPSRV_SET_JOIN_PERMIT_REQ message
+  required int32 status = 1;
+}
+
+// APPSRV_DEVICE_JOINED_IND
+message appsrv_deviceUpdateInd
+{
+    required ApiMac_deviceDescriptor devDescriptor = 1;
+    required ApiMac_capabilityInfo devCapInfo = 2;
+}
+
+// APPSRV_DEVICE_NOTACTIVE_UPDATE_IND
+message appsrv_deviceNotActiveUpdateInd
+{
+    required ApiMac_deviceDescriptor devDescriptor = 1;
+    required uint32 timeout = 2;
+}
+
+// APPSRV_DEVICE_DATA_RX_IND
+message appsrv_deviceDataRxInd
+{
+    required ApiMac_sAddr srcAddr = 1;
+    required sint32 rssi = 2;
+    optional Smsgs_sensorMsg sDataMsg = 4; 
+    optional Smsgs_configRspMsg sConfigMsg = 5;
+}
+
+// APPSRV_COLLECTOR_STATE_CNG_IND
+message appsrv_collectorStateCngUpdateInd
+{
+    required uint32 state = 1;
+}
+
+// sub-message for the network parameters
+// used by appsrv_nwkInfoUpdateInd 
+// and appsrv_getNwkInfoCnf
+message appsrv_nwkParam
+{
+    required Llc_netInfo nwkInfo = 1;
+    required int32 securityEnabled = 2;
+    required nwkMode networkMode = 3;
+    required Cllc_states state = 4;
+}
+
+// APPSRV_NWK_INFO_IND
+message appsrv_nwkInfoUpdateInd
+{
+   required appsrv_nwkParam nwkinfo = 1;
+}
+
+// APPSRV_GET_NWK_INFO_REQ
+message appsrv_getNwkInfoReq
+{
+  // APPSRV_GET_NWK_INFO_REQ - command ID used to identify this message
+  // Get network Information Request - This API is called by the appClient application to retrieve
+  // the network information
+  // Returns appsrv_getNwkInfoRsp_t 
+
+  required appsrv_CmdId cmdId = 1 [default = APPSRV_GET_NWK_INFO_REQ];  // don't change this field
+}
+
+// APPSRV_GET_NWK_INFO_CNF
+message appsrv_getNwkInfoCnf
+{
+  // APPSRV_GET_NWK_INFO_REQ - command ID used to identify this message
+  // Get network Information Request - This API is called by the appClient application to retrieve
+  // the network information
+  
+    required appsrv_CmdId cmdId = 1 [default = APPSRV_GET_NWK_INFO_CNF];  // don't change this field
+    required uint32 status = 2;
+    optional appsrv_nwkParam nwkinfo = 3;
+}
+
+// APPSRV_GET_DEVICE_ARRAY_REQ
+message appsrv_getDeviceArrayReq
+{
+  // APPSRV_GET_DEVICE_ARRAY_REQ - command ID used to identify this message
+  // Get list of the connected devices Request 
+  // This API is called by the appClient application to retrieve
+  // the list of currently connected devices 
+  // Returns appsrv_getNwkInfoCnf 
+ 
+  required appsrv_CmdId cmdId = 1 [default = APPSRV_GET_DEVICE_ARRAY_REQ];  // don't change this field
+}
+
+// sub message
+message Csf_deviceInformation {
+    required ApiMac_deviceDescriptor devInfo = 1;
+    required ApiMac_capabilityInfo   capInfo = 2;
+}
+
+// APPSRV_GET_DEVICE_ARRAY_CNF
+message appsrv_getDeviceArrayCnf
+{
+    required appsrv_CmdId cmdId = 1 [default = APPSRV_GET_DEVICE_ARRAY_CNF];  // don't change this field
+    required uint32 status = 2;
+    repeated Csf_deviceInformation devInfo = 3;
+}
+
+
+//  ========================================
+//  Texas Instruments Micro Controller Style
+//  ========================================
+//  Local Variables:
+//  mode: protobuf
+//  tab-width: 4
+//  c-basic-offset: 4
+//  indent-tabs-mode: nil
+//  End:
+//  vim:set  tabstop=4 shiftwidth=4 expandtab=true
+

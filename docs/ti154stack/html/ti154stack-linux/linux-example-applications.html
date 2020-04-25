@@ -1,0 +1,523 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Example Applications &mdash; 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation" href="../index.html"/>
+        <link rel="next" title="Running the Example Applications" href="linux-running-the-example-applications.html"/>
+        <link rel="prev" title="Development Environment" href="linux-development-environment.html"/>
+    <script language="JavaScript">
+        var tiPageName;
+        tiPageName = "sug ti154stack-linux linux-example-applications";
+
+        if (location.protocol == "file:"){
+            var ci_analytics_poc_load = true;
+        }
+    </script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8">
+
+
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../ti154stack-guide/index-linux.html" class="icon icon-home"> 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.12.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="linux-introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-quick-start.html">Linux Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-architecture.html">Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-sdk-description.html">SDK Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-development-environment.html">Development Environment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#linux-collector-and-gateway-example-applications">Linux® Collector and Gateway Example Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linux-serial-bootloader-example-application">Linux® Serial Bootloader Example Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#application-design-details">Application Design Details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ccdnld-api">CcDnld API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#general-behavior">General Behavior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#supported-functions">Supported Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#important-linux-host-design-considerations">Important Linux® Host-Design Considerations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linux-running-the-example-applications.html">Running the Example Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-build-system.html">Build System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-npi-server.html">NPI Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-components.html">Linux® Software Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-component-common-library.html">Component Common Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Terms and Acronyms</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../ti154stack-guide/index-linux.html">
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../ti154stack-guide/index-linux.html">Docs</a> &raquo;</li>
+      
+    <li>Example Applications</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="example-applications">
+<span id="chap-linux-example-applications"></span><h1>Example Applications<a class="headerlink" href="#example-applications" title="Permalink to this headline">¶</a></h1>
+<p>This section provides a high-level overview of the out-of-box example applications.</p>
+<div class="section" id="linux-collector-and-gateway-example-applications">
+<h2>Linux® Collector and Gateway Example Applications<a class="headerlink" href="#linux-collector-and-gateway-example-applications" title="Permalink to this headline">¶</a></h2>
+<p>The Linux Collector and Gateway Applications are provided as part of the TI
+15.4-Stack Linux SDK Installer. The Linux Collector Example Application
+interfaces with the CC13xx/CC26x2 running the TI 15.4-Stack CoProcessor through a
+UART.</p>
+<p>The collector example application does the following:</p>
+<ul class="simple">
+<li>Builds a full-function device (<a class="reference internal" href="glossary.html#term-ffd"><span class="xref std std-term">FFD</span></a>) that performs the functions of
+a network coordinator</li>
+<li>Starts a network and permits devices to join the network</li>
+<li>Provides an application to monitor and collects sensor data from one or
+more sensor devices</li>
+<li>Provides a socket server interface to the Linux Gateway Application</li>
+</ul>
+<p>The Linux Gateway Application, implemented within the Node.js framework, connects as a client to the socket server created by the Linux Collector. The Linux Gateway Application establishes a local Web server to which the user can connect through a Web browser to monitor and control the network devices.</p>
+<p>The Collector and Gateway Applications, which provide IEEE 802.15.4 to IP Bridge, are a great starting point for creating Internet of Things (IoT) applications with the TI 15.4-Stack.</p>
+<p><a class="reference internal" href="#fig-collector-block-diagram"><span class="std std-numref">Figure 15.</span></a> shows the software architecture of the
+Linux Collector Example Application.</p>
+<div class="figure align-center" id="fig-collector-block-diagram">
+<img alt="../_images/fig-collector-block-diagram.png" src="../_images/fig-collector-block-diagram.png" />
+<p class="caption"><span class="caption-number">Figure 15. </span><span class="caption-text">Software Block Diagram of the TI 15.4-Stack Linux® Collector
+Example Application</span></p>
+</div>
+<p>Following are high-level descriptions of each software block and where to find
+the relevant source code:</p>
+<p><strong>Linux Kernel</strong>: Has features and functionality provided by the processor SDK</p>
+<p><strong>NPI Server v2.0</strong>: (directory: example/npi_server2) Provides a serial
+communications link and interface to the application with the CC13xx/CC26x2
+LaunchPad running the TI 15.4-Stack CoProcessor firmware</p>
+<p><strong>API MAC</strong>: (directory: components/api) Provides an interface to the management and data services of the TI-15.4-Stack protocol stack</p>
+<p><strong>Collector</strong>: (file: example/collector/collector.c) Implements an example
+application that starts the network, allows new devices to join the network,
+configures the joining devices on how often to report the sensor data, for
+sleepy devices configures how often to poll for buffered messages in case of
+non-beacon and frequency-hopping mode of network operation, and tracks
+connected devices to determine if they are active or inactive on the network.
+This determination is achieved by the collector periodically sending tracking
+request messages and awaiting corresponding tracking response messages.</p>
+<p><strong>Logical Link Controller</strong>: (file: example/collector/cllc.c) Abstracts the
+network management functionality from the application such as starting the
+network, associating new devices, and responding to orphan notifications from
+the devices that have lost sync.</p>
+<p><strong>Collector Start-Up Code</strong>: (files: example/collector/linux_main.c and
+appsrv.c) implements logic that is needed to configure the application at
+start-up.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A portion of the Web server gateway code is also within appsrv.c.</p>
+</div>
+<p><strong>NPI Server</strong>
+-   Start-up: example/npi_server2/linux_main.c
+-   Application: example/npi_server2/app_main.c</p>
+<p><strong>Common Library Component Module</strong>: (directory: components/common) Provides
+various functionalities such as timer services, semaphores, and so on
+(see <a class="reference internal" href="linux-software-components.html#chap-linux-software"><span class="std std-ref">Linux® Software Components</span></a> for more details)</p>
+<p><strong>Collector-Specific Functions</strong> (file: example/collector/csf_linux.c)
+Implements the user interface specific functions, interfaces with the
+nonvolatile (NV) module to provide persistent data service to store information
+over power cycles, implements a server socket for user application to connect
+to the application to get useful network information and control network
+devices</p>
+<p><strong>Local Gateway Application</strong>: (file: example/collector/appsrv.c) Implements an
+application client that connects to the application server implemented in the
+collector specific function and also a Web server application</p>
+<p><strong>Gateway Protocol Files</strong>: These files define the message content and body
+between the <em>appsrv</em> component and the front-end gateway application in the
+gateway folder. (Files: example/collector/*.proto, generated files:
+“*.pb-c.[ch]”, corresponding *_proto.c.) The Node.js package uses a single
+<em>protobuf</em> definition file: example/gateway/appClient/protofiles/appsrv.proto.</p>
+<p><strong>Web Application</strong>: This is the gateway application (see the gateway directory
+and related Node.js files) that lets users view the network information, device
+information, information about reported data from the network devices and also
+control the network devices</p>
+<p><strong>MAC CoProcessor —</strong> (Prebuilt embedded hex file) Runs on the CC13xx/CC26x2
+device, implements an 802.15.4e/g MAC/PHY layer and provides an MT-based
+interface to the applications running on the Linux host</p>
+</div>
+<div class="section" id="linux-serial-bootloader-example-application">
+<h2>Linux® Serial Bootloader Example Application<a class="headerlink" href="#linux-serial-bootloader-example-application" title="Permalink to this headline">¶</a></h2>
+<p>The Linux serial bootloader example application is the Linux flash update
+application that provides ability to upgrade the firmware on the CC13xx/CC26x2
+device through the ROM serial bootloader.</p>
+<div class="section" id="application-design-details">
+<h3>Application Design Details<a class="headerlink" href="#application-design-details" title="Permalink to this headline">¶</a></h3>
+<p>The serial bootloader example application has two main modules:</p>
+<ul class="simple">
+<li>cc13xxdnld module</li>
+<li>sblUart module</li>
+</ul>
+<p>The cc13xxdnld software module has no dependencies on the operating system or
+hosting hardware and is intended to be portable across microprocessor units
+(MPUs), MCUs, and operating systems (OSs). The sblUart files contain the
+operating-system or hardware-specific calls to the UART that are provided as
+callback functions to the cc13xxdnld software module. These calls require UART
+read/write access to communicate with the CC13xx and the CC26xx ROM bootloader.</p>
+</div>
+<div class="section" id="ccdnld-api">
+<h3>CcDnld API<a class="headerlink" href="#ccdnld-api" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="overview">
+<h4>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h4>
+<p>The CcDnld API should be used in application code. The CcDnld API is intended
+to ease the integration of the CC13xx/CC26xx bootloader functionality in a host
+processor connected to the CC13xx/CC26xx UART.</p>
+</div>
+<div class="section" id="general-behavior">
+<h4>General Behavior<a class="headerlink" href="#general-behavior" title="Permalink to this headline">¶</a></h4>
+<p>Before using the CcDnld API, a binary or a hex image should be prepared to be
+loaded into the CC13xx/CC26x2 Flash.</p>
+<p>To load data to the CC13xx/CC26x2 flash following must be performed:</p>
+<ol class="arabic simple">
+<li>Set the UART send and receive data callbacks with CcDnld_init().</li>
+<li>Connect to the CC13xx/CC26x2 ROM bootloader with CcDnld_connect().</li>
+<li>Optionally Erase flash with CcDnld_flashEraseRange().</li>
+<li>Optionally Program flash with CcDnld_startDownload() and CcDnld_sendData().</li>
+<li>Optionally Erase flash with CcDnld_flashEraseRange().</li>
+<li>Optionally Verify flash with CcDnld_verify().</li>
+</ol>
+</div>
+<div class="section" id="error-handling">
+<h4>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h4>
+<p>The CcDnld API returns the CcDnld_Status that contains a success or an error
+code. <a class="reference internal" href="#tab-ccdnld-status-codes"><span class="std std-numref">Table 2.</span></a> lists the CcDnld_Status codes.</p>
+<table border="1" class="docutils" id="tab-ccdnld-status-codes">
+<caption><span class="caption-number">Table 2. </span><span class="caption-text">CcDnld_Status Codes</span><a class="headerlink" href="#tab-ccdnld-status-codes" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="61%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Status</strong></th>
+<th class="head"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>CcDnld_Status_Success</td>
+<td>Success</td>
+</tr>
+<tr class="row-odd"><td>CcDnld_Status_Cmd_Error</td>
+<td>Invalid command</td>
+</tr>
+<tr class="row-even"><td>CcDnld_Status_State_Error</td>
+<td>Invalid state</td>
+</tr>
+<tr class="row-odd"><td>CcDnld_Status_Param_Error</td>
+<td>Invalid parameter</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="supported-functions">
+<h4>Supported Functions<a class="headerlink" href="#supported-functions" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference internal" href="#tab-ccdnld-apis"><span class="std std-numref">Table 3.</span></a> lists the supported functions of the CcDnld API.</p>
+<table border="1" class="docutils" id="tab-ccdnld-apis">
+<caption><span class="caption-number">Table 3. </span><span class="caption-text">CcDnld API Supported Functions</span><a class="headerlink" href="#tab-ccdnld-apis" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Generic API Function</strong></th>
+<th class="head"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>CcDnld_init()</td>
+<td>Registers the UART read/write function points</td>
+</tr>
+<tr class="row-odd"><td>CcDnld_connect()</td>
+<td>Connects to the CC13xx and CC26xx ROM bootloader</td>
+</tr>
+<tr class="row-even"><td>CcDnld_flashEraseRange()</td>
+<td>Erases the specified flash range</td>
+</tr>
+<tr class="row-odd"><td>CcDnld_startDownload()</td>
+<td>Sends the download command to the CC13xx and CC26xx ROM bootloader</td>
+</tr>
+<tr class="row-even"><td>CcDnld_sendData()</td>
+<td>Sends program data to be program data to be programmed to the flash</td>
+</tr>
+<tr class="row-odd"><td>CcDnld_verify()</td>
+<td>Verify a flash range with data in a buffer</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="important-linux-host-design-considerations">
+<h3>Important Linux® Host-Design Considerations<a class="headerlink" href="#important-linux-host-design-considerations" title="Permalink to this headline">¶</a></h3>
+<p>In addition to a standard 2-wire UART interface, the final design should include two GPIO signals to control the CC13xx/CC26x2 device.</p>
+<ul class="simple">
+<li>GPIO Signal A: used to reset or power cycle the CC13xx/CC26x2 device</li>
+<li>GPIO Signal B: controls the masked ROM bootloader entry into the flash update mode</li>
+</ul>
+<p>At power up, the CC13xx/CC26x2 device can be configured to read a GPIO pin and then do one of the following actions:</p>
+<ol class="arabic simple">
+<li>Proceed normally.</li>
+<li>Enter bootloader or flash programmer mode.</li>
+</ol>
+<p>The configuration for this feature is stored in the customer configuration
+(CCFG) section of the on-chip Flash memory (see the <em>Bootloader</em> chapter in the
+<a class="reference external" href="http://www.ti.com/lit/pdf/swcu185">CC13x2 CC26x2 SimpleLink Wireless MCU Technical Reference Manual</a> for details).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When running the out-of-box TI 15.4-Stack CoProcessor binaries from the TI
+15.4-Stack Linux SDK on a CC13xx/CC26x2, pressing BTN-1 on the LaunchPad at
+boot-up will make the CC13xx/CC26x2 device enter bootloader mode.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="linux-running-the-example-applications.html" class="btn btn-neutral float-right" title="Running the Example Applications" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="linux-development-environment.html" class="btn btn-neutral" title="Development Environment" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">2016-2019, Texas Instruments</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.12.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+      });
+  </script>
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

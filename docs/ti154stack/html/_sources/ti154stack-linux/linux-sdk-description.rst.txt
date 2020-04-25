@@ -1,0 +1,65 @@
+SDK Description
+===============
+
+.. note::
+
+    #.  The default SDK Installation directory is:
+        ${HOME}/ti/simplelink/ti15.4stack-2.xx.xx.xx. References to the
+        ${SDK\_ROOT} in this document refer to this directory location.
+    #.  The numbering convention is: Major, Minor, Patch, BuildID
+        The Linux Build ID is independent of the Embedded SDK Build ID and can
+        be a different number.
+
+:numref:`fig-oob-dir` shows the Linux SDK is divided into several directories.
+
+.. figure:: resources/fig-oob-dir.jpeg
+    :name: fig-oob-dir
+    :align: center
+
+    TI 15.4-Stack Linux® SDK Out-of-Box Directory Structure
+
+:numref:`fig-oob-dir` shows the ${SDK\_ROOT} directory structure under your TI
+15.4-Stack install directory. A high-level description of the contents in
+each folder follows:
+
+-   *components*: contains the following libraries:
+
+    +   *common* — Simple runtime OS features, File I/O, and the *stream*
+        interface
+
+    +   *nv* — Emulates the nonvolatile memory, as used in an embedded device
+
+    +   *api* — The API MAC and MT message (Msg) interface for the embedded
+        network processor
+
+-   *docs*: Various documents such as the *Users Guide*, *Quick Start Guide*,
+    and the *TI 15.4-Stack CoProcessor Interface Guide*
+
+-   *example*: Example applications
+
+    +   *cc13xx-sbl* — Flash update utility for the CC13xx/CC26x2
+
+    +   *collector* — Example application that demonstrates starting up the
+        network, allowing network devices to join the network, collecting data
+        from remote sensors
+
+    +   *gateway* — A Node.js™ based application that creates a local Web
+        server and presents network information and sensor data through a Web
+        application
+
+    +   *npi\_server2* — A socket and packet interface to the embedded
+        CoProcessor
+
+    +   *google* — Contains a makefile that can download, build, and install
+        the Google protobuf compiler and the *protobuf-c* extension on the
+        Linux host machine
+
+-   *firmware*: Prebuilt hex files for the CC13xx/CC26x2 |TIMAC| CoProcessor,
+    Collector, and Sensor Applications
+
+-   *prebuilt*: Prebuilt Linux x86\_v64 and BeagleBone Black (:term:`BBB`)
+    binaries for the example applications, scripts to quickly run the out-of-
+    box example applications
+
+-   *scripts*: Contains makefile fragments used to compile and link example
+    applications

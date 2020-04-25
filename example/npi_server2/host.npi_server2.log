@@ -1,0 +1,10 @@
+make -f Makefile ARCH=host 
+make[1]: Entering directory '/home/debian/PocketBeagleApp/example/npi_server2'
+Creating App: (host) host_npi_server2
+objs/host/app_main.o: file not recognized: File format not recognized
+collect2: error: ld returned 1 exit status
+../../scripts/app.mak:94: recipe for target 'host_npi_server2' failed
+make[1]: *** [host_npi_server2] Error 1
+make[1]: Leaving directory '/home/debian/PocketBeagleApp/example/npi_server2'
+../../scripts/front_matter.mak:219: recipe for target 'host' failed
+make: *** [host] Error 2

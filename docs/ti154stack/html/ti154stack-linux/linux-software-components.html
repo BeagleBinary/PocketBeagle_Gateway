@@ -1,0 +1,445 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Linux® Software Components &mdash; 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation" href="../index.html"/>
+        <link rel="next" title="Component Common Library" href="linux-component-common-library.html"/>
+        <link rel="prev" title="NPI Server" href="linux-npi-server.html"/>
+    <script language="JavaScript">
+        var tiPageName;
+        tiPageName = "sug ti154stack-linux linux-software-components";
+
+        if (location.protocol == "file:"){
+            var ci_analytics_poc_load = true;
+        }
+    </script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8">
+
+
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../ti154stack-guide/index-linux.html" class="icon icon-home"> 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.12.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="linux-introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-quick-start.html">Linux Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-architecture.html">Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-sdk-description.html">SDK Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-development-environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-example-applications.html">Example Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-running-the-example-applications.html">Running the Example Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-build-system.html">Build System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-npi-server.html">NPI Server</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Linux® Software Components</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#component-nonvolatile-nv-library">Component NonVolatile (NV) Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#where-the-nv-library-is-used">Where the NV Library is Used</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-features-and-highlights">Key Features and Highlights</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#component-mt-layer-library">Component MT (Layer) Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#where-the-component-mt-library-is-used">Where the Component (MT) Library is Used</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#important-api-functions">Important API Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api-mac-layer">API MAC Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#protocol-buffers">Protocol Buffers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linux-component-common-library.html">Component Common Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Terms and Acronyms</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../ti154stack-guide/index-linux.html">
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../ti154stack-guide/index-linux.html">Docs</a> &raquo;</li>
+      
+    <li>Linux® Software Components</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="linux-software-components">
+<span id="chap-linux-software"></span><h1>Linux® Software Components<a class="headerlink" href="#linux-software-components" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="component-nonvolatile-nv-library">
+<h2>Component NonVolatile (NV) Library<a class="headerlink" href="#component-nonvolatile-nv-library" title="Permalink to this headline">¶</a></h2>
+<p>The documentation for the NV library can be found in the following directory:
+<code class="docutils literal notranslate"><span class="pre">${root}/components/nv/inc/nvintf.h</span></code></p>
+<div class="section" id="where-the-nv-library-is-used">
+<h3>Where the NV Library is Used<a class="headerlink" href="#where-the-nv-library-is-used" title="Permalink to this headline">¶</a></h3>
+<p>The example Collector Application uses this library component to simulate NV
+storage that would be found on an embedded device.</p>
+</div>
+<div class="section" id="key-features-and-highlights">
+<h3>Key Features and Highlights<a class="headerlink" href="#key-features-and-highlights" title="Permalink to this headline">¶</a></h3>
+<p>Following are some of the key features and highlights for the Linux software components:</p>
+<ul class="simple">
+<li>In the embedded device, two pages of flash memory are used as the data
+pages. In the host (Linux) environment, the data page is simulated through
+a simple file.</li>
+<li>Updating or creating an item: As items are written, or new items are
+created, the current NV page is scanned and the old item is marked as
+invalid.</li>
+<li>Ping-Pong Pages: Eventually the current page fills; then, the software
+automatically compacts the data into the other page and erases the current
+page. A version (sequence number) is used to differentiate the two pages if
+something goes wrong (for example, a power failure in the middle of
+compacting the page).</li>
+</ul>
+</div>
+</div>
+<div class="section" id="component-mt-layer-library">
+<h2>Component MT (Layer) Library<a class="headerlink" href="#component-mt-layer-library" title="Permalink to this headline">¶</a></h2>
+<p>The documentation for the component MT library can be found in the following
+directory: <code class="docutils literal notranslate"><span class="pre">${root}/components/api/inc/mt_msg.h</span></code></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The MT layer is a portion of the API MAC library; therefore, the MT
+layer is contained within the API MAC library.</p>
+</div>
+<p>In general, the MT component provides a means to send and receive a message
+(mt_msg) through an interface (mt_interface). The interface could be a simple
+serial port or a TCP/IP socket.</p>
+<p>A message transmitted across an interface is a byte stream in the following
+format:</p>
+<ol class="arabic simple">
+<li>An optional frame synchronization byte: 0xFE</li>
+<li>A 1- or 2-byte length field</li>
+<li>A command 0 byte (contains message type and subsystem ID number)</li>
+<li>A command 1 byte (specific to the subsystem)</li>
+<li>Zero or more payload bytes specific to the command bytes</li>
+<li>An optional Frame Check (XOR-checksum) (present or not present)</li>
+</ol>
+<div class="section" id="where-the-component-mt-library-is-used">
+<h3>Where the Component (MT) Library is Used<a class="headerlink" href="#where-the-component-mt-library-is-used" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt><a class="reference internal" href="#fig-mt-message-example"><span class="std std-numref">Figure 25.</span></a> shows a configuration where the Gateway</dt>
+<dd>Application is running on the local x86 Linux host machine and the NPI
+server is running on a BBB from a remote location.</dd>
+</dl>
+<div class="figure align-center" id="fig-mt-message-example">
+<img alt="../_images/fig-mt-message-example.png" src="../_images/fig-mt-message-example.png" />
+<p class="caption"><span class="caption-number">Figure 25. </span><span class="caption-text">MT Message Example</span></p>
+</div>
+<p>In the example system shown in <a class="reference internal" href="#fig-mt-message-example"><span class="std std-numref">Figure 25.</span></a>, the <em>MT
+Message</em> component is used in four distinct places, which are detailed as
+follows:</p>
+<ul class="simple">
+<li>The NPI server provides a Serial (UART) MT interface to the LaunchPad.</li>
+<li>The NPI server provides an MT TCP/IP Socket interface to the network.</li>
+<li>The Collector Application communicates with the remote NPI Server
+through TCP/IP.</li>
+<li>The Collector Application uses the MT protocol to encapsulate Google®
+Protobuf messages to and from the Node.js Gateway (Web server) application.</li>
+</ul>
+</div>
+<div class="section" id="important-api-functions">
+<h3>Important API Functions<a class="headerlink" href="#important-api-functions" title="Permalink to this headline">¶</a></h3>
+<p>The Collector Application and the NPI Application configure the interface
+though the respective config files; this function handles the INI settings for
+an interface (see the example in <a class="reference internal" href="#code-ini-settings"><span class="std std-numref">Listing 6.</span></a>). For more
+examples, refer to <em>linux_main.c</em> in the npi_server and the Collector
+Application.</p>
+<div class="literal-block-wrapper docutils container" id="code-ini-settings">
+<div class="code-block-caption"><span class="caption-number">Listing 6. </span><span class="caption-text">INI Message Settings</span><a class="headerlink" href="#code-ini-settings" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MT_MSG_INI_settings</span><span class="p">(</span><span class="k">struct</span> <span class="n">ini_parser</span> <span class="o">*</span><span class="n">pINI</span><span class="p">,</span>
+    <span class="kt">bool</span> <span class="o">*</span><span class="n">handled</span><span class="p">,</span>
+    <span class="k">struct</span> <span class="n">mt_msg_interface</span> <span class="o">*</span><span class="n">pIface</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>The <em>settings</em> function handles a configuration file fragment, as shown in
+<a class="reference internal" href="#code-cfg-fragment"><span class="std std-numref">Listing 7.</span></a>.</p>
+<div class="literal-block-wrapper docutils container" id="code-cfg-fragment">
+<div class="code-block-caption"><span class="caption-number">Listing 7. </span><span class="caption-text">Configuration File Fragment</span><a class="headerlink" href="#code-cfg-fragment" title="Permalink to this code">¶</a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[uart-interface]
+    include-chksum = true
+    frame-sync = true
+    fragmentation-size = 240
+    retry-max = 3
+    fragmentation-timeout-msecs = 1000
+    intersymbol-timeout-msecs = l00
+    srsp-timeout-msecs = 1000
+    len-2bytes = false
+    flush-timeout-msecs = 50
+</pre></div>
+</div>
+</div>
+<p>Once the data structure is configured, the interface is initialized or created
+through <a class="reference internal" href="#code-init-create"><span class="std std-numref">Listing 8.</span></a>.</p>
+<div class="literal-block-wrapper docutils container" id="code-init-create">
+<div class="code-block-caption"><span class="caption-number">Listing 8. </span><span class="caption-text">Interface Initialized or Created</span><a class="headerlink" href="#code-init-create" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MT_MSG_interfaceCreate</span><span class="p">(</span><span class="k">struct</span> <span class="n">mt_msg_interface</span> <span class="o">*</span><span class="n">pMI</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>As an example of how to send and receive messages, review the function (shown
+in <a class="reference internal" href="#code-send-receive"><span class="std std-numref">Listing 9.</span></a>) in the source code:</p>
+<div class="literal-block-wrapper docutils container" id="code-send-receive">
+<div class="code-block-caption"><span class="caption-number">Listing 9. </span><span class="caption-text">Interface Send and Receive Message</span><a class="headerlink" href="#code-send-receive" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">MT_MSG_getVersion</span><span class="p">(</span><span class="k">struct</span> <span class="n">mt_msg_interface</span> <span class="o">*</span><span class="n">pDest</span><span class="p">,</span>   \
+    <span class="k">struct</span> <span class="n">mt_version_info</span> <span class="o">*</span><span class="n">pinfo</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="api-mac-layer">
+<h2>API MAC Layer<a class="headerlink" href="#api-mac-layer" title="Permalink to this headline">¶</a></h2>
+<p>The API MAC interface is documented in the following directory:
+<code class="docutils literal notranslate"><span class="pre">${root}/components/api/inc/api_mac.h</span></code></p>
+</div>
+<div class="section" id="protocol-buffers">
+<h2>Protocol Buffers<a class="headerlink" href="#protocol-buffers" title="Permalink to this headline">¶</a></h2>
+<p>The TI 15.4-Stack Linux Gateway application takes use of Google’s Protocol
+Buffers. This software is maintained outside of Texas Instruments. For more
+information, please see (<a class="reference external" href="https://github.com/protobuf-c/protobuf-c">https://github.com/protobuf-c/protobuf-c</a>).</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="linux-component-common-library.html" class="btn btn-neutral float-right" title="Component Common Library" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="linux-npi-server.html" class="btn btn-neutral" title="NPI Server" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">2016-2019, Texas Instruments</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.12.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+      });
+  </script>
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

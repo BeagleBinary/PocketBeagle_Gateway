@@ -1,0 +1,121 @@
+Terms and Acronyms
+==================
+
+.. glossary::
+
+    BIM
+        Boot Image Manager, the software bootloader
+
+    IDE
+        Integrated Development Environment
+
+    RAM
+        Random Access Memory
+
+    RF
+        Radio Frequency
+
+    NV
+        Non-Volatile Memory
+
+    DFE
+        Direct Frame Exchange
+
+    IEEE
+        Institute of Electrical and Electronics Engineers
+
+    PHY
+        Physical layer of the OSI model
+
+    OSI
+        Open Systems Interconnection model
+
+    MAC
+        Medium Access Control
+
+    SUN
+        Smart Utility Network
+
+    PAN
+        Personal Area Network
+
+    CSMA/CA
+        Carrier Sense Multiple Access with Collision Avoidance. This prevents nodes from talking while the air is occupied. Used in all bands except 868MHz
+
+    LBT
+        Listen Before Talk. This prevents nodes from talking while the air is occupied. Used in 868MHz band.
+
+    DH1CF
+        Direct Hash Channel Function. This is used to produce a psuedo-random channel sequence for frequency hopping devices.
+
+    CCA
+    CCFG
+        Customer Configuration Area, contains lock-bits on flash page 31 and the
+        Customer Configuration Table (.ccfg)
+
+    CCS
+    Code Composer Studio
+
+        An integrated development environment to develop applications for
+        Texas Instruments embedded processors. Download: `Code Composer
+        Studio`_
+
+    IAR
+        IAR Systems
+
+    GCC
+    GNU Compiler Collection
+
+        A compiler system produced by the GNU Project, which support various
+        programming languages such as C and C++.
+
+    MCU
+        Microcontroller Unit
+
+    OAD
+        Over the Air Download
+
+    OOB
+        Out-Of-Box
+
+    PIB
+        Personal-Area-Network Information Bases
+
+    RCFG
+        TI-RTOS in ROM Configuration Table
+
+    ROM
+        Read-only Memory
+
+    SNV
+        Simple Non-Volatile storage
+
+    RTOS
+        Real Time Operating System
+
+    FFD
+        Full Functionality Device
+
+    RFD
+        Reduced Functionality Device
+
+    CLI
+        Command Line Interface
+
+    GUI
+        Graphical User Interface
+
+    BBB
+        BeagleBone Black
+
+    SDK
+        Software Development Kit
+
+    FAN
+        Field Area Network
+
+    MT
+        Message and Test Interface
+
+    NPI
+        Network Processor Interface

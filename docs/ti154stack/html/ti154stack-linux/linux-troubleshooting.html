@@ -1,0 +1,463 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Troubleshooting &mdash; 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation" href="../index.html"/>
+        <link rel="next" title="Terms and Acronyms" href="glossary.html"/>
+        <link rel="prev" title="Component Common Library" href="linux-component-common-library.html"/>
+    <script language="JavaScript">
+        var tiPageName;
+        tiPageName = "sug ti154stack-linux linux-troubleshooting";
+
+        if (location.protocol == "file:"){
+            var ci_analytics_poc_load = true;
+        }
+    </script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8">
+
+
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../ti154stack-guide/index-linux.html" class="icon icon-home"> 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.12.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="linux-introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-quick-start.html">Linux Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-architecture.html">Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-sdk-description.html">SDK Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-development-environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-example-applications.html">Example Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-running-the-example-applications.html">Running the Example Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-build-system.html">Build System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-npi-server.html">NPI Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-components.html">Linux® Software Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-component-common-library.html">Component Common Library</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#layer-1embedded-devices">Layer 1—Embedded Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layer-2move-to-the-linux-collector-application">Layer 2—Move to the Linux® Collector Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enable-logging">Enable Logging?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nv-overview-settings">NV (Overview) Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gateway-application">Gateway Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ip-network-issues">IP Network Issues?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ssh-connection-problems">SSH Connection Problems</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Terms and Acronyms</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../ti154stack-guide/index-linux.html">
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../ti154stack-guide/index-linux.html">Docs</a> &raquo;</li>
+      
+    <li>Troubleshooting</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="troubleshooting">
+<span id="sec-troubleshooting"></span><h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h1>
+<p>Troubleshooting should be performed in the layers.</p>
+<div class="section" id="layer-1embedded-devices">
+<h2>Layer 1—Embedded Devices<a class="headerlink" href="#layer-1embedded-devices" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Use the Flash Programmer v2 and verify the embedded device is programed
+correctly. See <a class="reference internal" href="linux-development-environment.html#sec-flash-cop"><span class="std std-ref">Programming the CoProcessor Application</span></a>.</li>
+<li>Attach an LCD BoosterPack™ Plug-in Module to the embedded sensor and verify
+the screen or use the UART debug output as described in <a class="reference external" href="http://www.ti.com/tool/simplelink-cc13x0-sdk">TI-15.4 Stack
+CC13x0 SimpleLink™ Embedded Example Applications Getting Started Guide</a></li>
+<li>Program the LaunchPad with a prebuilt embedded <em>Collector Hex file</em> (attach
+a BoosterPack Plug-in Module LCD, if available) and join the embedded
+collector with the embedded sensor.</li>
+</ul>
+</div>
+<div class="section" id="layer-2move-to-the-linux-collector-application">
+<h2>Layer 2—Move to the Linux® Collector Application<a class="headerlink" href="#layer-2move-to-the-linux-collector-application" title="Permalink to this headline">¶</a></h2>
+<p>Is the /dev/ttyACM0 device present or it cannot be opened?</p>
+<ol class="arabic simple">
+<li>Verify the device <em>/dev/ttyACM*</em> is present; the LaunchPad uses
+/dev/ttyACM [0..99]. If not, examine the <em>dmesg</em> output to see if the USB
+device is being recognized. If not, determine if the USB ACM module is
+present in your Linux Kernel.</li>
+<li>If you are using a Virtual Machine (VM)—did you disconnect (from the host)
+and connect the LaunchPad to the VM?</li>
+<li>The collector.cfg file assumes that the name <em>/dev/ttyACM0</em> is the
+LaunchPad. If other ACM devices are present, edit the configuration file.</li>
+<li>Are you a member of the group <em>dialout</em>? If so, fo to Step 5. If not, add
+yourself to this group.</li>
+<li>Some VMs (or kernel drivers and features) take about 10 to 15 seconds to
+complete the USB process and release the serial port for use by an
+application. Whereas in the BBB stand-alone Linux machine, the process is
+complete in about 1 second.</li>
+</ol>
+</div>
+<div class="section" id="enable-logging">
+<h2>Enable Logging?<a class="headerlink" href="#enable-logging" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Change the application configuration file and enable logging (see
+<a class="reference internal" href="linux-component-common-library.html#sec-log-file"><span class="std std-ref">Log File</span></a>), enable everything except the SYS items. Within the
+first 2 or 3 seconds, a series of commands and responses will go to the
+CoProcessor (the log is very verbose) and complete hex dumps of every
+message transfer are also included.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It may be helpful to enable <em>dup2stderr = true</em> rather than to
+review the log files.</p>
+</div>
+</li>
+<li><p class="first">The Collector Application (within the first few seconds) should communicate
+with the CoProcessor device and each message transferred is dumped as hex
+bytes. Verify that the embedded device is responding to messages.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="nv-overview-settings">
+<h2>NV (Overview) Settings<a class="headerlink" href="#nv-overview-settings" title="Permalink to this headline">¶</a></h2>
+<p>Perhaps an invalid configuration is stored in the NV simulation. Typically, NV
+settings cause problems with joining and sensor connection.</p>
+<ol class="arabic simple">
+<li>The Linux Collector stores the simulated NV configuration in a file called
+<em>nv-simulation.bin</em>. To reset the NV, simply delete the <em>nv-simulation.bin</em>
+file and a new one will be created as needed.</li>
+<li>The Collector configuration file supports a <em>load-nv-sim = false</em> option
+that forces the NV settings to be reset each time the application starts.</li>
+<li>Did the embedded sensor device <em>join</em> another network? At start-up, the
+Example Sensor Application reads the buttons (right or BTN-2). If the
+button is pressed, the sensor example clears or resets the NV parameters.</li>
+</ol>
+</div>
+<div class="section" id="gateway-application">
+<h2>Gateway Application<a class="headerlink" href="#gateway-application" title="Permalink to this headline">¶</a></h2>
+<p>Typical trouble shooting steps for Gateway application are as follows:</p>
+<ol class="arabic simple">
+<li>Node or Node.js? See the discussion in <a class="reference internal" href="linux-running-the-example-applications.html#sec-option-2"><span class="std std-ref">Running the Example Linux® Applications After Building From Source</span></a>.</li>
+<li>Enable logging in the Collector Application (see the previous description
+in this section). Each message from the Gateway Application (Node.js) is
+logged and hex values are dumped to the log file.</li>
+<li>The Gateway Application default is hard-coded to connect to the local host,
+on a specific port. For details, see <em>Socket Configuration</em> in
+<a class="reference internal" href="linux-running-the-example-applications.html#sec-start-gateway"><span class="std std-ref">Start the Gateway Application</span></a>.</li>
+</ol>
+</div>
+<div class="section" id="ip-network-issues">
+<h2>IP Network Issues?<a class="headerlink" href="#ip-network-issues" title="Permalink to this headline">¶</a></h2>
+<p>Identify IP network issues by performing the steps that follow:</p>
+<ol class="arabic simple">
+<li>Try to <em>ping</em> the IP address of the other device.</li>
+<li>Is your laptop (or company) firewall preventing access?</li>
+<li>Use a fixed IP address (not randomly assigned DHCP addresses).</li>
+</ol>
+</div>
+<div class="section" id="ssh-connection-problems">
+<h2>SSH Connection Problems<a class="headerlink" href="#ssh-connection-problems" title="Permalink to this headline">¶</a></h2>
+<p>PuTTY warning titled <em>WARNING – POTENTIAL SECURITY BREACH</em></p>
+<p>Linux equivalent <em>WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED</em></p>
+<p>The following is background information to explain the SSH connection problems:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This document is not a security document, network security is beyond
+the scope of this document – the information provided here is intended to
+help an engineer determine what might have happened.</p>
+</div>
+<ul>
+<li><p class="first">Step 1—Background Part 1</p>
+<p>When first connecting to the BBB, your SSH client will ask to verify the
+new host SSH key. In the Linux example shown in
+<a class="reference internal" href="#fig-linux-security"><span class="std std-numref">Figure 26.</span></a>, the user answered <em>yes</em> and accepted the new
+host key. (PuTTY uses a Windows dialog box in a similar style.)</p>
+<div class="figure align-center" id="fig-linux-security">
+<img alt="../_images/fig-linux-security.jpeg" src="../_images/fig-linux-security.jpeg" />
+<p class="caption"><span class="caption-number">Figure 26. </span><span class="caption-text">Linux® Example</span></p>
+</div>
+</li>
+<li><p class="first">Step 2—Background Part 2</p>
+<p>When the user selects <em>yes</em>, the SSH tool saves the remote host key (in
+this case, the key comes from the BBB). In Linux, this key is saved in your
+$ {HOME}/.ssh directory. PuTTY uses the Windows registry.</p>
+<p>Most often the key is associated with an IP address, or with a <em>hostname</em>.</p>
+<p>Where does this key come from? At first power up, the BBB creates a new
+random SSH host key and saves this key on its local SD Card. Upon the next
+power up, the BBB reuses the saved key.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This host key is a random value, and there are now two copies of
+this key: Copy 1 is on the BBB and Copy 2 is stored on your development
+laptop.</p>
+</div>
+</li>
+<li><p class="first">Step 3—The cause of the problem</p>
+<p>Previously the connection was with the <em>old-beagle-bone-black</em> SD Card
+(with the old SSH key).</p>
+<p>Most commonly the BBB has the same IP address; however, the content of the
+SD Card is different. More specifically, that random SSH host key is
+different; by definition, each key is random.</p>
+<p>Example: Reformat the SD Card and a new random SSH key will be created. Or
+swap BBB devices; thus, a different SD Card is in use with a different
+random key.</p>
+</li>
+<li><p class="first">Step 4—The error message</p>
+<p>From your laptop, connect to the pseudo-new BBB (effectively this is a
+<em>different or new</em> SD Card); thus, the BBB will present a different random
+host key to your laptop.</p>
+<p>The security policy of SSH is to verify the remote host key with all known
+(and saved) host keys. Because a connection was made previously, the old
+key was saved. The correct security policy is to refuse the connection
+until the user affirmatively resolves the host key change.</p>
+<p>Because most development environments are very closed, a very controlled
+update of the host key is often the correct action to take.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This document is not a security document—TI strongly encourages
+you to study and learn about various types of network security and make
+informed decisions about how your product security functions.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="glossary.html" class="btn btn-neutral float-right" title="Terms and Acronyms" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="linux-component-common-library.html" class="btn btn-neutral" title="Component Common Library" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">2016-2019, Texas Instruments</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.12.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+      });
+  </script>
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,513 @@
+.. _chap-development-environment:
+
+Development Environment
+=======================
+
+Hardware Requirements and Configurations
+----------------------------------------
+
+BeagleBone Black With CoProcessor and Multiple Sensors
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The TI 15.4-Stack SDK Linux Example Applications can be executed from BBB as
+explained in this document. The following hardware is required:
+
+-   `BeagleBone Black <https://beagleboard.org/black>`_
+
+-   8GB (or more) micro-SD memory card (required to program the processor SDK
+    Image)
+
+-   One Ethernet cable
+
+-   One Linux machine running Ubuntu 14.04 LTS 64-bit
+
+-   At least two CC13xx/CC26x2 LaunchPad™ development kits
+
+    +   LaunchPad 1 acts as the CoProcessor, which is the interface to the
+        802.15.4 network
+
+    +   LaunchPad 2+ are the network nodes that join the TI 15.4-Stack-based
+        network
+
+-   FTDI cable
+
+-   One USB cable to connect the LaunchPad to the :term:`BBB`
+
+-   One 5-V power supply or mini USB cable to power the :term:`BBB`
+
+.. figure:: resources/fig-app-on-bbb.png
+    :name: fig-app-on-bbb
+    :align: center
+
+    Network Configuration With Application Running on the BBB
+
+Linux® x86 PC With CoProcessor and Multiple Sensors
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The TI 15.4-Stack Linux SDK Example Application can be executed from an x86
+machine running Ubuntu® connected through USB to a CC13xx/CC26x2 LaunchPad
+running the |TIMAC| CoProcessor Application. The following hardware is
+required:
+
+-   A Linux x86 PC running Ubuntu OS 14.04 LTS (x86\_64 Bit)
+
+-   USB cable to connect to the LaunchPad
+
+-   At least two CC13xx/CC26x2 LaunchPad™ development kits
+
+    +   LaunchPad 1 acts as the CoProcessor, which is the interface to the
+        802.15.4 network
+
+    +   LaunchPad 2+ are the network nodes that join the TI 15.4-Stack-based
+        network
+
+    .. figure:: resources/fig-host-config.png
+        :name: fig-host-config
+        :align: center
+
+        Network Configuration With Application Running on the x86\_64 PC Running Ubuntu® OS
+
+Required Software
+-----------------
+
+This section explains how to set up the hardware with the desired software to
+build and run the TI 15.4-Stack Linux SDK out-of-box example applications and
+setup to develop custom applications.
+
+.. _sec-linux-dev-host:
+
+Linux® Development Host
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The x86 machine running Ubuntu can be used to develop and run the applications
+as well as cross compile the applications for the :term:`BBB` platform. This
+section provides setup instructions to build, develop, and run the applications
+on an x86 machine. This section also provides setup instructions for the x86
+machine for cross-compiling on the :term:`BBB` platform.
+
+.. note:: When developing for the BBB platform on an x86 machine, the C code is
+    cross-compiled and linked as a BBB application on your host x86 Linux\_64
+    machine. The Arm executable is then copied to the BBB to run the application.
+
+    When cross-compiling, executables are named *host\_<name>*, which means the
+    *compilation host*. The prefix *bbb\_<name>* is used as a target prefix for
+    the BBB.
+
+Install the following software on your x86\_64 machine running Ubuntu 14.04 LTS
+64-bit to run the TI 15.4-Stack Linux SDK out-of-box example applications.
+
+#.  Install the TI 15.4-Stack Linux SDK
+
+    a)  Download the `TI 15.4-Stack Linux SDK <http://www.ti.com/tool/ti-15.4-stack-gateway-linux-sdk>`_ on to your Linux machine.
+
+        .. note::
+            Because the installer is a 64-bit Linux executable, it requires a
+            64-bit Linux machine.
+
+    c)  On the host (Linux x86\_64) machine, go to the directory where the
+        Linux Installer is located and use the following commands to install:
+
+        .. code-block:: bash
+
+            $chmod +x ti15.4stack_linux_x64_xx_xx_xx_xx.run
+            $./ti15.4stack_linux_x64_xx_xx_xx_xx.run
+
+        .. note::
+            The *$* symbol prompt indicates that this installer should be run
+            as a normal user. Do not run as a ROOT (with the # prompt).
+
+        The default TI 15.4-Stack install directory is:
+        ``${HOME}/ti/simplelink/ti154stack_linux_64_xx_xx_xx_xx``
+
+#.  Do an update
+
+    .. code-block:: bash
+
+        $sudo apt-get update
+
+#.  Install the package: build essentials
+
+    .. code-block:: bash
+
+        $sudo apt-get install build-essential
+
+#.  Install the package: Node.js
+
+    .. code-block:: bash
+
+        $sudo apt-get install Node.js
+
+#.  Your user name must be a member of the group *dialout*
+
+    .. code-block:: bash
+
+        $sudo adduser $USER dialout
+
+#.  To cross-compile for BBB, install TI's `AM335x Sitara Processor SDK for
+    Linux`_ . TI's processor SDK for AM335x contains all of the cross-
+    compilation tools, headers, libraries, and other required files for cross-
+    compiling to the BBB.
+
+    .. note::
+        #.  In the TI 15.4-Stack Linux SDK, the processor SDK is installed in
+            the following location: /home/${USER}/ti-processor-sdk-linux-
+            am335x-evm-xx.xx.xx.xx
+
+        #.  The TI processor SDK download is very large and expands to an even
+            larger installation (the download is approximately 3GB, the
+            installed footprint is approximately 4.5GB) and is only required to
+            build the Example Applications through a cross-compilation scheme.
+
+        If the TI processor SDK is installed in a different location or is a
+        different version, then the following two files must be updated:
+
+        -   File 1:
+            ${SDK\_ROOT}/scripts/front\_matter.mak
+
+        -   File 2:
+            ${SDK\_ROOT}/example/cc13xx-sbl/app/linux/Makefile
+
+        :numref:`code-front-matter` is a screenshot from the front\_matter.mak
+        file (adjust the version numbers as required).
+
+    .. code-block:: bash
+        :name: code-front-matter
+        :caption: Screenshot From File front\_matter.mak
+
+        #========================================
+        # These *MAY* need to be adjusted to fit your SDK install.
+        # NOTE: The Boot loader also has a macro that may need updating.
+        # SEE: ${root}/example/ccl3xx-sbl/app/linux/Makefile
+        #----------------------------------------
+        # What is the Processor SDK Root directory
+        #----------------------------------------
+        bbb_TI_PROC_SDK_DIR=${HOME}/ti-processor-sdk-linux-am335x-evm-
+        xx.xx.xx.xx
+
+    Your x86 machine running Ubuntu should now be ready to run the build and
+    run the example applications or to cross-compile applications for the BBB
+    platform.
+
+#.  To test and verify the setup, build the Linux application from source with
+    the following instructions:
+
+    a)  Change to the TI 15.4-Stack ${SDK\_ROOT}
+        installation directory
+
+        .. code-block:: bash
+
+            $cd ${HOME}/ti/simplelink/ti15.4stack-x.xx.xx.xx
+
+    b)  At the *bash$* prompt, type the following:
+
+        .. code-block:: bash
+
+            # builds the host version
+            $bash ./build_all.sh
+            # cross-compiles the BBB version. See Makefile for more details.
+            $bash ./build_all.sh bbb
+
+    c)  The script builds the component libraries and the example applications.
+
+        .. note:: The script also creates *\*.log* files of the compilation
+            process.
+
+#.  Next, configure the :term:`BBB` (see :ref:`sec-bbb`), or go to the step to
+    program the LaunchPad with the desired flash images. See :ref:`sec-flash-lps`
+    (using the Linux Flash Programing tool), or see
+    :ref:`chap-running-examples`, which discusses the Windows flash tool.
+
+.. _sec-bbb:
+
+BeagleBone Black
+^^^^^^^^^^^^^^^^
+
+The :term:`BBB` can be used in two different ways to develop and run the
+applications:
+
+-   Method 1: As a runtime environment only, software is generally developed
+    (edited, compiled, and linked) on a *host x86 Linux machine* and then
+    deployed (or copied) to the :term:`BBB`.
+
+-   Method 2: As a development environment, the edit, compile, and link
+    processes are done directly on the BBB.
+
+The following steps provide details on how to set up the BBB for both methods described previously.
+
+#.  Program the micro-SD memory card with the TI Linux Processor SDK version
+    0.2.00.02.11 or greater.
+
+    a)  Download the prebuilt processor SDK image *am335x-evm-linux-
+        xx.xx.xx.xx.img.zip* from `AM335x Sitara Processor SDK for Linux`_.
+        Follow the instructions at the wiki page to program the micro-SD memory
+        card through Windows: `Processor SDK Linux Creating a SD Card with
+        Windows`_ The Linux method is described in `Processor SDK Linux create
+        SD card script`_.
+
+    b)  To boot from the SD card, take the following actions:
+
+        #.  Disconnect power and unplug USB cable from the :term:`BBB`.
+
+        #.  Insert the SD card.
+
+        #.  Press (and hold) the *boot switch* (see
+            :numref:`fig-dev-boot-bbb`).
+
+        #.  Apply power to the :term:`BBB` (through a USB or through a barrel
+            connector).
+
+        #.  Wait a few seconds; then release the boot switch.
+
+            .. note:: The boot switch is only detected at power up.
+
+        #.  In about 5 to 15 seconds, the LEDs will start blinking.
+
+            .. figure:: resources/fig-boot-bbb.png
+                :name: fig-dev-boot-bbb
+                :align: center
+
+                Boot Switch Location
+
+#.  Determine the IP address of the :term:`BBB`. To monitor and control the TI
+    15.4-Stack Network when using the TI 15.4-Stack Linux SDK out-of-box
+    Gateway Application, you must know the IP address of the :term:`BBB`.
+
+    -   Method 1: Connect to the Host PC through a USB cable, as shown in
+        :numref:`fig-bbb-linux-usb-dev`.
+
+        +   The USB IP address is hard coded as 192.168.7.2 and is assigned
+            during boot. This uses the RNDIS driver.
+
+    .. figure:: resources/fig-bbb-linux-usb.jpeg
+        :name: fig-bbb-linux-usb-dev
+        :align: center
+
+        USB Connection
+
+    -   Method 2: Use a network router or PC, as shown in
+        :numref:`fig-bbb-connection-router-dev`.
+
+    .. figure:: resources/fig-bbb-connection-router.png
+        :name: fig-bbb-connection-router-dev
+        :align: center
+
+        Network Router or PC Connection
+
+    -   The network router assigns a *random IP address* through DHCP to the
+        BBB based on the order in which the devices power up (for example, if
+        today the BBB powers up first, the BBB receives BBB = xx.xx.xx.100 and
+        laptop = xx.xx.xx.101; however, tomorrow the IP address might reverse,
+        or perhaps a new device is present on the router [for example, a cell
+        phone]).
+
+    The following two options are used to determine the assigned IP address:
+
+    -   **Use the Router HTTP Management page.**
+
+        Each router brand is different (the generic name is *DHCP Client
+        Table*). See :numref:`tab-dhcp-client` for a list of example routers.
+
+    .. table:: DHCP Client Table Examples
+        :name: tab-dhcp-client
+
+        +-----------+---------------------------------------------------------------------------------+
+        | **Brand** | **Example Link**                                                                |
+        +===========+=================================================================================+
+        | LinkSys   | http://www.linksys.com/us/support-article?articleNum=139502                     |
+        +-----------+---------------------------------------------------------------------------------+
+        | NetGear   | http://documentation.netgear.com/fvs336g/enu/202-10257-01/FVS336G_RM-11-07.html |
+        +-----------+---------------------------------------------------------------------------------+
+        | Belkin    | http://www.belkin.com/pyramid/AdvancedInfo/F5D8235-4/Advance/reserveIP.htm      |
+        +-----------+---------------------------------------------------------------------------------+
+
+    -   **Use an FTDI USB serial cable and a terminal application.**
+
+        Perform the following steps to use an FTDI USB serial cable and a
+        terminal application:
+
+        a)  Before booting the Beagle board, first connect the Ethernet cable
+            and connect an FTDI (USB serial) cable. Open a terminal program
+            using the settings *115200 8-N-1*.
+
+        b)  Power-cycle the BBB (remember to press and hold the boot switch
+            shown in :numref:`fig-dev-boot-bbb`).
+
+        c)  Wait until the Beagle board has finished booting.
+
+        d)  Log into the BBB using the user name *root*.
+
+        e)  Type the command *ifconfig*, then the IP address appears on the
+            screen shown in :numref:`fig-bbb-ifconfig`.
+
+        f)  Copy the *inet addr.*
+
+        .. figure:: resources/fig-bbb-ifconfig.jpeg
+            :name: fig-bbb-ifconfig
+            :align: center
+
+            Getting the IP Address of BBB
+
+#.  Prebuilt.tar file. On the Linux PC, use the following commands to transfer
+    the prebuilt.tar file with built binaries to the :term:`BBB`. The
+    prebuilt.tar file can be found here:
+
+    -   In the Linux SDK, the file is under the following:
+        ${SDK\_ROOT}/prebuilt/bbb\_prebuilt.tar.gz
+
+#.  Copy the *bbb\_prebuilt* file to the BBB.
+    Substitute the appropriate address for the ${BBB\_IP\_ADDRESS} that follows:
+
+    .. code-block:: bash
+
+        $ cd ${SDK_ROOT}/prebuilt
+        $ scp bbb_prebuilt.tar.gz root@${BBB_IP_ADDRESS}:~/.
+
+    .. note::
+        #.  Other tools can be used, such as Windows Secure Copy (WinSCP) or
+            FileZilla.
+        #.  The target directory *~/.* is shorthand for *roots* ${HOME}
+            directory (that is, /home/root).
+        #.  Later during development, Secure Copy (SCP) can be used to copy new
+            binary files to the BBB.
+
+#.  Log into the BBB and unpack the prebuilt.tar.gz file. Type the following
+    commands:
+
+    .. code-block:: bash
+
+        # connect to the BBB
+        $ssh root@${BBB_IP_ADDRESS}
+
+        root@am335x-evm# cd ${HOME}
+        root@am335x-evm# tar xf bbb_prebuilt.tar.gz
+
+    The prebuilt applications are found in the *prebuilt* directory.
+
+#.  OPTIONAL: Perform the following steps to copy the Linux example SDK source
+    code to the BBB to build and run the application on BBB:
+
+    a)  Create a .tar file of the entire ${SDK\_ROOT} directory.
+
+    b)  Copy this new .tar file from your Linux host to the BBB through scp (for
+        more details, see the previous note about where the prebuilt files are
+        copied).
+
+    c)  Unpack the .tar file.
+
+    d)  See :ref:`sec-build-from-source` for details about how to build on the
+        BBB.
+
+    The BBB is now ready to run the TI 15.4-Stack SDK Linux example
+    applications.
+
+#.  Next, flash program the Launchpads. See :ref:`sec-flash-lps` for using the
+    Linux Flash Programing tool; also see
+    :ref:`chap-running-examples` where the Windows flash tool is discussed.
+
+.. _sec-flash-lps:
+
+Program the Launchpads
+^^^^^^^^^^^^^^^^^^^^^^
+
+This section provides instructions on how to program the CC13xx/CC26x2
+LaunchPads with the required hex files. Prebuilt firmware files are in the
+${SDK\_ROOT}/firmware directory.
+
+-   Program one LaunchPad (See :numref:`fig-program-lps` [A]) with the
+    *$(SDK\_ROOT)/firmware/coprocessor\_cc13x0_lp.hex image, Label this
+    LaunchPad *CoProcessor*.
+
+-   Program all other LaunchPads (See :numref:`fig-program-lps` [B]) with the
+    *$(SDK\_ROOT)/firmware/default/sensor\_default.hex image. Label these
+    LaunchPads as *sensors*.
+
+.. figure:: resources/fig-program-lps.png
+    :name: fig-program-lps
+    :align: center
+
+    Program the LaunchPads
+
+There are three options to program the LaunchPads:
+
+-   Option 1: Use the Linux application cc13xx-sbl (see
+    :ref:`sec-serial-bootloader` for details).
+
+-   Option 2: Use the Windows application SmartRF™ Flash Programmer v2 (see
+    :ref:`sec-flash-cop` for this method).
+
+-   Options 3: Use the `Uniflash Flash Tool <http://www.ti.com/tool/uniflash>`_.
+    This tool is available for Linux. macOS, and Windows.
+
+The LaunchPads are now ready. :ref:`chap-running-examples` describes how to run
+the out-of-box Collector and Gateway Applications.
+
+.. _sec-flash-cop:
+
+Programming the CoProcessor Application
+---------------------------------------
+
+The TI 15.4-Stack Linux SDK includes a prebuilt hex file for the MAC
+CoProcessor. This hex file can be programmed through the SmartRF Flash
+Programmer v2 (see `SmartRF Flash Programmer`_ to download) or 
+`Uniflash Flash Tool <http://www.ti.com/tool/uniflash>`_. 
+In addition, the workspace of the |TIMAC| CoProcessor
+CCS project is included with the SimpleLink SDK. Refer to the **TI 15.4-Stack
+Users Guide** on how to program the device using CCS.
+
+Option 2:  - SmartRF Flash Programmer v2
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open the SmartRF Flash Programmer v2 on the Windows machine.
+:numref:`fig-flash-programmer2-expl` shows the steps to program the CC13xx
+device with the desired hex file.
+
+.. figure:: resources/fig-flash-programmer2-expl.jpeg
+    :name: fig-flash-programmer2-expl
+    :align: center
+
+    Steps to Program the CC13xx LaunchPad Using the SmartRF Flash Programmer v2
+
+.. note::
+
+    #.  When connecting the LaunchPad, the SmartRF program might update the
+        *debugger firmware* in the on-board XDS-110 debug feature.
+
+    #.  Troubleshooting Hint 1: It is easy to confuse various LaunchPads (that
+        is, sensor versus CoProcessor), so be sure to label each device
+        properly.
+
+Options 3 - Use the Uniflash Flash Tool
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open the Uniflash Flash Tool and connect the LaunchPad to the PC.
+
+Run UniFlash, and perform the following steps:
+
+.. note::
+
+    #.  Uniflash will automatically find any LaunchPads that are connected to your PC.
+
+-   Go to the `Settings & Utilities` tab in Uniflash and erase all unprotected sectors
+    (See :numref:`fig-uniflash1`)
+
+.. figure:: resources/UniFlash_1.png
+    :name: fig-uniflash1
+    :align: center
+
+-   Before programming the device, change the Erase settings back to 
+    `Necessary Sectors Only (Retain untouched content within sector)`, 
+    (See :numref:`fig-uniflash2`)
+
+.. figure:: resources/UniFlash_2.png
+    :name: fig-uniflash2
+    :align: center
+
+-   In the Program tab, under **Flash image(s)**, browse to the pre-built sensor hex file, located at:
+    *$(SDK\_ROOT)/firmware/default/sensor\_default.hex 
+
+-   Make sure to first **Load Image** and then afterwards **Verify Image**
+    (See :numref:`fig-uniflash3`)
+
+.. figure:: resources/UniFlash_3.png
+    :name: fig-uniflash3
+    :align: center

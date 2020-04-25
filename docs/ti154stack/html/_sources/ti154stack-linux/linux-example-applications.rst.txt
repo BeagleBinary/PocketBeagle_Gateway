@@ -1,0 +1,226 @@
+.. _chap-linux-example-applications:
+
+Example Applications
+====================
+
+This section provides a high-level overview of the out-of-box example applications.
+
+Linux® Collector and Gateway Example Applications
+-------------------------------------------------
+
+The Linux Collector and Gateway Applications are provided as part of the TI
+15.4-Stack Linux SDK Installer. The Linux Collector Example Application
+interfaces with the CC13xx/CC26x2 running the |TIMAC| CoProcessor through a
+UART.
+
+The collector example application does the following:
+
+-   Builds a full-function device (:term:`FFD`) that performs the functions of
+    a network coordinator
+
+-   Starts a network and permits devices to join the network
+
+-   Provides an application to monitor and collects sensor data from one or
+    more sensor devices
+
+-   Provides a socket server interface to the Linux Gateway Application
+
+The Linux Gateway Application, implemented within the Node.js framework, connects as a client to the socket server created by the Linux Collector. The Linux Gateway Application establishes a local Web server to which the user can connect through a Web browser to monitor and control the network devices.
+
+The Collector and Gateway Applications, which provide IEEE 802.15.4 to IP Bridge, are a great starting point for creating Internet of Things (IoT) applications with the TI 15.4-Stack.
+
+:numref:`fig-collector-block-diagram` shows the software architecture of the
+Linux Collector Example Application.
+
+.. figure:: resources/fig-collector-block-diagram.png
+    :name: fig-collector-block-diagram
+    :align: center
+
+    Software Block Diagram of the TI 15.4-Stack Linux® Collector
+    Example Application
+
+Following are high-level descriptions of each software block and where to find
+the relevant source code:
+
+**Linux Kernel**: Has features and functionality provided by the processor SDK
+
+**NPI Server v2.0**: (directory: example/npi\_server2) Provides a serial
+communications link and interface to the application with the CC13xx/CC26x2
+LaunchPad running the |TIMAC| CoProcessor firmware
+
+**API MAC**: (directory: components/api) Provides an interface to the management and data services of the TI-15.4-Stack protocol stack
+
+**Collector**: (file: example/collector/collector.c) Implements an example
+application that starts the network, allows new devices to join the network,
+configures the joining devices on how often to report the sensor data, for
+sleepy devices configures how often to poll for buffered messages in case of
+non-beacon and frequency-hopping mode of network operation, and tracks
+connected devices to determine if they are active or inactive on the network.
+This determination is achieved by the collector periodically sending tracking
+request messages and awaiting corresponding tracking response messages.
+
+**Logical Link Controller**: (file: example/collector/cllc.c) Abstracts the
+network management functionality from the application such as starting the
+network, associating new devices, and responding to orphan notifications from
+the devices that have lost sync.
+
+**Collector Start-Up Code**: (files: example/collector/linux\_main.c and
+appsrv.c) implements logic that is needed to configure the application at
+start-up.
+
+.. note:: A portion of the Web server gateway code is also within appsrv.c.
+
+**NPI Server**
+-   Start-up: example/npi\_server2/linux\_main.c
+-   Application: example/npi\_server2/app\_main.c
+
+**Common Library Component Module**: (directory: components/common) Provides
+various functionalities such as timer services, semaphores, and so on
+(see :ref:`chap-linux-software` for more details)
+
+**Collector-Specific Functions** (file: example/collector/csf\_linux.c)
+Implements the user interface specific functions, interfaces with the
+nonvolatile (NV) module to provide persistent data service to store information
+over power cycles, implements a server socket for user application to connect
+to the application to get useful network information and control network
+devices
+
+**Local Gateway Application**: (file: example/collector/appsrv.c) Implements an
+application client that connects to the application server implemented in the
+collector specific function and also a Web server application
+
+**Gateway Protocol Files**: These files define the message content and body
+between the *appsrv* component and the front-end gateway application in the
+gateway folder. (Files: example/collector/\*.proto, generated files:
+“\*.pb-c.[ch]”, corresponding \*\_proto.c.) The Node.js package uses a single
+*protobuf* definition file: example/gateway/appClient/protofiles/appsrv.proto.
+
+**Web Application**: This is the gateway application (see the gateway directory
+and related Node.js files) that lets users view the network information, device
+information, information about reported data from the network devices and also
+control the network devices
+
+**MAC CoProcessor —** (Prebuilt embedded hex file) Runs on the CC13xx/CC26x2
+device, implements an 802.15.4e/g MAC/PHY layer and provides an MT-based
+interface to the applications running on the Linux host
+
+Linux® Serial Bootloader Example Application
+--------------------------------------------
+
+The Linux serial bootloader example application is the Linux flash update
+application that provides ability to upgrade the firmware on the CC13xx/CC26x2
+device through the ROM serial bootloader.
+
+Application Design Details
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The serial bootloader example application has two main modules:
+
+-   cc13xxdnld module
+
+-   sblUart module
+
+The cc13xxdnld software module has no dependencies on the operating system or
+hosting hardware and is intended to be portable across microprocessor units
+(MPUs), MCUs, and operating systems (OSs). The sblUart files contain the
+operating-system or hardware-specific calls to the UART that are provided as
+callback functions to the cc13xxdnld software module. These calls require UART
+read/write access to communicate with the CC13xx and the CC26xx ROM bootloader.
+
+CcDnld API
+^^^^^^^^^^
+
+Overview
+""""""""
+
+The CcDnld API should be used in application code. The CcDnld API is intended
+to ease the integration of the CC13xx/CC26xx bootloader functionality in a host
+processor connected to the CC13xx/CC26xx UART.
+
+General Behavior
+""""""""""""""""
+
+Before using the CcDnld API, a binary or a hex image should be prepared to be
+loaded into the CC13xx/CC26x2 Flash.
+
+To load data to the CC13xx/CC26x2 flash following must be performed:
+
+#.  Set the UART send and receive data callbacks with CcDnld\_init().
+
+#.  Connect to the CC13xx/CC26x2 ROM bootloader with CcDnld\_connect().
+
+#.  Optionally Erase flash with CcDnld\_flashEraseRange().
+
+#.  Optionally Program flash with CcDnld\_startDownload() and CcDnld\_sendData().
+
+#.  Optionally Erase flash with CcDnld\_flashEraseRange().
+
+#.  Optionally Verify flash with CcDnld\_verify().
+
+Error Handling
+""""""""""""""
+
+The CcDnld API returns the CcDnld\_Status that contains a success or an error
+code. :numref:`tab-ccdnld-status-codes` lists the CcDnld\_Status codes.
+
+.. table:: CcDnld\_Status Codes
+    :name: tab-ccdnld-status-codes
+
+    +------------------------------+-------------------+
+    | **Status**                   | **Description**   |
+    +==============================+===================+
+    | CcDnld\_Status\_Success      | Success           |
+    +------------------------------+-------------------+
+    | CcDnld\_Status\_Cmd\_Error   | Invalid command   |
+    +------------------------------+-------------------+
+    | CcDnld\_Status\_State\_Error | Invalid state     |
+    +------------------------------+-------------------+
+    | CcDnld\_Status\_Param\_Error | Invalid parameter |
+    +------------------------------+-------------------+
+
+Supported Functions
+"""""""""""""""""""
+
+:numref:`tab-ccdnld-apis` lists the supported functions of the CcDnld API.
+
+.. table:: CcDnld API Supported Functions
+    :name: tab-ccdnld-apis
+
+    +---------------------------+---------------------------------------------------------------------+
+    | **Generic API Function**  | **Description**                                                     |
+    +===========================+=====================================================================+
+    | CcDnld\_init()            | Registers the UART read/write function points                       |
+    +---------------------------+---------------------------------------------------------------------+
+    | CcDnld\_connect()         | Connects to the CC13xx and CC26xx ROM bootloader                    |
+    +---------------------------+---------------------------------------------------------------------+
+    | CcDnld\_flashEraseRange() | Erases the specified flash range                                    |
+    +---------------------------+---------------------------------------------------------------------+
+    | CcDnld\_startDownload()   | Sends the download command to the CC13xx and CC26xx ROM bootloader  |
+    +---------------------------+---------------------------------------------------------------------+
+    | CcDnld\_sendData()        | Sends program data to be program data to be programmed to the flash |
+    +---------------------------+---------------------------------------------------------------------+
+    | CcDnld\_verify()          | Verify a flash range with data in a buffer                          |
+    +---------------------------+---------------------------------------------------------------------+
+
+Important Linux® Host-Design Considerations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In addition to a standard 2-wire UART interface, the final design should include two GPIO signals to control the CC13xx/CC26x2 device.
+
+-   GPIO Signal A: used to reset or power cycle the CC13xx/CC26x2 device
+
+-   GPIO Signal B: controls the masked ROM bootloader entry into the flash update mode
+
+At power up, the CC13xx/CC26x2 device can be configured to read a GPIO pin and then do one of the following actions:
+
+#.  Proceed normally.
+
+#.  Enter bootloader or flash programmer mode.
+
+The configuration for this feature is stored in the customer configuration
+(CCFG) section of the on-chip Flash memory (see the *Bootloader* chapter in the
+|TRM| for details).
+
+.. note:: When running the out-of-box |TIMAC| CoProcessor binaries from the TI
+    15.4-Stack Linux SDK on a CC13xx/CC26x2, pressing BTN-1 on the LaunchPad at
+    boot-up will make the CC13xx/CC26x2 device enter bootloader mode.

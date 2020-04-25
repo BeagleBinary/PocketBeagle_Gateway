@@ -1,0 +1,390 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Linux Quick Start Guide &mdash; 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation" href="../index.html"/>
+        <link rel="next" title="Software Architecture" href="linux-software-architecture.html"/>
+        <link rel="prev" title="Introduction" href="linux-introduction.html"/>
+    <script language="JavaScript">
+        var tiPageName;
+        tiPageName = "sug ti154stack-linux linux-quick-start";
+
+        if (location.protocol == "file:"){
+            var ci_analytics_poc_load = true;
+        }
+    </script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8">
+
+
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../ti154stack-guide/index-linux.html" class="icon icon-home"> 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.12.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="linux-introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Linux Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#learn">Learn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#develop">Develop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enhance">Enhance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#support">Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-architecture.html">Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-sdk-description.html">SDK Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-development-environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-example-applications.html">Example Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-running-the-example-applications.html">Running the Example Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-build-system.html">Build System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-npi-server.html">NPI Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-components.html">Linux® Software Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-component-common-library.html">Component Common Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Terms and Acronyms</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../ti154stack-guide/index-linux.html">
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../ti154stack-guide/index-linux.html">Docs</a> &raquo;</li>
+      
+    <li>Linux Quick Start Guide</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="linux-quick-start-guide">
+<span id="get-started-introduction"></span><h1>Linux Quick Start Guide<a class="headerlink" href="#linux-quick-start-guide" title="Permalink to this headline">¶</a></h1>
+<p>This section serves as a road map for users developing applications and
+products using a TI SimpleLink wireless MCU platform using TI 15.4-Stack. Whether a
+seasoned developer or just getting started, TI has created a variety of
+resources to simplify development. These resources will enhance your experience
+with the TI 15.4-Stack from the out-of-the-box demo to production.</p>
+<p><a class="reference internal" href="#fig-suggested-workflow"><span class="std std-numref">Figure 1.</span></a> shows the suggested work-flow for getting
+started with TI 15.4-Stack development environment.</p>
+<div class="figure align-center" id="id6">
+<span id="fig-suggested-workflow"></span><img alt="../_images/suggestedworkflow.png" src="../_images/suggestedworkflow.png" />
+<p class="caption"><span class="caption-number">Figure 1. </span><span class="caption-text">Suggested Workflow</span></p>
+</div>
+<div class="section" id="learn">
+<span id="get-started-learn"></span><h2>Learn<a class="headerlink" href="#learn" title="Permalink to this headline">¶</a></h2>
+<p>Resources contained in the Learn track of <a class="reference internal" href="#fig-suggested-workflow"><span class="std std-numref">Figure 1.</span></a> are
+intended for users who are new to TI 15.4-Stack. These modules demonstrate
+how to quickly get started with TI 15.4-Stack.</p>
+<ul class="simple">
+<li><strong>SimpleLink Academy</strong> <a class="reference external" href="http://dev.ti.com/tirex/explore/node?node=AHjJ8SNDuLXt3h6qHE4-OA__pTTHBmu__LATEST">SimpleLink Academy</a></li>
+</ul>
+</div>
+<div class="section" id="develop">
+<span id="get-started-develop"></span><h2>Develop<a class="headerlink" href="#develop" title="Permalink to this headline">¶</a></h2>
+<p>The develop track of <a class="reference internal" href="#fig-suggested-workflow"><span class="std std-numref">Figure 1.</span></a> is intended for
+programmers who are ready to start developing an end product using TI 15.4-Stack.
+To begin:</p>
+<ol class="arabic simple">
+<li><strong>Download the TI 15.4-Stack Linux SDK</strong> <a class="reference external" href="http://www.ti.com/tool/ti-15.4-stack-gateway-linux-sdk">TI 15.4-Stack Linux SDK</a> contains the
+code necessary to create a complete IEEE 802.15.4g compliant Linux
+application. These examples should be considered as starting points for end
+product designs. To install TI 15.4-Stack, run the installer downloaded above.
+See <a class="reference internal" href="linux-development-environment.html#chap-development-environment"><span class="std std-ref">Development Environment</span></a> for help installing the TI
+15.4-Stack Linux SDK.</li>
+<li><strong>Get Familiar with the Users Guide</strong> The Users Guide is meant to be used
+alongside the TI 15.4-Stack when developing an end product. It contains
+documentation on the stack architecture, APIs, and suggestions for
+developing applications. To jump to the Table of Contents, click here:
+<a class="reference internal" href="../ti154stack-guide/index-linux.html#ldg-overview"><span class="std std-ref">Linux TI 15.4-Stack User’s Guide</span></a></li>
+<li><strong>Select an Example Project</strong> The Linux Collector Example Application
+interfaces with a SimpleLink™ /CC26x2 device running the TI 15.4-Stack CoProcessor
+firmware through UART. The Linux Collector Example Application provides the
+same functionality as the Embedded Collector Application with the addition
+of providing a socket server interface to the Linux Gateway Application.
+The Linux Gateway Application is implemented within the Node.js® framework
+and connects as a client to the socket server created by the Linux
+Collector Example Application and establishes a local web server to which
+the user can connect through a web browser (in the local network) to
+monitor and control the network devices. The Collector and Gateway
+Applications are a great starting point for creating Internet of Things
+(IoT) applications with TI 15.4-Stack. For more details on these and all
+other included projects, see
+<a class="reference internal" href="linux-example-applications.html#chap-linux-example-applications"><span class="std std-ref">Example Applications</span></a>.</li>
+<li><strong>Troubleshooting Help</strong> While developing your custom application, you may
+run into issues that require the use of a debugger.
+The <a class="reference internal" href="linux-troubleshooting.html#sec-troubleshooting"><span class="std std-ref">Troubleshooting</span></a> chapter provides help with understanding
+common problems.
+If you are still having problems after reading through the Troubleshooting
+chapter, see the <a class="reference internal" href="#get-started-support"><span class="std std-ref">Support</span></a> track for more options.</li>
+</ol>
+</div>
+<div class="section" id="enhance">
+<span id="get-started-enhance"></span><h2>Enhance<a class="headerlink" href="#enhance" title="Permalink to this headline">¶</a></h2>
+<p>The enhance track of <a class="reference internal" href="#fig-suggested-workflow"><span class="std std-numref">Figure 1.</span></a> is intended to take your
+product to the next level by leveraging TI’s web-based collateral. Additional
+resources found in these pages include application-specific source code
+examples and complete sub-system designs.</p>
+<p><strong>TI Designs™</strong></p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.ti.com/tool/TIDEP0084">Sensor To Cloud Linux</a></li>
+<li><a class="reference external" href="http://www.ti.com/tool/TIDC-01002">Sensor To Cloud Embedded</a></li>
+<li><a class="reference external" href="http://www.ti.com/tool/tida-00488">Energy Harvesting Environmental Sensor</a></li>
+<li><a class="reference external" href="http://www.ti.com/tool/TIDA-00489">Wireless PIR Motion Detector</a></li>
+<li><a class="reference external" href="http://www.ti.com/tool/TIDA-01066">Door and Window Sensor</a></li>
+</ul>
+<p>Examples of system designs containing complete hardware and
+software examples, using TI 15.4-Stack.</p>
+</div>
+<div class="section" id="support">
+<span id="get-started-support"></span><h2>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h2>
+<p>The support track of <a class="reference internal" href="#fig-suggested-workflow"><span class="std std-numref">Figure 1.</span></a> is intended to provide
+you additional help and resources that aren’t contained in the previous tracks.</p>
+<ul class="simple">
+<li><strong>E2E Forums</strong> <a class="reference external" href="https://e2e.ti.com/support/wireless-connectivity/">www.e2e.ti.com</a></li>
+</ul>
+<p>A support community providing answers to questions relating to TI 15.4-Stack. You can
+browse questions from other developers or ask your own questions if you run
+into issues developing with the TI 15.4-Stack.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="linux-software-architecture.html" class="btn btn-neutral float-right" title="Software Architecture" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="linux-introduction.html" class="btn btn-neutral" title="Introduction" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">2016-2019, Texas Instruments</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.12.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+      });
+  </script>
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

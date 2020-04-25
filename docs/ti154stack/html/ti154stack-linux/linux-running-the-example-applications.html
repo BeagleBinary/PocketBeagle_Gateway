@@ -1,0 +1,835 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Running the Example Applications &mdash; 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation" href="../index.html"/>
+        <link rel="next" title="Build System" href="linux-build-system.html"/>
+        <link rel="prev" title="Example Applications" href="linux-example-applications.html"/>
+    <script language="JavaScript">
+        var tiPageName;
+        tiPageName = "sug ti154stack-linux linux-running-the-example-applications";
+
+        if (location.protocol == "file:"){
+            var ci_analytics_poc_load = true;
+        }
+    </script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8">
+
+
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../ti154stack-guide/index-linux.html" class="icon icon-home"> 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.12.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="linux-introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-quick-start.html">Linux Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-architecture.html">Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-sdk-description.html">SDK Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-development-environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-example-applications.html">Example Applications</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Running the Example Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-collector-and-gateway-applications">Running the Collector and Gateway Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#embedded-prebuilt-hex-files-and-frequency-selection">Embedded Prebuilt Hex Files and Frequency Selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connect-the-coprocessor">Connect the CoProcessor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#about-dev-ttyacm0">About /dev/ttyACM0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-1-running-application-using-prebuilt-binaries">Option 1: Running Application Using Prebuilt Binaries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-example-linux-applications-after-building-from-source">Running the Example Linux® Applications After Building From Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-the-collector-example-application">Start the Collector Example Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#interactive-command-line-interface">Interactive Command Line Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#start-the-gateway-application">Start the Gateway Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#joining-the-sensor-nodes-to-the-network">Joining the Sensor Nodes to the Network</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#collector-application-configuration">Collector Application Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sensor-and-collector-configuration">Sensor and Collector Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux-versus-embedded-config-h-files">Linux® versus Embedded config.h Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-the-channel-of-operation">Setting the Channel of Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-network-operation-mode">Setting Up Network Operation Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-up-mac-data-frame-security">Set Up MAC Data Frame Security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-sensor-reporting-interval">Setting Up Sensor Reporting Interval</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-polling-intervals-for-sensor-devices-in-sleep-mode">Setting Up Polling Intervals for Sensor Devices in Sleep Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#serial-bootloader-application-flash-update">Serial Bootloader Application (Flash Update)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linux-build-system.html">Build System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-npi-server.html">NPI Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-components.html">Linux® Software Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-component-common-library.html">Component Common Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Terms and Acronyms</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../ti154stack-guide/index-linux.html">
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../ti154stack-guide/index-linux.html">Docs</a> &raquo;</li>
+      
+    <li>Running the Example Applications</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="running-the-example-applications">
+<span id="chap-running-examples"></span><h1>Running the Example Applications<a class="headerlink" href="#running-the-example-applications" title="Permalink to this headline">¶</a></h1>
+<p>This section provides instructions on how to run the out-of-box Example Applications.</p>
+<div class="section" id="running-the-collector-and-gateway-applications">
+<span id="sec-running-collector-gateway"></span><h2>Running the Collector and Gateway Applications<a class="headerlink" href="#running-the-collector-and-gateway-applications" title="Permalink to this headline">¶</a></h2>
+<p>This section explains how to run the out-of-box Collector Application that
+creates the network and allows new devices to join to the network. Also, it
+explains how to run the Gateway Application that creates a local Web server to
+which users can connect using a Web browser to visualize the network
+information and reported sensor data from the sensor nodes. In addition, this
+chapter also explains how to connect sensor nodes to the network and observe
+data communication between the Linux Collector Example Application and the
+sensor nodes.</p>
+<p>There are two ways to run the out-of-box Example Applications:</p>
+<ul class="simple">
+<li>Option 1: Run the existing prebuilt Linux examples found in the
+${SDK_ROOT}/prebuilt directory.</li>
+<li>Option 2: Build and run the Linux applications manually from source.</li>
+</ul>
+<div class="section" id="embedded-prebuilt-hex-files-and-frequency-selection">
+<span id="sec-prebuilt-frequency"></span><h3>Embedded Prebuilt Hex Files and Frequency Selection<a class="headerlink" href="#embedded-prebuilt-hex-files-and-frequency-selection" title="Permalink to this headline">¶</a></h3>
+<p>The out-of-box prebuilt hex files use APIMAC_STD_US_915_PHY_1 (see
+<a class="reference internal" href="#code-default-phy"><span class="std std-numref">Listing 2.</span></a>).</p>
+<div class="literal-block-wrapper docutils container" id="code-default-phy">
+<div class="code-block-caption"><span class="caption-number">Listing 2. </span><span class="caption-text">Defines to Select the Desired PHY:</span><a class="headerlink" href="#code-default-phy" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*! PHY IDs - 915MHz US Frequency band operating mode # 1 */</span>
+<span class="cp">#define APIMAC_STD_US_915_PHY_1 1</span>
+
+<span class="cm">/*! 863MHz ETSI Frequency band operating mode # 3 */</span>
+<span class="cp">#define APIMAC_STD_ETSI_863_PHY_3 3</span>
+
+<span class="cm">/*! 433MHz China Frequency band operating mode # 3 */</span>
+<span class="cp">#define APIMAC_GENERIC_CHINA_433_PHY_128 128</span>
+</pre></div>
+</div>
+</div>
+<p><strong>915 MHz (PHY1), 863 MHz (PHY3), or 433 MHz (PHY128)</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Each PHY also has a SimpleLink Long Range, (SLR), mode of
+operation. This mode gives extended range, and has a data rate of
+5kbps. The SLR PHY ID’s are:</p>
+<ul class="last simple">
+<li>APIMAC_GENERIC_US_LRM_915_PHY_129</li>
+<li>APIMAC_GENERIC_CHINA_LRM_433_PHY_130</li>
+<li>APIMAC_GENERIC_ETSI_LRM_863_PHY_131</li>
+</ul>
+</div>
+<p>Use the following steps to change the embedded devices:</p>
+<ol class="arabic">
+<li><p class="first">Modify the embedded <em>config.h</em> in the sensor example.</p>
+</li>
+<li><p class="first">Compile and create the new sensor hex file using TI’s Code Composer Studio™
+(CCS) software</p>
+</li>
+<li><p class="first">Program the Sensor module with this new hex file.</p>
+</li>
+<li><p class="first">Use the following steps to change the Linux application:</p>
+<ol class="loweralpha">
+<li><p class="first">Find the <em>collector.cfg</em> file (it is an ASCII text file).
+The example Linux Collector Application reads this file at start-up.</p>
+</li>
+<li><p class="first">Modify the <em>config-phy-id</em> line, as shown in <a class="reference internal" href="#code-config-phy"><span class="std std-numref">Listing 3.</span></a>.</p>
+<div class="literal-block-wrapper docutils container" id="code-config-phy">
+<div class="code-block-caption"><span class="caption-number">Listing 3. </span><span class="caption-text">config-phy-id Line</span><a class="headerlink" href="#code-config-phy" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">-</span><span class="n">percentfilter</span> <span class="n">OxOff</span>
+<span class="n">config</span><span class="o">-</span><span class="n">phy</span><span class="o">-</span><span class="n">id</span> <span class="mi">1</span>
+<span class="n">config</span><span class="o">-</span><span class="n">scan</span><span class="o">-</span><span class="n">duration</span> <span class="mi">5</span>
+</pre></div>
+</div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="section" id="connect-the-coprocessor">
+<span id="sec-connect-cop"></span><h3>Connect the CoProcessor<a class="headerlink" href="#connect-the-coprocessor" title="Permalink to this headline">¶</a></h3>
+<p>Program the CoProcessor LaunchPad as shown in <a class="reference internal" href="#fig-program-lp"><span class="std std-numref">Figure 16.</span></a> (A) and
+program the Sensor LaunchPads as shown in <a class="reference internal" href="#fig-program-lp"><span class="std std-numref">Figure 16.</span></a> (B) with the
+hex files, as described in
+<a class="reference internal" href="linux-development-environment.html#sec-flash-lps"><span class="std std-ref">Program the Launchpads</span></a> or
+<a class="reference internal" href="#sec-prebuilt-frequency"><span class="std std-ref">Embedded Prebuilt Hex Files and Frequency Selection</span></a>.</p>
+<div class="figure align-center" id="fig-program-lp">
+<img alt="../_images/fig-program-lps.png" src="../_images/fig-program-lps.png" />
+<p class="caption"><span class="caption-number">Figure 16. </span><span class="caption-text">Connect the CoProcessor LaunchPad</span></p>
+</div>
+</div>
+<div class="section" id="about-dev-ttyacm0">
+<h3>About /dev/ttyACM0<a class="headerlink" href="#about-dev-ttyacm0" title="Permalink to this headline">¶</a></h3>
+<p>Linux supports several types of USB serial ports. One type is
+<em>/dev/ttyUSB&lt;number&gt;</em>. Another type is <em>/dev/ttyACM&lt;number&gt;</em>.</p>
+<p>Linux assigns the numbers in order, as each USB device is enumerated. For
+example: the first device is /dev/ttyACM0, the second device is /dev/ttyACM1, and so on.</p>
+<p>Specifically, the LaunchPad shows as a /dev/ttyACM&lt;number&gt; device. The
+LaunchPad debug interface actually presents two serial interfaces—this example
+uses only the first interface, also known as <em>/dev/ttyACM0</em>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">FTDI serial cables show as /dev/ttyUSB&lt;number&gt;.</p>
+</div>
+<p>The <em>out-of-box collector.cfg</em> file assumes that the LaunchPad is exactly
+/dev/ttyACM0.</p>
+<p>A software developer usually has many devices connected to a development machine through the USB interface. These other devices may also present another /dev/ttyACM&lt;some_number&gt; interface (for example, a mobile phone, or a tablet).</p>
+<p>Thus, if another serial device is already connected (or enumerated) when the LaunchPad is connected it may (or may not) appear as /dev/ttyACM0.</p>
+<p>To determine what is present, use the <em>ls</em> command shown in
+<a class="reference internal" href="#fig-tty-acm"><span class="std std-numref">Figure 17.</span></a>.</p>
+<div class="figure align-center" id="fig-tty-acm">
+<img alt="../_images/fig-tty-acm.jpeg" src="../_images/fig-tty-acm.jpeg" />
+<p class="caption"><span class="caption-number">Figure 17. </span><span class="caption-text">dev/ttyACM0 Code</span></p>
+</div>
+<p>Edit the collector.cfg file accordingly. Solutions:</p>
+<ul class="simple">
+<li>Option 1: Unplug everything except the CoProcessor, which should remain connected.</li>
+<li>Option 2: Sometimes unplugging everything is not a viable solution; so the
+other alternative is to edit the <em>collector.cfg</em> file and change the
+<em>devname</em> line shown in <a class="reference internal" href="#code-collector-cfg"><span class="std std-numref">Listing 4.</span></a>.</li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="code-collector-cfg">
+<div class="code-block-caption"><span class="caption-number">Listing 4. </span><span class="caption-text">collector.cfg Option 2</span><a class="headerlink" href="#code-collector-cfg" title="Permalink to this code">¶</a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>; If collector app connects directly to a UART (no-npi-server) this is how
+; to connect.
+[uart-cfg]
+;; Launchpads use USB and show up as: /dev/ttyACMO and ACMl
+;; Solutions using an FTDI or Prolific cable use /dev/ttyUSBO or USBl
+;; Hard serial ports are: /dev/ttySO to ttyS9
+;devname = /dev/ttyUSBl
+devname = /dev/ttyACMO
+baudrate = ll52OO
+; we use the default flags
+flag = default
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="option-1-running-application-using-prebuilt-binaries">
+<span id="sec-running-prebuilt"></span><h3>Option 1: Running Application Using Prebuilt Binaries<a class="headerlink" href="#option-1-running-application-using-prebuilt-binaries" title="Permalink to this headline">¶</a></h3>
+<p>Run the prebuilt example binaries with the following steps:</p>
+<ol class="arabic simple">
+<li>Program the LaunchPads, as described in
+<a class="reference internal" href="#sec-running-collector-gateway"><span class="std std-ref">Running the Collector and Gateway Applications</span></a>.</li>
+<li>Change to the prebuilt directory (on the host or on the BBB).</li>
+<li>Run the <em>run_demo.sh</em> script.</li>
+<li>On the Linux x86 host, the Web browser should launch automatically and
+connect to the desired IP address and port.</li>
+<li>On the BBB, launch your browser manually; then, visit the specified website
+address (the shell script will display a link with the IP address and port ID).</li>
+<li>Go to <a class="reference internal" href="#sec-joining-sensors"><span class="std std-ref">Joining the Sensor Nodes to the Network</span></a>.</li>
+</ol>
+</div>
+<div class="section" id="running-the-example-linux-applications-after-building-from-source">
+<span id="sec-option-2"></span><h3>Running the Example Linux® Applications After Building From Source<a class="headerlink" href="#running-the-example-linux-applications-after-building-from-source" title="Permalink to this headline">¶</a></h3>
+<p>Choosing this option means that the following items have been completed:</p>
+<ul class="simple">
+<li>The LaunchPad development kits have been programmed as required (see
+<a class="reference internal" href="#sec-connect-cop"><span class="std std-ref">Connect the CoProcessor</span></a>).</li>
+<li>The CoProcessor LaunchPad is connected as /dev/ttyACM0.</li>
+</ul>
+<p>The steps listed in <a class="reference internal" href="#sec-start-collector"><span class="std std-ref">Start the Collector Example Application</span></a> manually perform the same steps
+the <em>run_demo.sh</em> script performed in <a class="reference internal" href="#sec-running-prebuilt"><span class="std std-ref">Option 1: Running Application Using Prebuilt Binaries</span></a>.</p>
+</div>
+<div class="section" id="start-the-collector-example-application">
+<span id="sec-start-collector"></span><h3>Start the Collector Example Application<a class="headerlink" href="#start-the-collector-example-application" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Change to the collector directory: ${root}/example/collector.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">First, it may be necessary to visit and build the various library
+component directories. If required, type <em>make</em> to build the Collector
+Application.</p>
+</div>
+</li>
+<li><p class="first">Launch the Collector Application and, if desired a specific configuration
+file. The default configuration filename is <em>collector.cfg</em>. The
+configuration file can be specified on the command line.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> <span class="si">${</span><span class="nv">SDK_ROOT</span><span class="si">}</span>/example/collector bash$ make clean <span class="o">(</span>optional<span class="o">)</span>
+$ make host <span class="o">(</span>optional<span class="o">)</span>
+$ ./host_collector collector.cfg <span class="p">&amp;</span>
+
+<span class="c1"># or:</span>
+<span class="c1"># Cross-compile the BBB version and copy the executable to the BBB.</span>
+
+$ make bbb
+$ scp bbb_collector root@192.168.7.2:~/.
+$ ssh root@192.168.7.2:~/.
+<span class="c1"># ./bbb_collector collector.cfg &amp;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ol class="last arabic">
+<li><p class="first">If using a VM, be sure to connect the LaunchPad USB device to the
+VM.</p>
+</li>
+<li><p class="first">The device <em>/dev/ttyACM0</em> is the debug serial port associated with
+the LaunchPad. Details about this port and the /dev/ttyACM1 device
+can be found in the LaunchPad documentation.</p>
+<p>By default, the configuration files contain assumptions that the
+CC13xx/CC26x2 CoProcessor application uses <em>/dev/ttyACM0</em>. If more
+than one device is present or if other ACM communications devices
+are present, it may be necessary to edit or change the configuration
+file.</p>
+<p>See the <em>devname</em> selection in the collector.cfg file for details.</p>
+</li>
+<li><p class="first">Your username must be a member of the group <em>dialout</em> (see
+<a class="reference internal" href="linux-development-environment.html#sec-linux-dev-host"><span class="std std-ref">Linux® Development Host</span></a> for details).</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+<div class="section" id="interactive-command-line-interface">
+<h4>Interactive Command Line Interface<a class="headerlink" href="#interactive-command-line-interface" title="Permalink to this headline">¶</a></h4>
+<p>If a command line interface (<a class="reference internal" href="glossary.html#term-cli"><span class="xref std std-term">CLI</span></a>) is prefered to a web <a class="reference internal" href="glossary.html#term-gui"><span class="xref std std-term">GUI</span></a> then
+build the collector without the <code class="docutils literal notranslate"><span class="pre">IS_HEADLESS</span></code> symbol defined in the Makefile.
+In this mode an interactive terminal is launched with the collector that can be
+used to control the network, issue commands, and upgrade sensor device firmware
+using TI 15.4-Stack native <a class="reference internal" href="glossary.html#term-oad"><span class="xref std std-term">OAD</span></a>. You can use the following commands:</p>
+<ul class="simple">
+<li><strong>sxx</strong>: Select a device (ex. ‘s1’ or ‘s0x1234’)</li>
+<li><strong>o</strong>: Open/Closes the network for devices to join</li>
+<li><strong>t</strong>: Send an LED toggle request to the selected device</li>
+<li><strong>v</strong>: Send a version request to the selected device</li>
+<li><strong>u</strong>: Send an update request to the selected device</li>
+<li><strong>fxx</strong>: Read a firmware binary. This file can now be sent to a selected
+device using the ‘u’ command (ex. ‘f sensor_oad_cc1310lp.bin)</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To use the linux gateway only define <code class="docutils literal notranslate"><span class="pre">IS_HEADLESS</span></code> when building the
+collector. To have both options do not define <code class="docutils literal notranslate"><span class="pre">IS_HEADLESS</span></code>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="start-the-gateway-application">
+<span id="sec-start-gateway"></span><h3>Start the Gateway Application<a class="headerlink" href="#start-the-gateway-application" title="Permalink to this headline">¶</a></h3>
+<p>When using Option 1 in <a class="reference internal" href="#sec-running-prebuilt"><span class="std std-ref">Option 1: Running Application Using Prebuilt Binaries</span></a>, the following steps are
+automatically performed by the <em>run_demo.sh</em> script in the prebuilt directory.</p>
+<p>In a separate shell window, do the following:</p>
+<ol class="arabic">
+<li><p class="first">Enter the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$cd</span> <span class="si">${</span><span class="nv">SDK_ROOT</span><span class="si">}</span>/example/gateway
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use the following for Ubuntu Linux:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$nodejs</span> gateway.js <span class="p">&amp;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Use the following on the BBB:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#node gateway.js &amp;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There is a name conflict between various versions of Linux with
+respect to the application called <em>node</em>, which is detailed in the
+following: <a class="reference external" href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=614907#108">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=614907#108</a>
+Currently, the Ubuntu distribution uses the name <em>nodejs</em>, and the BBB
+uses the name <em>node</em>.</p>
+</div>
+<ol class="arabic">
+<li><p class="first">Socket Configuration:</p>
+<p>The Gateway Application is hard coded to use <em>localhost</em> port/service
+5000 to communicate with the Linux Collector application. The Collector
+socket configuration (port number or service number) is specified in
+the collector.cfg file.</p>
+<p>For details see the following:</p>
+<p>${SDK_ROOT}/example/collector/collector.cfg
+${SDK_ROOT}/example/gateway/appClient/appclient.js</p>
+</li>
+<li><p class="first">Start your Web browser.</p>
+<p>When using Option 1 in <a class="reference internal" href="#sec-running-prebuilt"><span class="std std-ref">Option 1: Running Application Using Prebuilt Binaries</span></a>, the following are
+automatically performed by the <em>run_demo.sh</em> script in the prebuilt
+directory.</p>
+</li>
+<li><p class="first">The Gateway (Node.js) Web server operates on Port 1310.</p>
+</li>
+<li><p class="first">If you are running the gateway on your Linux host, use the following:
+<a class="reference external" href="http://localhost:1310">http://localhost:1310</a></p>
+</li>
+<li><p class="first">Otherwise, substitute your BBB IP address as required. Next, see the
+following screen as shown in <a class="reference internal" href="#fig-web-gui-start"><span class="std std-numref">Figure 18.</span></a>.</p>
+<div class="figure align-center" id="fig-web-gui-start">
+<img alt="../_images/fig-web-gui-start.jpeg" src="../_images/fig-web-gui-start.jpeg" />
+<p class="caption"><span class="caption-number">Figure 18. </span><span class="caption-text">TI 15.4-Stack Gateway Application Web Application Served by the
+Local Web Server After Network Start-Up</span></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+<div class="section" id="joining-the-sensor-nodes-to-the-network">
+<span id="sec-joining-sensors"></span><h3>Joining the Sensor Nodes to the Network<a class="headerlink" href="#joining-the-sensor-nodes-to-the-network" title="Permalink to this headline">¶</a></h3>
+<p>After starting, the network the Collector Application (by default) closes the
+network for new device joins. When the network is open, new devices can join
+the network. To open the network, select the <em>Open</em> button on the Web browser.</p>
+<p>After the network is open, power up the CC13xx/CC26x2 LaunchPad programmed with
+the Sensor Example Application. When the device joins the network, the red LED
+on the Sensor LaunchPad turns on. The new device is then be visible and sensor-
+data values appear on the Web page. After connecting several sensor nodes to the
+network, a screen similar to <a class="reference internal" href="#fig-web-gui-joined"><span class="std std-numref">Figure 19.</span></a> is visible.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In frequency-hopping configuration mode, the radio network is always
+open to new nodes.</p>
+</div>
+<div class="figure align-center" id="fig-web-gui-joined">
+<img alt="../_images/fig-web-gui-joined.jpeg" src="../_images/fig-web-gui-joined.jpeg" />
+<p class="caption"><span class="caption-number">Figure 19. </span><span class="caption-text">TI 15.4-Stack Gateway Application Web Application Served by the Local Web
+Server After Devices Joined to the Network</span></p>
+</div>
+<p>Next, using the front end enables sending of the Toggle LED commands to the
+sensor nodes. After pressing the button, the red LED Toggle turns on the
+desired end node of the CC13xx/CC26x2 LaunchPad.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">After pressing the Toggle LED button, a delay of several seconds may
+occur before the red LED on the desired end node toggles because the out-
+of-box sensor nodes are in sleep mode. The sensor nodes will wake up after
+a sleep interval to retrieve the command buffered (in this case Toggle-LED
+request message) from the PAN coordinator (collector).</p>
+</div>
+</div>
+</div>
+<div class="section" id="collector-application-configuration">
+<h2>Collector Application Configuration<a class="headerlink" href="#collector-application-configuration" title="Permalink to this headline">¶</a></h2>
+<p>The definitive description of the TI 15.4-Stack network configuration items is
+described in the <strong>TI 15.4-Stack Software Developer’s Guide</strong> A short summary
+of the key network configuration items follows.</p>
+<div class="section" id="sensor-and-collector-configuration">
+<h3>Sensor and Collector Configuration<a class="headerlink" href="#sensor-and-collector-configuration" title="Permalink to this headline">¶</a></h3>
+<p>The embedded devices have a hard-coded configuration, which is set by the
+config.h file in the respective prebuilt directories. There is a separate
+config.h file for the sensor and the Collector Application; these settings must
+match, otherwise communication does not occur.</p>
+</div>
+<div class="section" id="linux-versus-embedded-config-h-files">
+<h3>Linux® versus Embedded config.h Files<a class="headerlink" href="#linux-versus-embedded-config-h-files" title="Permalink to this headline">¶</a></h3>
+<p>In the embedded device, various settings are compile time constants provided by
+the config.h file. For example, CONFIG_SECURE In the embedded device,
+CONFIG_SECURE is a simple #define, as shown in the following::</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*! Security Enable - set to true to turn on security */</span>
+<span class="cp">#define CONFIG_SECURE true</span>
+</pre></div>
+</div>
+<p>In contrast, the Linux implementation uses a runtime variable rather than a
+compile time constant; the Linux implementation has two parts.</p>
+<ul>
+<li><p class="first">Linux Part 1 is a global variable; the CONFIG_SECURE macro refers to the
+following::</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*! Security Enable - set to true to turn on security */</span>
+<span class="k">extern</span> <span class="kt">bool</span> <span class="n">linux_CONFIG_SECURE</span><span class="p">;</span>
+<span class="cp">#define CONFIG_SECURE linux_CONFIG_SECURE</span>
+<span class="cp">#define CONFIG_SECURE_DEFAULT false</span>
+</pre></div>
+</div>
+<p>The Collector and other files (that is, CLLC and CSF) still use the
+CONFIG_SECURE macro; the macro instead resolves to a global variable.</p>
+</li>
+<li><p class="first">Linux Part 2: The global variables are in the linux_main.c file along with
+their default values. At start-up, the code for the linux_main.c file
+reads and parses the application configuration file (the contents of which
+may alter the value of the configuration values).</p>
+<p>The default names of the configuration files are <em>collector.cfg</em> and <em>npi_server2.cfg</em>.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="setting-the-channel-of-operation">
+<h3>Setting the Channel of Operation<a class="headerlink" href="#setting-the-channel-of-operation" title="Permalink to this headline">¶</a></h3>
+<p>Configure the desired bit mask by setting <code class="docutils literal notranslate"><span class="pre">CONFIG_CHANNEL_MASK</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">config.h</span></code> or <code class="docutils literal notranslate"><span class="pre">config-channel-mask</span></code> in <code class="docutils literal notranslate"><span class="pre">collector.cfg</span></code> to select the
+desired channel or channels.:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*!</span>
+<span class="cm">Channel mask - Each bit indicates if the corresponding channel is to be scanned First byte represents channel 0 to 7 and the last byte represents channel 128 to 135</span>
+<span class="cm">*/</span>
+
+<span class="cp">#define CONFIG_CHANNEL_MASK {   0x0F, 0x00, 0x00, 0x00, 0x00, 0x00,     \</span>
+<span class="cp">                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00,     \</span>
+<span class="cp">                                0x00, 0x00, 0x00, 0x00, 0x00 }</span>
+</pre></div>
+</div>
+<p>In the Linux configuration file, the user provides a list of channel numbers
+rather than a byte array of bits.</p>
+</div>
+<div class="section" id="setting-up-network-operation-mode">
+<h3>Setting Up Network Operation Mode<a class="headerlink" href="#setting-up-network-operation-mode" title="Permalink to this headline">¶</a></h3>
+<p>Network can be secure or nonsecure, beacon enabled or disabled, or in
+frequency-hopping mode. The embedded devices are configured through their
+config.h files; the important items for desired mode of network operation are
+described as follows:</p>
+<ul>
+<li><p class="first">Non-beacon mode</p>
+<p>Set the defines for beacon order and superframe order as described in the
+following, and set the frequency-hopping mode define to false.:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define CONFIG_MAC_BEACON_ORDER 15</span>
+<span class="cp">#define CONFIG_MAC_SUPERFRAME_ORDER 15</span>
+<span class="cp">#define CONFIG_FH_ENABLE false</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Beacon-enabled mode</p>
+<p>Set the defines for beacon order and superframe order to a desired value
+other than 15 such that the superframe order is less than the beacon order.
+Also, set the CONFIG_FH_ENABLE to false, as shown in the following::</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define CONFIG_MAC_BEACON_ORDER 8</span>
+<span class="cp">#define CONFIG_MAC_SUPERFRAME_ORDER 6</span>
+<span class="cp">#define CONFIG_FH_ENABLE false</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Frequency-hopping mode</p>
+<p>Frequency-hopping mode is selected if CONFIG_FH_ENABLE is set to true. In
+this configuration, values for beacon order and superframe order must be
+15.:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define CONFIG_MAC_BEACON_ORDER     15</span>
+<span class="cp">#define CONFIG_MAC_SUPERFRAME_ORDER 15</span>
+<span class="cp">#define CONFIG_FH_ENABLE            true</span>
+<span class="cp">#define CONFIG_SECURE               true</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The Linux collector can be configured by editing <code class="docutils literal notranslate"><span class="pre">collector.cfg</span></code>.</p>
+</div>
+<div class="section" id="set-up-mac-data-frame-security">
+<h3>Set Up MAC Data Frame Security<a class="headerlink" href="#set-up-mac-data-frame-security" title="Permalink to this headline">¶</a></h3>
+<p>For beacon or nonbeacon operation, set security to true or false by using the
+define listed here in the config.h file.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*! Security Enable - set to true to turn on security */</span>
+<span class="cp">#define CONFIG_SECURE true</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-up-sensor-reporting-interval">
+<h3>Setting Up Sensor Reporting Interval<a class="headerlink" href="#setting-up-sensor-reporting-interval" title="Permalink to this headline">¶</a></h3>
+<p>The sensor reporting interval is defined in the collector.c file. Define the
+desired value in milliseconds for the sensor reporting interval for the define
+listed here::</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Default configuration reporting interval, in milliseconds */</span>
+<span class="cp">#define CONFIG_REPORTING_INTERVAL 30000</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-up-polling-intervals-for-sensor-devices-in-sleep-mode">
+<h3>Setting Up Polling Intervals for Sensor Devices in Sleep Mode<a class="headerlink" href="#setting-up-polling-intervals-for-sensor-devices-in-sleep-mode" title="Permalink to this headline">¶</a></h3>
+<p>Devices that are in sleep mode poll intervals because nonbeacon mode and
+frequency-hopping mode can be configured by setting desired value in
+milliseconds for the following define in the collector.c file::</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Default configuration polling interval, in milliseconds */</span>
+<span class="cp">#define CONFIG_POLLING_INTERVAL 3000</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="serial-bootloader-application-flash-update">
+<span id="sec-serial-bootloader"></span><h3>Serial Bootloader Application (Flash Update)<a class="headerlink" href="#serial-bootloader-application-flash-update" title="Permalink to this headline">¶</a></h3>
+<p>To use the Serial bootloader application, use the application executable with
+arguments described as follows:</p>
+<p><code class="docutils literal notranslate"><span class="pre">./host_cc13xx-sbl</span> <span class="pre">DEVICE</span> <span class="pre">FILENAME</span> <span class="pre">OPTIONS</span></code></p>
+<p>or</p>
+<p><code class="docutils literal notranslate"><span class="pre">./bbb_cc13xx-sbl</span> <span class="pre">DEVICE</span> <span class="pre">FILENAME</span> <span class="pre">OPTIONS</span></code></p>
+<p>where:</p>
+<p><code class="docutils literal notranslate"><span class="pre">DEVICE</span></code></p>
+<ul class="simple">
+<li>is the serial interface (for example, /dev/ttyACM0).</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">FILENAME</span></code></p>
+<ul class="simple">
+<li>is the Intel hex or binary file to flash program into the device.</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">OPTIONS</span></code></p>
+<ul>
+<li><p class="first">are:</p>
+<p>–e (erase)</p>
+<p>–p (program)</p>
+<p>–v (verify)</p>
+</li>
+</ul>
+<p>Program the CC13xx/CC26x2 device with an application that enables the bootloader
+feature (explained in the <em>Bootloader</em> chapter of the <a class="reference external" href="http://www.ti.com/lit/pdf/swcu185">CC13x2 CC26x2 SimpleLink Wireless MCU Technical Reference Manual</a>). The CoProcessor
+example embedded application demonstrates the bootloader feature. Specifically,
+the CoProcessor applications enable the bootloader feature through the DIO13 Pin
+(Button 1 on the CC13xx/CC26x2 LaunchPad). To force entry into the bootloader,
+use the following steps:</p>
+<ol class="arabic simple">
+<li>Connect the LaunchPad.</li>
+<li>Start the flash update tool; the tool will display <em>connecting…</em></li>
+<li>Press and hold the LaunchPad BTN-1.</li>
+<li>Press and release the LaunchPad RESET button.</li>
+<li>The application connects and performs the flash update (see
+<a class="reference internal" href="#fig-bootloader-connection"><span class="std std-numref">Figure 20.</span></a> for the connection diagram).</li>
+</ol>
+<div class="figure align-center" id="fig-bootloader-connection">
+<img alt="../_images/fig-bootloader-connection.png" src="../_images/fig-bootloader-connection.png" />
+<p class="caption"><span class="caption-number">Figure 20. </span><span class="caption-text">Bootloader Connection Diagram</span></p>
+</div>
+<p><a class="reference internal" href="#fig-bootloader-shell"><span class="std std-numref">Figure 21.</span></a> shows an example of how to use the application;
+the following steps describe the process:</p>
+<ol class="arabic simple">
+<li>On the x86 Linux machine, clean and build the BBB version.</li>
+<li>Using SCP, copy the executable and hex files to the BBB.</li>
+<li>Obtain a shell prompt on the BBB.</li>
+<li>Execute the flash tool (see the button-press sequence described in the
+previous set of steps).</li>
+</ol>
+<div class="figure align-center" id="fig-bootloader-shell">
+<img alt="../_images/fig-bootloader-shell.jpeg" src="../_images/fig-bootloader-shell.jpeg" />
+<p class="caption"><span class="caption-number">Figure 21. </span><span class="caption-text">Screenshot Showing How to Run the Example Application</span></p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="linux-build-system.html" class="btn btn-neutral float-right" title="Build System" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="linux-example-applications.html" class="btn btn-neutral" title="Example Applications" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">2016-2019, Texas Instruments</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.12.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+      });
+  </script>
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

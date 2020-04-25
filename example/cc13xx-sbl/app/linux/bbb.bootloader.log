@@ -1,0 +1,1 @@
+/home/matt/ti-processor-sdk-linux-am335x-evm-06.01.00.08/linux-devkit/sysroots/x86_64-arago-linux/usr/bin/arm-linux-gnueabihf-gcc -o bbb_cc13xx-sbl objs/bbb/main.o objs/bbb/cc13xxdnld.o objs/bbb/sblUart.o

@@ -1,0 +1,10 @@
+make -f Makefile ARCH=bbb 
+make[1]: Entering directory '/home/matt/ti/BeagleBinary/PocketBeagleApp/example/collector'
+Compling: linux_main.c
+Compling: cllc.c
+Compling: collector.c
+Compling: csf_linux.c
+Compling: appsrv.c
+Creating App: (bbb) bbb_collector
+Done.
+make[1]: Leaving directory '/home/matt/ti/BeagleBinary/PocketBeagleApp/example/collector'

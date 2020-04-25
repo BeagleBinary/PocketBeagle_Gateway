@@ -1,0 +1,804 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Development Environment &mdash; 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation" href="../index.html"/>
+        <link rel="next" title="Example Applications" href="linux-example-applications.html"/>
+        <link rel="prev" title="SDK Description" href="linux-sdk-description.html"/>
+    <script language="JavaScript">
+        var tiPageName;
+        tiPageName = "sug ti154stack-linux linux-development-environment";
+
+        if (location.protocol == "file:"){
+            var ci_analytics_poc_load = true;
+        }
+    </script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8">
+
+
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../ti154stack-guide/index-linux.html" class="icon icon-home"> 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.12.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="linux-introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-quick-start.html">Linux Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-architecture.html">Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-sdk-description.html">SDK Description</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development Environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hardware-requirements-and-configurations">Hardware Requirements and Configurations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#beaglebone-black-with-coprocessor-and-multiple-sensors">BeagleBone Black With CoProcessor and Multiple Sensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux-x86-pc-with-coprocessor-and-multiple-sensors">Linux® x86 PC With CoProcessor and Multiple Sensors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#required-software">Required Software</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linux-development-host">Linux® Development Host</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sec-bbb">BeagleBone Black</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#program-the-launchpads">Program the Launchpads</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#programming-the-coprocessor-application">Programming the CoProcessor Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#option-2-smartrf-flash-programmer-v2">Option 2:  - SmartRF Flash Programmer v2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#options-3-use-the-uniflash-flash-tool">Options 3 - Use the Uniflash Flash Tool</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linux-example-applications.html">Example Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-running-the-example-applications.html">Running the Example Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-build-system.html">Build System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-npi-server.html">NPI Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-components.html">Linux® Software Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-component-common-library.html">Component Common Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Terms and Acronyms</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../ti154stack-guide/index-linux.html">
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../ti154stack-guide/index-linux.html">Docs</a> &raquo;</li>
+      
+    <li>Development Environment</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="development-environment">
+<span id="chap-development-environment"></span><h1>Development Environment<a class="headerlink" href="#development-environment" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="hardware-requirements-and-configurations">
+<h2>Hardware Requirements and Configurations<a class="headerlink" href="#hardware-requirements-and-configurations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="beaglebone-black-with-coprocessor-and-multiple-sensors">
+<h3>BeagleBone Black With CoProcessor and Multiple Sensors<a class="headerlink" href="#beaglebone-black-with-coprocessor-and-multiple-sensors" title="Permalink to this headline">¶</a></h3>
+<p>The TI 15.4-Stack SDK Linux Example Applications can be executed from BBB as
+explained in this document. The following hardware is required:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://beagleboard.org/black">BeagleBone Black</a></li>
+<li>8GB (or more) micro-SD memory card (required to program the processor SDK
+Image)</li>
+<li>One Ethernet cable</li>
+<li>One Linux machine running Ubuntu 14.04 LTS 64-bit</li>
+<li>At least two CC13xx/CC26x2 LaunchPad™ development kits<ul>
+<li>LaunchPad 1 acts as the CoProcessor, which is the interface to the
+802.15.4 network</li>
+<li>LaunchPad 2+ are the network nodes that join the TI 15.4-Stack-based
+network</li>
+</ul>
+</li>
+<li>FTDI cable</li>
+<li>One USB cable to connect the LaunchPad to the <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a></li>
+<li>One 5-V power supply or mini USB cable to power the <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a></li>
+</ul>
+<div class="figure align-center" id="fig-app-on-bbb">
+<img alt="../_images/fig-app-on-bbb.png" src="../_images/fig-app-on-bbb.png" />
+<p class="caption"><span class="caption-number">Figure 4. </span><span class="caption-text">Network Configuration With Application Running on the BBB</span></p>
+</div>
+</div>
+<div class="section" id="linux-x86-pc-with-coprocessor-and-multiple-sensors">
+<h3>Linux® x86 PC With CoProcessor and Multiple Sensors<a class="headerlink" href="#linux-x86-pc-with-coprocessor-and-multiple-sensors" title="Permalink to this headline">¶</a></h3>
+<p>The TI 15.4-Stack Linux SDK Example Application can be executed from an x86
+machine running Ubuntu® connected through USB to a CC13xx/CC26x2 LaunchPad
+running the TI 15.4-Stack CoProcessor Application. The following hardware is
+required:</p>
+<ul>
+<li><p class="first">A Linux x86 PC running Ubuntu OS 14.04 LTS (x86_64 Bit)</p>
+</li>
+<li><p class="first">USB cable to connect to the LaunchPad</p>
+</li>
+<li><p class="first">At least two CC13xx/CC26x2 LaunchPad™ development kits</p>
+<ul class="simple">
+<li>LaunchPad 1 acts as the CoProcessor, which is the interface to the
+802.15.4 network</li>
+<li>LaunchPad 2+ are the network nodes that join the TI 15.4-Stack-based
+network</li>
+</ul>
+<div class="figure align-center" id="fig-host-config">
+<img alt="../_images/fig-host-config.png" src="../_images/fig-host-config.png" />
+<p class="caption"><span class="caption-number">Figure 5. </span><span class="caption-text">Network Configuration With Application Running on the x86_64 PC Running Ubuntu® OS</span></p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="required-software">
+<h2>Required Software<a class="headerlink" href="#required-software" title="Permalink to this headline">¶</a></h2>
+<p>This section explains how to set up the hardware with the desired software to
+build and run the TI 15.4-Stack Linux SDK out-of-box example applications and
+setup to develop custom applications.</p>
+<div class="section" id="linux-development-host">
+<span id="sec-linux-dev-host"></span><h3>Linux® Development Host<a class="headerlink" href="#linux-development-host" title="Permalink to this headline">¶</a></h3>
+<p>The x86 machine running Ubuntu can be used to develop and run the applications
+as well as cross compile the applications for the <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a> platform. This
+section provides setup instructions to build, develop, and run the applications
+on an x86 machine. This section also provides setup instructions for the x86
+machine for cross-compiling on the <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a> platform.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>When developing for the BBB platform on an x86 machine, the C code is
+cross-compiled and linked as a BBB application on your host x86 Linux_64
+machine. The Arm executable is then copied to the BBB to run the application.</p>
+<p class="last">When cross-compiling, executables are named <em>host_&lt;name&gt;</em>, which means the
+<em>compilation host</em>. The prefix <em>bbb_&lt;name&gt;</em> is used as a target prefix for
+the BBB.</p>
+</div>
+<p>Install the following software on your x86_64 machine running Ubuntu 14.04 LTS
+64-bit to run the TI 15.4-Stack Linux SDK out-of-box example applications.</p>
+<ol class="arabic">
+<li><p class="first">Install the TI 15.4-Stack Linux SDK</p>
+<ol class="loweralpha">
+<li><p class="first">Download the <a class="reference external" href="http://www.ti.com/tool/ti-15.4-stack-gateway-linux-sdk">TI 15.4-Stack Linux SDK</a> on to your Linux machine.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Because the installer is a 64-bit Linux executable, it requires a
+64-bit Linux machine.</p>
+</div>
+</li>
+</ol>
+<ol class="loweralpha" start="3">
+<li><p class="first">On the host (Linux x86_64) machine, go to the directory where the
+Linux Installer is located and use the following commands to install:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$chmod</span> +x ti15.4stack_linux_x64_xx_xx_xx_xx.run
+$./ti15.4stack_linux_x64_xx_xx_xx_xx.run
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <em>$</em> symbol prompt indicates that this installer should be run
+as a normal user. Do not run as a ROOT (with the # prompt).</p>
+</div>
+<p>The default TI 15.4-Stack install directory is:
+<code class="docutils literal notranslate"><span class="pre">${HOME}/ti/simplelink/ti154stack_linux_64_xx_xx_xx_xx</span></code></p>
+</li>
+</ol>
+</li>
+<li><p class="first">Do an update</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$sudo</span> apt-get update
+</pre></div>
+</div>
+</li>
+<li><p class="first">Install the package: build essentials</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$sudo</span> apt-get install build-essential
+</pre></div>
+</div>
+</li>
+<li><p class="first">Install the package: Node.js</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$sudo</span> apt-get install Node.js
+</pre></div>
+</div>
+</li>
+<li><p class="first">Your user name must be a member of the group <em>dialout</em></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$sudo</span> adduser <span class="nv">$USER</span> dialout
+</pre></div>
+</div>
+</li>
+<li><p class="first">To cross-compile for BBB, install TI’s <a class="reference external" href="http://www.ti.com/tool/PROCESSOR-SDK-AM335X">AM335x Sitara Processor SDK for
+Linux</a> . TI’s processor SDK for AM335x contains all of the cross-
+compilation tools, headers, libraries, and other required files for cross-
+compiling to the BBB.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ol class="arabic simple">
+<li>In the TI 15.4-Stack Linux SDK, the processor SDK is installed in
+the following location: /home/${USER}/ti-processor-sdk-linux-
+am335x-evm-xx.xx.xx.xx</li>
+<li>The TI processor SDK download is very large and expands to an even
+larger installation (the download is approximately 3GB, the
+installed footprint is approximately 4.5GB) and is only required to
+build the Example Applications through a cross-compilation scheme.</li>
+</ol>
+<p>If the TI processor SDK is installed in a different location or is a
+different version, then the following two files must be updated:</p>
+<ul class="simple">
+<li>File 1:
+${SDK_ROOT}/scripts/front_matter.mak</li>
+<li>File 2:
+${SDK_ROOT}/example/cc13xx-sbl/app/linux/Makefile</li>
+</ul>
+<p class="last"><a class="reference internal" href="#code-front-matter"><span class="std std-numref">Listing 1.</span></a> is a screenshot from the front_matter.mak
+file (adjust the version numbers as required).</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="code-front-matter">
+<div class="code-block-caption"><span class="caption-number">Listing 1. </span><span class="caption-text">Screenshot From File front_matter.mak</span><a class="headerlink" href="#code-front-matter" title="Permalink to this code">¶</a></div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#========================================</span>
+<span class="c1"># These *MAY* need to be adjusted to fit your SDK install.</span>
+<span class="c1"># NOTE: The Boot loader also has a macro that may need updating.</span>
+<span class="c1"># SEE: ${root}/example/ccl3xx-sbl/app/linux/Makefile</span>
+<span class="c1">#----------------------------------------</span>
+<span class="c1"># What is the Processor SDK Root directory</span>
+<span class="c1">#----------------------------------------</span>
+<span class="nv">bbb_TI_PROC_SDK_DIR</span><span class="o">=</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/ti-processor-sdk-linux-am335x-evm-
+xx.xx.xx.xx
+</pre></div>
+</div>
+</div>
+<p>Your x86 machine running Ubuntu should now be ready to run the build and
+run the example applications or to cross-compile applications for the BBB
+platform.</p>
+</li>
+<li><p class="first">To test and verify the setup, build the Linux application from source with
+the following instructions:</p>
+<ol class="loweralpha">
+<li><p class="first">Change to the TI 15.4-Stack ${SDK_ROOT}
+installation directory</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$cd</span> <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/ti/simplelink/ti15.4stack-x.xx.xx.xx
+</pre></div>
+</div>
+</li>
+<li><p class="first">At the <em>bash$</em> prompt, type the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># builds the host version</span>
+<span class="nv">$bash</span> ./build_all.sh
+<span class="c1"># cross-compiles the BBB version. See Makefile for more details.</span>
+<span class="nv">$bash</span> ./build_all.sh bbb
+</pre></div>
+</div>
+</li>
+<li><p class="first">The script builds the component libraries and the example applications.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The script also creates <em>*.log</em> files of the compilation
+process.</p>
+</div>
+</li>
+</ol>
+</li>
+<li><p class="first">Next, configure the <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a> (see <a class="reference internal" href="#sec-bbb"><span class="std std-ref">BeagleBone Black</span></a>), or go to the step to
+program the LaunchPad with the desired flash images. See <a class="reference internal" href="#sec-flash-lps"><span class="std std-ref">Program the Launchpads</span></a>
+(using the Linux Flash Programing tool), or see
+<a class="reference internal" href="linux-running-the-example-applications.html#chap-running-examples"><span class="std std-ref">Running the Example Applications</span></a>, which discusses the Windows flash tool.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="sec-bbb">
+<span id="id7"></span><h3>BeagleBone Black<a class="headerlink" href="#sec-bbb" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a> can be used in two different ways to develop and run the
+applications:</p>
+<ul class="simple">
+<li>Method 1: As a runtime environment only, software is generally developed
+(edited, compiled, and linked) on a <em>host x86 Linux machine</em> and then
+deployed (or copied) to the <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a>.</li>
+<li>Method 2: As a development environment, the edit, compile, and link
+processes are done directly on the BBB.</li>
+</ul>
+<p>The following steps provide details on how to set up the BBB for both methods described previously.</p>
+<ol class="arabic">
+<li><p class="first">Program the micro-SD memory card with the TI Linux Processor SDK version
+0.2.00.02.11 or greater.</p>
+<ol class="loweralpha">
+<li><p class="first">Download the prebuilt processor SDK image <em>am335x-evm-linux-
+xx.xx.xx.xx.img.zip</em> from <a class="reference external" href="http://www.ti.com/tool/PROCESSOR-SDK-AM335X">AM335x Sitara Processor SDK for Linux</a>.
+Follow the instructions at the wiki page to program the micro-SD memory
+card through Windows: <a class="reference external" href="http://processors.wiki.ti.com/index.php/Processor_SDK_Linux_Creating_a_SD_Card_with_Windows">Processor SDK Linux Creating a SD Card with
+Windows</a> The Linux method is described in <a class="reference external" href="http://processors.wiki.ti.com/index.php/Processor_SDK_Linux_create_SD_card_script">Processor SDK Linux create
+SD card script</a>.</p>
+</li>
+<li><p class="first">To boot from the SD card, take the following actions:</p>
+<ol class="arabic">
+<li><p class="first">Disconnect power and unplug USB cable from the <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a>.</p>
+</li>
+<li><p class="first">Insert the SD card.</p>
+</li>
+<li><p class="first">Press (and hold) the <em>boot switch</em> (see
+<a class="reference internal" href="#fig-dev-boot-bbb"><span class="std std-numref">Figure 6.</span></a>).</p>
+</li>
+<li><p class="first">Apply power to the <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a> (through a USB or through a barrel
+connector).</p>
+</li>
+<li><p class="first">Wait a few seconds; then release the boot switch.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The boot switch is only detected at power up.</p>
+</div>
+</li>
+<li><p class="first">In about 5 to 15 seconds, the LEDs will start blinking.</p>
+<div class="figure align-center" id="fig-dev-boot-bbb">
+<img alt="../_images/fig-boot-bbb.png" src="../_images/fig-boot-bbb.png" />
+<p class="caption"><span class="caption-number">Figure 6. </span><span class="caption-text">Boot Switch Location</span></p>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p class="first">Determine the IP address of the <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a>. To monitor and control the TI
+15.4-Stack Network when using the TI 15.4-Stack Linux SDK out-of-box
+Gateway Application, you must know the IP address of the <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a>.</p>
+<ul class="simple">
+<li>Method 1: Connect to the Host PC through a USB cable, as shown in
+<a class="reference internal" href="#fig-bbb-linux-usb-dev"><span class="std std-numref">Figure 7.</span></a>.<ul>
+<li>The USB IP address is hard coded as 192.168.7.2 and is assigned
+during boot. This uses the RNDIS driver.</li>
+</ul>
+</li>
+</ul>
+<div class="figure align-center" id="fig-bbb-linux-usb-dev">
+<img alt="../_images/fig-bbb-linux-usb.jpeg" src="../_images/fig-bbb-linux-usb.jpeg" />
+<p class="caption"><span class="caption-number">Figure 7. </span><span class="caption-text">USB Connection</span></p>
+</div>
+<ul class="simple">
+<li>Method 2: Use a network router or PC, as shown in
+<a class="reference internal" href="#fig-bbb-connection-router-dev"><span class="std std-numref">Figure 8.</span></a>.</li>
+</ul>
+<div class="figure align-center" id="fig-bbb-connection-router-dev">
+<img alt="../_images/fig-bbb-connection-router.png" src="../_images/fig-bbb-connection-router.png" />
+<p class="caption"><span class="caption-number">Figure 8. </span><span class="caption-text">Network Router or PC Connection</span></p>
+</div>
+<ul class="simple">
+<li>The network router assigns a <em>random IP address</em> through DHCP to the
+BBB based on the order in which the devices power up (for example, if
+today the BBB powers up first, the BBB receives BBB = xx.xx.xx.100 and
+laptop = xx.xx.xx.101; however, tomorrow the IP address might reverse,
+or perhaps a new device is present on the router [for example, a cell
+phone]).</li>
+</ul>
+<p>The following two options are used to determine the assigned IP address:</p>
+<ul>
+<li><p class="first"><strong>Use the Router HTTP Management page.</strong></p>
+<p>Each router brand is different (the generic name is <em>DHCP Client
+Table</em>). See <a class="reference internal" href="#tab-dhcp-client"><span class="std std-numref">Table 1.</span></a> for a list of example routers.</p>
+</li>
+</ul>
+<table border="1" class="docutils" id="tab-dhcp-client">
+<caption><span class="caption-number">Table 1. </span><span class="caption-text">DHCP Client Table Examples</span><a class="headerlink" href="#tab-dhcp-client" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Brand</strong></th>
+<th class="head"><strong>Example Link</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>LinkSys</td>
+<td><a class="reference external" href="http://www.linksys.com/us/support-article?articleNum=139502">http://www.linksys.com/us/support-article?articleNum=139502</a></td>
+</tr>
+<tr class="row-odd"><td>NetGear</td>
+<td><a class="reference external" href="http://documentation.netgear.com/fvs336g/enu/202-10257-01/FVS336G_RM-11-07.html">http://documentation.netgear.com/fvs336g/enu/202-10257-01/FVS336G_RM-11-07.html</a></td>
+</tr>
+<tr class="row-even"><td>Belkin</td>
+<td><a class="reference external" href="http://www.belkin.com/pyramid/AdvancedInfo/F5D8235-4/Advance/reserveIP.htm">http://www.belkin.com/pyramid/AdvancedInfo/F5D8235-4/Advance/reserveIP.htm</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p class="first"><strong>Use an FTDI USB serial cable and a terminal application.</strong></p>
+<p>Perform the following steps to use an FTDI USB serial cable and a
+terminal application:</p>
+<ol class="loweralpha simple">
+<li>Before booting the Beagle board, first connect the Ethernet cable
+and connect an FTDI (USB serial) cable. Open a terminal program
+using the settings <em>115200 8-N-1</em>.</li>
+<li>Power-cycle the BBB (remember to press and hold the boot switch
+shown in <a class="reference internal" href="#fig-dev-boot-bbb"><span class="std std-numref">Figure 6.</span></a>).</li>
+<li>Wait until the Beagle board has finished booting.</li>
+<li>Log into the BBB using the user name <em>root</em>.</li>
+<li>Type the command <em>ifconfig</em>, then the IP address appears on the
+screen shown in <a class="reference internal" href="#fig-bbb-ifconfig"><span class="std std-numref">Figure 9.</span></a>.</li>
+<li>Copy the <em>inet addr.</em></li>
+</ol>
+<div class="figure align-center" id="fig-bbb-ifconfig">
+<img alt="../_images/fig-bbb-ifconfig.jpeg" src="../_images/fig-bbb-ifconfig.jpeg" />
+<p class="caption"><span class="caption-number">Figure 9. </span><span class="caption-text">Getting the IP Address of BBB</span></p>
+</div>
+</li>
+</ul>
+</li>
+<li><p class="first">Prebuilt.tar file. On the Linux PC, use the following commands to transfer
+the prebuilt.tar file with built binaries to the <a class="reference internal" href="glossary.html#term-bbb"><span class="xref std std-term">BBB</span></a>. The
+prebuilt.tar file can be found here:</p>
+<ul class="simple">
+<li>In the Linux SDK, the file is under the following:
+${SDK_ROOT}/prebuilt/bbb_prebuilt.tar.gz</li>
+</ul>
+</li>
+<li><p class="first">Copy the <em>bbb_prebuilt</em> file to the BBB.
+Substitute the appropriate address for the ${BBB_IP_ADDRESS} that follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> <span class="si">${</span><span class="nv">SDK_ROOT</span><span class="si">}</span>/prebuilt
+$ scp bbb_prebuilt.tar.gz root@<span class="si">${</span><span class="nv">BBB_IP_ADDRESS</span><span class="si">}</span>:~/.
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ol class="last arabic simple">
+<li>Other tools can be used, such as Windows Secure Copy (WinSCP) or
+FileZilla.</li>
+<li>The target directory <em>~/.</em> is shorthand for <em>roots</em> ${HOME}
+directory (that is, /home/root).</li>
+<li>Later during development, Secure Copy (SCP) can be used to copy new
+binary files to the BBB.</li>
+</ol>
+</div>
+</li>
+<li><p class="first">Log into the BBB and unpack the prebuilt.tar.gz file. Type the following
+commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># connect to the BBB</span>
+<span class="nv">$ssh</span> root@<span class="si">${</span><span class="nv">BBB_IP_ADDRESS</span><span class="si">}</span>
+
+root@am335x-evm# <span class="nb">cd</span> <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>
+root@am335x-evm# tar xf bbb_prebuilt.tar.gz
+</pre></div>
+</div>
+<p>The prebuilt applications are found in the <em>prebuilt</em> directory.</p>
+</li>
+<li><p class="first">OPTIONAL: Perform the following steps to copy the Linux example SDK source
+code to the BBB to build and run the application on BBB:</p>
+<ol class="loweralpha simple">
+<li>Create a .tar file of the entire ${SDK_ROOT} directory.</li>
+<li>Copy this new .tar file from your Linux host to the BBB through scp (for
+more details, see the previous note about where the prebuilt files are
+copied).</li>
+<li>Unpack the .tar file.</li>
+<li>See <a class="reference internal" href="linux-build-system.html#sec-build-from-source"><span class="std std-ref">Building the Applications From Source</span></a> for details about how to build on the
+BBB.</li>
+</ol>
+<p>The BBB is now ready to run the TI 15.4-Stack SDK Linux example
+applications.</p>
+</li>
+<li><p class="first">Next, flash program the Launchpads. See <a class="reference internal" href="#sec-flash-lps"><span class="std std-ref">Program the Launchpads</span></a> for using the
+Linux Flash Programing tool; also see
+<a class="reference internal" href="linux-running-the-example-applications.html#chap-running-examples"><span class="std std-ref">Running the Example Applications</span></a> where the Windows flash tool is discussed.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="program-the-launchpads">
+<span id="sec-flash-lps"></span><h3>Program the Launchpads<a class="headerlink" href="#program-the-launchpads" title="Permalink to this headline">¶</a></h3>
+<p>This section provides instructions on how to program the CC13xx/CC26x2
+LaunchPads with the required hex files. Prebuilt firmware files are in the
+${SDK_ROOT}/firmware directory.</p>
+<ul class="simple">
+<li>Program one LaunchPad (See <a class="reference internal" href="#fig-program-lps"><span class="std std-numref">Figure 10.</span></a> [A]) with the
+<em>$(SDK_ROOT)/firmware/coprocessor_cc13x0_lp.hex image, Label this
+LaunchPad *CoProcessor</em>.</li>
+<li>Program all other LaunchPads (See <a class="reference internal" href="#fig-program-lps"><span class="std std-numref">Figure 10.</span></a> [B]) with the
+<em>$(SDK_ROOT)/firmware/default/sensor_default.hex image. Label these
+LaunchPads as *sensors</em>.</li>
+</ul>
+<div class="figure align-center" id="fig-program-lps">
+<img alt="../_images/fig-program-lps.png" src="../_images/fig-program-lps.png" />
+<p class="caption"><span class="caption-number">Figure 10. </span><span class="caption-text">Program the LaunchPads</span></p>
+</div>
+<p>There are three options to program the LaunchPads:</p>
+<ul class="simple">
+<li>Option 1: Use the Linux application cc13xx-sbl (see
+<a class="reference internal" href="linux-running-the-example-applications.html#sec-serial-bootloader"><span class="std std-ref">Serial Bootloader Application (Flash Update)</span></a> for details).</li>
+<li>Option 2: Use the Windows application SmartRF™ Flash Programmer v2 (see
+<a class="reference internal" href="#sec-flash-cop"><span class="std std-ref">Programming the CoProcessor Application</span></a> for this method).</li>
+<li>Options 3: Use the <a class="reference external" href="http://www.ti.com/tool/uniflash">Uniflash Flash Tool</a>.
+This tool is available for Linux. macOS, and Windows.</li>
+</ul>
+<p>The LaunchPads are now ready. <a class="reference internal" href="linux-running-the-example-applications.html#chap-running-examples"><span class="std std-ref">Running the Example Applications</span></a> describes how to run
+the out-of-box Collector and Gateway Applications.</p>
+</div>
+</div>
+<div class="section" id="programming-the-coprocessor-application">
+<span id="sec-flash-cop"></span><h2>Programming the CoProcessor Application<a class="headerlink" href="#programming-the-coprocessor-application" title="Permalink to this headline">¶</a></h2>
+<p>The TI 15.4-Stack Linux SDK includes a prebuilt hex file for the MAC
+CoProcessor. This hex file can be programmed through the SmartRF Flash
+Programmer v2 (see <a class="reference external" href="http://www.ti.com/tool/flash-programmer">SmartRF Flash Programmer</a> to download) or
+<a class="reference external" href="http://www.ti.com/tool/uniflash">Uniflash Flash Tool</a>.
+In addition, the workspace of the TI 15.4-Stack CoProcessor
+CCS project is included with the SimpleLink SDK. Refer to the <strong>TI 15.4-Stack
+Users Guide</strong> on how to program the device using CCS.</p>
+<div class="section" id="option-2-smartrf-flash-programmer-v2">
+<h3>Option 2:  - SmartRF Flash Programmer v2<a class="headerlink" href="#option-2-smartrf-flash-programmer-v2" title="Permalink to this headline">¶</a></h3>
+<p>Open the SmartRF Flash Programmer v2 on the Windows machine.
+<a class="reference internal" href="#fig-flash-programmer2-expl"><span class="std std-numref">Figure 11.</span></a> shows the steps to program the CC13xx
+device with the desired hex file.</p>
+<div class="figure align-center" id="fig-flash-programmer2-expl">
+<img alt="../_images/fig-flash-programmer2-expl.jpeg" src="../_images/fig-flash-programmer2-expl.jpeg" />
+<p class="caption"><span class="caption-number">Figure 11. </span><span class="caption-text">Steps to Program the CC13xx LaunchPad Using the SmartRF Flash Programmer v2</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ol class="last arabic simple">
+<li>When connecting the LaunchPad, the SmartRF program might update the
+<em>debugger firmware</em> in the on-board XDS-110 debug feature.</li>
+<li>Troubleshooting Hint 1: It is easy to confuse various LaunchPads (that
+is, sensor versus CoProcessor), so be sure to label each device
+properly.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="options-3-use-the-uniflash-flash-tool">
+<h3>Options 3 - Use the Uniflash Flash Tool<a class="headerlink" href="#options-3-use-the-uniflash-flash-tool" title="Permalink to this headline">¶</a></h3>
+<p>Open the Uniflash Flash Tool and connect the LaunchPad to the PC.</p>
+<p>Run UniFlash, and perform the following steps:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ol class="last arabic simple">
+<li>Uniflash will automatically find any LaunchPads that are connected to your PC.</li>
+</ol>
+</div>
+<ul class="simple">
+<li>Go to the <cite>Settings &amp; Utilities</cite> tab in Uniflash and erase all unprotected sectors
+(See <a class="reference internal" href="#fig-uniflash1"><span class="std std-numref">Figure 12.</span></a>)</li>
+</ul>
+<div class="figure align-center" id="fig-uniflash1">
+<img alt="../_images/UniFlash_1.png" src="../_images/UniFlash_1.png" />
+</div>
+<ul class="simple">
+<li>Before programming the device, change the Erase settings back to
+<cite>Necessary Sectors Only (Retain untouched content within sector)</cite>,
+(See <a class="reference internal" href="#fig-uniflash2"><span class="std std-numref">Figure 13.</span></a>)</li>
+</ul>
+<div class="figure align-center" id="fig-uniflash2">
+<img alt="../_images/UniFlash_2.png" src="../_images/UniFlash_2.png" />
+</div>
+<ul class="simple">
+<li>In the Program tab, under <strong>Flash image(s)</strong>, browse to the pre-built sensor hex file, located at:
+<a href="#id9"><span class="problematic" id="id10">*</span></a>$(SDK_ROOT)/firmware/default/sensor_default.hex</li>
+<li>Make sure to first <strong>Load Image</strong> and then afterwards <strong>Verify Image</strong>
+(See <a class="reference internal" href="#fig-uniflash3"><span class="std std-numref">Figure 14.</span></a>)</li>
+</ul>
+<div class="figure align-center" id="fig-uniflash3">
+<img alt="../_images/UniFlash_3.png" src="../_images/UniFlash_3.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="linux-example-applications.html" class="btn btn-neutral float-right" title="Example Applications" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="linux-sdk-description.html" class="btn btn-neutral" title="SDK Description" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">2016-2019, Texas Instruments</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.12.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+      });
+  </script>
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

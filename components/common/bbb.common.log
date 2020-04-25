@@ -1,0 +1,4 @@
+make -f Makefile ARCH=bbb 
+make[1]: Entering directory '/home/matt/ti/BeagleBinary/PocketBeagleApp/components/common'
+Creating Lib: objs/bbb/libcommon.a
+make[1]: Leaving directory '/home/matt/ti/BeagleBinary/PocketBeagleApp/components/common'

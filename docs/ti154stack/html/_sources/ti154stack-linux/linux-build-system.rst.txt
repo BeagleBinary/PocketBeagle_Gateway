@@ -1,0 +1,156 @@
+Build System
+============
+
+.. _sec-build-from-source:
+
+Building the Applications From Source
+-------------------------------------
+
+There are various ways to build the applications in the TI 15.4-Stack Linux SDK Installer.
+
+Using Top-Level Script
+^^^^^^^^^^^^^^^^^^^^^^
+
+The script file ``build_all.sh`` can be used to build all the example
+applications. :numref:`tab-buildall-options` lists the available options and
+their effect when using this script.
+
+.. _tab-buildall-options:
+.. table:: Top-Level Script Options
+
+    +------------------------------+--------------------------------------------------------------------------------------+
+    | **Options**                  | **Description**                                                                      |
+    +==============================+======================================================================================+
+    | $bash ./build\_all.sh clean  | Delete all compiled object and executable files                                      |
+    +------------------------------+--------------------------------------------------------------------------------------+
+    | $bash ./build\_all.sh        | Builds for host machine                                                              |
+    +------------------------------+--------------------------------------------------------------------------------------+
+    | $bash ./build\_all.sh host   | Builds for host machine                                                              |
+    +------------------------------+--------------------------------------------------------------------------------------+
+    | $bash ./build\_all.sh bbb    | Builds for BBB                                                                       |
+    |                              | (when building from the x86 machine requires the BBB cross-compiler, as mentioned in |
+    |                              | :ref:`sec-linux-dev-host`)                                                           |
+    +------------------------------+--------------------------------------------------------------------------------------+
+    | $bash ./build\_all.sh remake | Delete all compiled object and executable files and then build for the host machine  |
+    +------------------------------+--------------------------------------------------------------------------------------+
+
+Using the Makefile Within Each Directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each component (library or application) directory contains a makefile to build that component.
+
+#.  Change to the specific directory (either application or library).
+
+#.  Type *make*.
+
+    :numref:`tab-make-targets` lists the general targets supported by each
+    makefile.
+
+
+.. table:: Targets Supported by Each Makefile
+    :name: tab-make-targets
+
+    +-------------------------+-----------------------------------+
+    |     **Options**         |     **Description**               |
+    +=========================+===================================+
+    |     bash$ make          |     Builds the host               |
+    +-------------------------+-----------------------------------+
+    |     bash$ make host     |     Builds the host               |
+    +-------------------------+-----------------------------------+
+    |     bash$ make bbb      |     Builds the BBB variant        |
+    +-------------------------+-----------------------------------+
+    |     bash$ make clean    |     Removes all generated files   |
+    +-------------------------+-----------------------------------+
+    |     bash$ make remake   |     Make clean followed by make   |
+    +-------------------------+-----------------------------------+
+
+Makefile System
+---------------
+
+.. note:: The cc13xx-sbl (bootloader) is a simple self-contained application
+    that uses one self- contained makefile. The cc13xx-sbl does not use the
+    fragment-based system described in the discussion that follows.
+
+Generally, there are two types of builds:
+
+-   A static library
+
+-   An application
+
+The makefile method used in the example application is a *makefile-fragment* scheme. There are three parts to this fragment-based system:
+
+-   The primary Makefile (located with the source code [typically in a parent
+    directory])
+
+-   The front\_matter.mak make-fragment (in the scripts directory)
+
+-   The app.mak or library.mak make-fragment (in the scripts directory)
+
+The various components are shown in :numref:`fig-makefile-structure` and
+discussed in more detail in the rest of this chapter. In
+:numref:`fig-makefile-structure`, the outer box represents an example makefile
+and the inner shaded boxes represent the fragments.
+
+.. figure:: resources/fig-makefile-structure.png
+    :name: fig-makefile-structure
+    :align: center
+
+    Makefile Structure
+
+Primary Makefile
+^^^^^^^^^^^^^^^^
+
+The primary makefile is at the top level of each item (that is, the top
+directory of a library, or an application). The top portion of the Makefile does
+the following:
+
+-   Set a pseudo default target, typically named *\_default*
+
+-   Set various ${CFLAGS}
+
+-   Include the ${scripts}/front\_matter.mak
+
+Included ${scripts}/front\_matter.mak
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The included ${scripts}/front\_matter.mak file is in the following:
+
+${root}/scripts/front\_matter.mak
+
+This is a *common-boiler-plate* file that determines the following:
+
+-   The key variable${ARCH} specifies the type of build (host or BBB).
+
+-   The various compile (transformation) rules are listed.
+
+-   The compiler-generated dependency files are created and included.
+
+Makefile (Between the Includes)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The makefile (between the includes) is not a separate file; it is the portion of
+the original makefile between the two include statements. In this section, the
+following items are listed:
+
+-   Source Files, that is ${C\_SOURCES}
+
+-   Libraries that are used
+
+-   Any additional required rules (for example, using the protobuf compiler)
+
+Included ${scripts}/library.mak or ${scripts}/app.mak
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This file is either ${root}/scripts/library.mak or ${root}/scripts/app.mak
+These files do one of the following:
+
+-   Create the library
+
+-   Create the executable
+
+Makefile (Final Portion)
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+The makefile (final portion) is not a separate file but is the final portion of
+the makefile after the include statements. The final portion contains a
+directory, an application, or library-specific rules.

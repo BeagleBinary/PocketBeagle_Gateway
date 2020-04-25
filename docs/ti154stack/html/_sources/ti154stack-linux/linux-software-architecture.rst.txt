@@ -1,0 +1,93 @@
+.. _TI-15.4-Stack-CoP-Interface-Guide: ..\/..\/TI-15.4%20Stack%20CoP%20Interface%20Guide.pdf
+.. _chap-software-architecture:
+
+Software Architecture
+=====================
+
+Block Diagram and Interface Model
+---------------------------------
+
+This section describes the high-level |TIMAC| CoProcessor-based system
+architecture, the various software components, and the overall system
+architecture (see :numref:`fig-collector-block-diagram`). The |TIMAC|
+CoProcessor is an entity that implements the IEEE 802.15.4e/g standard in a
+dedicated system on a chip and provides a serial interface to an external
+processor for control and processing of the CoProcessor operations. A
+description of the API is provided in the `TI-15.4-Stack-CoP-Interface-Guide`_
+inside the */docs* folder of the TI 15.4-Stack Linux SDK installation.
+
+The |TIMAC| CoProcessor approach is a scalable architecture split that fits
+perfectly for configurations where the host application runs protocol stack
+layers over the IEEE 802.15.4 e/g MAC/PHY (for example, generic IP over
+6LoWPAN, Zigbee® IP, or Zigbee Pro) or even an application that must use the
+MAC/PHY as a data link.
+
+With the TI 15.4-Stack Linux Example Application, the external host software is
+running on a Linux-based platform. The high-level software partitioning
+of layers can be conceptually applied to non-Linux hosts. The software
+components developed and described in this document are specific to a Linux-
+host implementation for an x86 or Arm® based platform.
+
+The interface between the host and the |TIMAC| CoProcessor is defined at
+different logical layers in this split architecture: a physical layer (for
+example, a USB or a universal asynchronous receiver/transmitter [UART]), a
+logical data-link layer, and a presentation layer.
+
+The physical layer interface is used to transport the serial frames over the
+physical link. Several physical interfaces can be used (for example, USB or
+UART). This serial protocol is known as the management and test (:term:`MT`) protocol.
+
+The frames transported over the physical serial link follow the format
+specified in the `TI-15.4-Stack-CoP-Interface-Guide`_ in the ``/docs`` folder
+within the TI 15.4-Stack Linux SDK installation.
+
+The Collector Example Application delivered with this package illustrates an
+example of how to implement a high-level application that is intended to use
+the |TIMAC| CoProcessor services.
+
+.. figure:: resources/fig-linux-software-architecture.png
+    :name: fig-linux-software-architecture
+    :align: center
+
+    High-Level Software Architecture of TI 15.4-Stack Linux® Applications
+
+Software system components:
+
+-   |TIMAC| CoProcessor Embedded Example Application: This is embedded software
+    running on a SimpleLink CC13xx/CC26x2 device. This example application
+    implements a 802.15.4e/g MAC/PHY layer and provides a (serial port) MT-
+    based interface to the applications running on the Linux host.
+
+-   NPI Server v2: The network processor interface (:term:`NPI`) server
+    provides a socket-based communication channel to the |TIMAC| CoProcessor
+    that abstracts the physical serial-communication mechanism (for example,
+    UART or USB).
+
+    .. note:: The NPI server is an optional module; therefore, |TIMAC| can
+        interface directly to the Linux kernel through the dev interface as
+        well.
+
+-   Linux kernel: This provides a device-driver model for the serial interface
+    that is available as a character device over the selected physical port
+    (for example, USB). In the USB case for instance, the |TIMAC| CoProcessor
+    implements a CDC USB driver class; therefore, the kernel should provide a
+    USB modem (ACM) service over /dev.
+
+-   TI 15.4-Stack Application: This application module implements a specific
+    application using the 802.15.4e/g protocol and the MT structure-based model
+    as an application-level interface.
+
+    +   Application: The TI 15.4-Stack Linux SDK Sample Application provides a
+        starting point to use the |TIMAC| CoProcessor by illustrating how to
+        initialize the network, join a network, and perform data communication
+        between the personal area network (:term:`PAN`) Coordinator and the
+        devices (that is, implementing a star-network topology).
+
+    +   API MAC: This is the application programming interface (API) for the TI
+        802.15.4 MAC software. This API provides an interface to the management
+        and data services of the 802.15.4 stack using the CoProcessor embedded
+        example application. This module supports two communication methods.
+        Method 1 is direct through a /dev/tty (serial-port) interface, and
+        Method 2 uses a TCP/IP stream socket that connects to the NPI Server.
+        The NPI server translates the TCP/IP connection into a /dev/tty (serial
+        port) interface.

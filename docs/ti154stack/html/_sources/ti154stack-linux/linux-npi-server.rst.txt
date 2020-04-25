@@ -1,0 +1,149 @@
+NPI Server
+==========
+
+Overview
+--------
+
+At a very high level, the network processor interface (NPI) server is a utility
+application that translates MT packets to and from a TCP/IP connection and a
+serial port (see the data-flow diagram in :numref:`fig-npi-data-flow`. The NPI
+Server is a rather small body of code, the bulk of the application comes from
+the Common Library, which supplies the socket and UART API, and from the APIMAC
+library, which supplies the MT message handling layer).
+
+.. figure:: resources/fig-npi-data-flow.png
+    :name: fig-npi-data-flow
+    :align: center
+
+    NPI Data Flow
+
+:numref:`fig-uml-actor-diagram` shows a UML-style actor diagram with the
+data-flow diagram of the NPI server. Starting from the left side of
+:numref:`fig-uml-actor-diagram`, the following occurs:
+
+-   The Linux client sends a message.
+
+-   The stream (socket) library provides a byte stream interface to the MT MSG
+    library (part of the APIMAC library).
+
+-   The complete packet is presented to the application (the NPI server) and
+    depending upon the type of message, the application decides how to forward.
+
+-   The message follows a similar route to the embedded device.
+
+Replies and asynchronous notifications from the device follow the same basic
+flow in reverse.
+
+.. figure:: resources/fig-uml-actor-diagram.png
+    :name: fig-uml-actor-diagram
+    :align: center
+
+    UML-Style Actor Diagram
+
+A description and data walk-through for :numref:`fig-uml-actor-diagram` follows.
+
+-   The right side represents the client application on some PCs. The
+    connection is through a socket. The client application sends a message.
+
+-   The Stream library provides a byte-stream interface for the MT message
+    interface layer.
+
+-   The MT layer assembles the packet (if required, the MT layer will
+    defragment the message) and presents a *Packet* to the application layer.
+
+-   The Application code (the NPI server in the center) handles each message to
+    determine how or if the message should be forwarded to the other interface.
+    For example, a Synchronous Request (SREQ) should produce a Synchronous
+    Response (SRSP).
+
+-   The message effectively follows the reverse procedure, through the MT layer
+    and to the Stream interface (in this case for a serial port).
+
+Key Features and Highlights
+---------------------------
+
+Key features and highlights for the NPI server follow:
+
+-   Message Format (Message Geometry) Translation:
+    In general, the embedded device (serial port) requires the MT Message Frame
+    to have the format shown in :numref:`tab-message-translation`.
+
+    .. table:: Message Geometry Translation
+        :name: tab-message-translation
+
+        +------+-----+------+------+---------------------+-----+
+        | OxFE | LEN | CMDO | CMDl | (LEN) Payload bytes | FCS |
+        +------+-----+------+------+---------------------+-----+
+
+
+    :numref:`tab-mt-description` defines the byte sequence. The Embedded column
+    represents the CC13xx/CC26xx UART interface, and the Socket column
+    represents the Stream Socket interface between the NPI server and the
+    client.
+
+    .. table:: MT Message Description
+        :name: tab-mt-description
+
+        +----------+--------------+------------+----------------------------------------------------+
+        | **Byte** | **Embedded** | **Socket** | **Description**                                    |
+        +==========+==============+============+====================================================+
+        | 0xfe     | Required     | Optional   | Frame synchronization (message start) byte         |
+        +----------+--------------+------------+----------------------------------------------------+
+        | LEN      | 1 byte       | 2 bytes    | Length in bytes of the payload portion (LSB first) |
+        +----------+--------------+------------+----------------------------------------------------+
+        | CMD0     | 1 byte       | 1 byte     | bits [7–5] message type                            |
+        |          |              |            | bits [4–0] subsystem number                        |
+        +----------+--------------+------------+----------------------------------------------------+
+        | CMD1     | 1 byte       | 1 byte     | Command byte for specific subsystem                |
+        +----------+--------------+------------+----------------------------------------------------+
+        | (bytes)  | Variable     | Variable   | Zero or more bytes, command specific               |
+        +----------+--------------+------------+----------------------------------------------------+
+        | FCS      | 1 byte       | Optional   | XOR check value of the CMD0, CMD1, and (data)      |
+        +----------+--------------+------------+----------------------------------------------------+
+
+
+-   Large Messages (Fragmentation):
+
+    Fragmentation can occur in either direction (Host to CC13xx/CC26x2, or
+    CC13xx/CC26x2 to Host). The embedded CC13xx/CC26x2 firmware only supports 1
+    byte for a length; however, to support large messages, fragmentation is
+    required.
+
+    The MT library provides this support. A large message is divided and
+    transmitted as a series of smaller fragments. Incoming fragmented messages
+    are reassembled as needed.
+
+-   Protocol Geometry is configurable through a configuration file.
+
+    All of the previously listed message-format geometry values are configurable
+    through the NPI\_SERVER2.CFG file. In addition, other geometry items
+    (time-out, retry, and so on) are also configurable. See
+    :numref:`code-cfg-file` from the *npi\_server2.cfg.* file.
+
+    .. note:: The example collector application is configurable in the same way
+        through the *collector.cfg* file.
+
+    .. code-block:: none
+        :name: code-cfg-file
+        :caption: Example of collector.cfg File
+
+        [uart-interface]
+            include-chksum = true
+            frame-sync = true
+            fragmentation-size = 240
+            retry-max = 3
+            fragmentation-timeout-msecs = 1000
+            intersymbol-timeout-msecs = 100
+            srsp-timeout-msecs = 1000
+            len-2bytes = false
+            flush-timeout-msecs = 50
+        [socket-interface]
+            include-chksum = false
+            frame-sync = false
+            fragmentation-size = 240
+            retry-max = 3
+            fragmentation-timeout-msecs = 1000
+            intersymbol-timeout-msecs = 100
+            srsp-timeout-msecs = 1000
+            len-2bytes = true
+            flush-timeout-msecs = 10

@@ -1,0 +1,4 @@
+make -f Makefile ARCH=bbb 
+make[1]: Entering directory '/home/matt/ti/BeagleBinary/PocketBeagleApp/components/api'
+Creating Lib: objs/bbb/libapimac.a
+make[1]: Leaving directory '/home/matt/ti/BeagleBinary/PocketBeagleApp/components/api'

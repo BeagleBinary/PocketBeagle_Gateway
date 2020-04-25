@@ -1,0 +1,6 @@
+make -f Makefile ARCH=host 
+make[1]: Entering directory '/home/debian/PocketBeagleApp/example/collector'
+Compling: csf_linux.c
+Creating App: (host) host_collector
+Done.
+make[1]: Leaving directory '/home/debian/PocketBeagleApp/example/collector'

@@ -1,0 +1,727 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Component Common Library &mdash; 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="
+SimpleLink™ Linux SDK
+TI 15.4-Stack User&#39;s Guide
+ 2.12.00.00 documentation" href="../index.html"/>
+        <link rel="next" title="Troubleshooting" href="linux-troubleshooting.html"/>
+        <link rel="prev" title="Linux® Software Components" href="linux-software-components.html"/>
+    <script language="JavaScript">
+        var tiPageName;
+        tiPageName = "sug ti154stack-linux linux-component-common-library";
+
+        if (location.protocol == "file:"){
+            var ci_analytics_poc_load = true;
+        }
+    </script>
+
+    <script src="http://www.ti.com/assets/js/headerfooter/analytics.js" type="text/javascript" charset="utf-8">
+
+
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+  <header id="tiHeader">
+    <div class="top">
+      <ul>
+        <li id="top_logo">
+          <a href="http://www.ti.com">
+            <img src="../_static/img/ti_logo.png"/>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav"></div>
+  </header>
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../ti154stack-guide/index-linux.html" class="icon icon-home"> 
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.12.00.00
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="linux-introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-quick-start.html">Linux Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-architecture.html">Software Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-sdk-description.html">SDK Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-development-environment.html">Development Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-example-applications.html">Example Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-running-the-example-applications.html">Running the Example Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-build-system.html">Build System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-npi-server.html">NPI Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linux-software-components.html">Linux® Software Components</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Component Common Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#opaque-types-intptr-t-versus-void">Opaque Types <em>intptr_t</em> versus <em>void</em></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#os-abstraction-semaphores-mutexes-threads-and-timers">OS Abstraction: Semaphores, Mutexes, Threads, and Timers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#where-the-os-abstractions-are-used">Where the OS Abstractions are Used</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#important-api-elements">Important API Elements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#stream-interface">Stream Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#where-the-stream-interface-is-used">Where the Stream Interface is Used</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Important API Elements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#log-file">Log File</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#where-the-log-file-is-used">Where the Log File is Used</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Important API Elements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#opening-a-log-file">Opening a Log file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#writing-to-the-log-printf-style">Writing to the Log printf() Style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#controlling-what-is-logged-and-what-is-not-logged">Controlling What Is Logged and What Is Not Logged</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#log-configuration">Log Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example-log-output">Example Log Output</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ini-files">ini Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#where-the-ini-files-are-used">Where the .ini Files are Used</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-format">File Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Important API Elements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#reading-the-ini-file">Reading the .ini File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#handling-values-callback-example">Handling Values – Callback Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linux-troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Terms and Acronyms</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../ti154stack-guide/index-linux.html">
+SimpleLink™ Linux SDK
+TI 15.4-Stack User's Guide
+</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../ti154stack-guide/index-linux.html">Docs</a> &raquo;</li>
+      
+    <li>Component Common Library</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="component-common-library">
+<h1>Component Common Library<a class="headerlink" href="#component-common-library" title="Permalink to this headline">¶</a></h1>
+<p>This chapter describes at a high level some of the features in the
+${root}/components/common library. The goal of this document is a quick overview
+or introduction with pointers to where to find the detail. The various
+components are documented in detail in their respective header files.</p>
+<div class="section" id="opaque-types-intptr-t-versus-void">
+<h2>Opaque Types <em>intptr_t</em> versus <em>void</em><a class="headerlink" href="#opaque-types-intptr-t-versus-void" title="Permalink to this headline">¶</a></h2>
+<p>Portable code runs across multiple platforms transparently. Another important
+item is the ability to create opaque types. In the past, developers often used
+an integer as an opaque type, or a void pointer as an opaque type.</p>
+<p>On a 32-bit Arm target (the BBB), because the compiler uses a 32-bit pointer and
+a 32-bit integer, casting a pointer to an integer is not a problem.</p>
+<p>A 64-bit host is a problem, the sizeof(pointer) != sizeof(int), and improper
+handling of opaque types is often a source of bugs.</p>
+<p>Solution: The C99 standard introduced an intptr_t, which is a compiler-supplied
+type that always works for both opaque data types. Hence, all opaque types in
+the common library use <em>intptr_t</em> for opaque values.</p>
+</div>
+<div class="section" id="os-abstraction-semaphores-mutexes-threads-and-timers">
+<h2>OS Abstraction: Semaphores, Mutexes, Threads, and Timers<a class="headerlink" href="#os-abstraction-semaphores-mutexes-threads-and-timers" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#tab-doc-locations"><span class="std std-numref">Table 8.</span></a> lists the location of the feature documentation.</p>
+<table border="1" class="docutils" id="tab-doc-locations">
+<caption><span class="caption-number">Table 8. </span><span class="caption-text">Documentation Locations</span><a class="headerlink" href="#tab-doc-locations" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Description</strong></th>
+<th class="head"><strong>Location</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Mutex</td>
+<td>${root}/components/common/inc/mutex.h</td>
+</tr>
+<tr class="row-odd"><td>Semaphore</td>
+<td>${root}/components/common/inc/semaphore.h</td>
+</tr>
+<tr class="row-even"><td>Thread</td>
+<td>${root}/components/common/inc/threads.h</td>
+</tr>
+<tr class="row-odd"><td>Timer</td>
+<td>${root}/components/common/inc/timer</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="where-the-os-abstractions-are-used">
+<h3>Where the OS Abstractions are Used<a class="headerlink" href="#where-the-os-abstractions-are-used" title="Permalink to this headline">¶</a></h3>
+<p>Threads:</p>
+<blockquote>
+<div>In the Collector Application, the primary <em>collector</em> application is a
+thread; there is also a timer thread. In the NPI server, a unique thread is
+created for each attached client.</div></blockquote>
+<p>Semaphores:</p>
+<blockquote>
+<div>Semaphores are used to indicate when messages arrive and require service.</div></blockquote>
+<p>Mutexes:</p>
+<blockquote>
+<div>Mutexes are used to lock access to shared resources across multiple threads.</div></blockquote>
+</div>
+<div class="section" id="important-api-elements">
+<h3>Important API Elements<a class="headerlink" href="#important-api-elements" title="Permalink to this headline">¶</a></h3>
+<p>Timers:</p>
+<ul class="simple">
+<li>All time units are in milliseconds and are relative to the request.</li>
+<li>The time value –1 (negative) means: wait or block forever.</li>
+<li>The time value 0 (zero) means: test, do not block the return fail/error immediately if not successful.</li>
+<li>Positive time values represent the time in milliseconds.</li>
+<li>Long time-outs (more than 20 days) are not supported.</li>
+</ul>
+<p>Mutexes, Semaphores, and Threads:</p>
+<ul class="simple">
+<li>Have a <em>dbg_name</em> element for log identification purposes</li>
+<li>Supports recursive locks and a time-out parameter</li>
+<li>Synchronization calls such as: Lock, Unlock, Get, Put, and calls are present</li>
+</ul>
+</div>
+</div>
+<div class="section" id="stream-interface">
+<h2>Stream Interface<a class="headerlink" href="#stream-interface" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#tab-stream-docs"><span class="std std-numref">Table 9.</span></a> lists where the stream interfaces are documented.</p>
+<table border="1" class="docutils" id="tab-stream-docs">
+<caption><span class="caption-number">Table 9. </span><span class="caption-text">Stream Interface Documentation</span><a class="headerlink" href="#tab-stream-docs" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><strong>Description</strong></th>
+<th class="head"><strong>Location</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Stream (generic)</td>
+<td>${root}/components/common/inc/stream.h</td>
+</tr>
+<tr class="row-odd"><td>Stream (UART)</td>
+<td>${root}/components/common/inc/stream_uart.h</td>
+</tr>
+<tr class="row-even"><td>Stream (socket)</td>
+<td>${root}/components/common/inc/stream_socket.h</td>
+</tr>
+<tr class="row-odd"><td>Socket (common)</td>
+<td>${root}/components/common/inc/stream_socket_private.h</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="where-the-stream-interface-is-used">
+<h3>Where the Stream Interface is Used<a class="headerlink" href="#where-the-stream-interface-is-used" title="Permalink to this headline">¶</a></h3>
+<p>The stream module is used for the log files, configuration files, serial ports,
+and sockets. At a high level, streams are simply a stream of bytes that can be
+read or written.</p>
+<p>The source (or destination) of a stream can be a file, a memory buffer, memory,
+a serial UART, or a socket. All of these sources are abstracted and can be
+treated as a <em>generic stream of bytes</em>.</p>
+</div>
+<div class="section" id="id5">
+<h3>Important API Elements<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>Upon successful opening or creation of a stream, the return is a nonzero opaque
+<em>intptr_t</em> result, as shown in <a class="reference internal" href="#code-open-stream"><span class="std std-numref">Listing 10.</span></a>.</p>
+<div class="literal-block-wrapper docutils container" id="code-open-stream">
+<div class="code-block-caption"><span class="caption-number">Listing 10. </span><span class="caption-text">Opening or Creation of a Stream</span><a class="headerlink" href="#code-open-stream" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">intptr_t</span> <span class="n">STREAM</span> <span class="nf">createUart</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="n">uart_cfg</span> <span class="o">*</span><span class="n">pCFG</span><span class="p">);</span>
+<span class="kt">intptr_t</span> <span class="n">SOCKET_CLIENT</span> <span class="nf">create</span><span class="p">(</span><span class="k">struct</span> <span class="n">socket_cfg</span> <span class="o">*</span><span class="n">pCFG</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">SOCKET_CLIENT</span> <span class="nf">connect</span><span class="p">(</span><span class="kt">intptr_t</span> <span class="n">h</span><span class="p">);</span>
+<span class="kt">intptr_t</span> <span class="n">STREAM</span> <span class="nf">createWrFile</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">);</span>
+<span class="kt">intptr_t</span> <span class="n">STREAM</span> <span class="nf">createRdFile</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p><a class="reference internal" href="#code-close-stream"><span class="std std-numref">Listing 11.</span></a> shows the closing of a stream.</p>
+<div class="literal-block-wrapper docutils container" id="code-close-stream">
+<div class="code-block-caption"><span class="caption-number">Listing 11. </span><span class="caption-text">Closing a Stream</span><a class="headerlink" href="#code-close-stream" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">STREAM_close</span><span class="p">(</span><span class="kt">intptr_t</span> <span class="n">h</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p><a class="reference internal" href="#code-rw-stram"><span class="std std-numref">Listing 12.</span></a> shows reading and writing bytes.</p>
+<div class="literal-block-wrapper docutils container" id="code-rw-stram">
+<div class="code-block-caption"><span class="caption-number">Listing 12. </span><span class="caption-text">Reading and Writing Bytes</span><a class="headerlink" href="#code-rw-stram" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">STREAM_wrBytes</span><span class="p">(</span><span class="kt">intptr_t</span> <span class="n">h</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">databytes</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nbytes</span><span class="p">,</span>    \
+    <span class="kt">int</span> <span class="n">timeout_mSecs</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">STREAM_rdBytes</span><span class="p">(</span><span class="kt">intptr_t</span> <span class="n">h</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">databytes</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nbytes</span><span class="p">,</span>          \
+    <span class="kt">int</span> <span class="n">timeout_mSecs</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">STREAM_rxAvail</span><span class="p">(</span><span class="kt">intptr_t</span> <span class="n">h</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mSecs_timeout</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="log-file">
+<span id="sec-log-file"></span><h2>Log File<a class="headerlink" href="#log-file" title="Permalink to this headline">¶</a></h2>
+<p>The full log facility is documented in the following directory:
+<code class="docutils literal notranslate"><span class="pre">${root}/components/common/inc/log.h</span></code></p>
+<div class="section" id="where-the-log-file-is-used">
+<h3>Where the Log File is Used<a class="headerlink" href="#where-the-log-file-is-used" title="Permalink to this headline">¶</a></h3>
+<p>The library components and applications create files using this log facility.</p>
+</div>
+<div class="section" id="id6">
+<h3>Important API Elements<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="opening-a-log-file">
+<h4>Opening a Log file<a class="headerlink" href="#opening-a-log-file" title="Permalink to this headline">¶</a></h4>
+<p>Logs are written to a file specified by the function call shown in
+<a class="reference internal" href="#code-log-init"><span class="std std-numref">Listing 13.</span></a>.</p>
+<div class="literal-block-wrapper docutils container" id="code-log-init">
+<div class="code-block-caption"><span class="caption-number">Listing 13. </span><span class="caption-text">Function Call for Opening a Log File</span><a class="headerlink" href="#code-log-init" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">LOG_init</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="writing-to-the-log-printf-style">
+<h4>Writing to the Log printf() Style<a class="headerlink" href="#writing-to-the-log-printf-style" title="Permalink to this headline">¶</a></h4>
+<p>Logs are written using a <code class="docutils literal notranslate"><span class="pre">printf()</span></code> like the function shown in
+<a class="reference internal" href="#code-log-printf"><span class="std std-numref">Listing 14.</span></a>.</p>
+<div class="literal-block-wrapper docutils container" id="code-log-printf">
+<div class="code-block-caption"><span class="caption-number">Listing 14. </span><span class="caption-text">Writing to the Log printf()</span><a class="headerlink" href="#code-log-printf" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">LOG_printf</span><span class="p">(</span><span class="n">logflags_t</span> <span class="n">whybits</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span>
+<span class="c1">// Example:</span>
+<span class="n">LOG_printf</span><span class="p">(</span> <span class="n">LOG_ALWAYS</span><span class="p">,</span> <span class="s">&quot;the answer is %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mi">42</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="controlling-what-is-logged-and-what-is-not-logged">
+<h4>Controlling What Is Logged and What Is Not Logged<a class="headerlink" href="#controlling-what-is-logged-and-what-is-not-logged" title="Permalink to this headline">¶</a></h4>
+<p>What exactly is logged (enabled) or not logged (disabled) is controlled by the
+<em>whybits</em> parameter. To be clear, the whybits parameter is not a <em>log level</em>,
+but instead the whybits parameter is a (64-bit) bit mask and is managed by the
+<code class="docutils literal notranslate"><span class="pre">LOG_test()</span></code> function, which in pseudocode is shown in
+<a class="reference internal" href="#code-log-test"><span class="std std-numref">Listing 15.</span></a>.</p>
+<div class="literal-block-wrapper docutils container" id="code-log-test">
+<div class="code-block-caption"><span class="caption-number">Listing 15. </span><span class="caption-text">LOG_test() Function Pseudocode</span><a class="headerlink" href="#code-log-test" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="nf">LOG_test</span><span class="p">(</span><span class="n">logflags_t</span> <span class="n">whybits</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// This is [pseudo-code], not actual code from the module</span>
+    <span class="c1">// ie: LOG ALWAYS, or LOG ERROR</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">special_case_true</span><span class="p">(</span> <span class="n">whybits</span> <span class="p">)</span> <span class="p">){</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span> <span class="c1">// log the message</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">special</span> <span class="n">case_false</span><span class="p">(</span><span class="n">whybits</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// do not log the message</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">whybits</span> <span class="o">&amp;</span> <span class="n">log_cfg</span><span class="p">.</span><span class="n">log_flags</span> <span class="p">){</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span> <span class="c1">// log the message</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span> <span class="c1">// do nog log.</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="log-configuration">
+<h4>Log Configuration<a class="headerlink" href="#log-configuration" title="Permalink to this headline">¶</a></h4>
+<p>The application logging can be configured through the <em>ini-configuration</em> file.
+Included in the <code class="docutils literal notranslate"><span class="pre">${root}/components/common</span></code> library is a log/ini-file callback
+function that can be used to configure various aspects of the log feature. See
+the function <code class="docutils literal notranslate"><span class="pre">LOG_INI_settings()</span></code>.</p>
+<p>A small excerpt from a configuration file follows.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[log]
+
+filename = collector_log.txt
+;----------------------------------------
+; The flag name &#39;everything&#39; is magic, it turns on everything.
+; setting all of the log bits to 1.
+;---------------------------------------- flag = everything
+flag = not-sys_dbg_mutex flag = not-sys_dbg_thread
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ol class="last arabic simple">
+<li>The name/value pair <em>filename</em> specifies the log filename.</li>
+<li>The value <em>flag</em> enables a specific log (bit); for example, <em>flag = foo</em> will
+use a look-up table to determine the value of the foo bit and will set that bit
+in the log_cfg.log_flags.</li>
+<li>The flag name <em>everything</em> turns on (sets) all of the log bits enabling
+everything. The flag name <em>everything</em> turns on (that is, it sets all the
+log bits; thus, enabling all the log messages defined by the application).
+For more details on log functionality, see <a class="reference internal" href="#sec-log-file"><span class="std std-ref">Log File</span></a>.</li>
+<li>Otherwise, the <em>named-bit</em> is set to 1.</li>
+<li>If the name is pre-pended with “not-“, the bit is cleared (equal 0)</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="example-log-output">
+<h3>Example Log Output<a class="headerlink" href="#example-log-output" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="#code-log-output"><span class="std std-numref">Listing 16.</span></a> shows an example of the log file contents.
+The left column shows the time in seconds and milliseconds since the application
+was started.</p>
+<div class="literal-block-wrapper docutils container" id="code-log-output">
+<div class="code-block-caption"><span class="caption-number">Listing 16. </span><span class="caption-text">Log Output Example</span><a class="headerlink" href="#code-log-output" title="Permalink to this code">¶</a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1.012: uart: TX Msg (start) [pib-set-common]
+1.012: pib-set-common msg(0002) nbytes=22 len=17 [ 0xfe 0x11 0x22 0x09 0x52 0x01 0x00 0x00]
+1.012: uart: TX 22 bytes
+1.012: 00000000: fe 11 22 09 52 01 00 00-00 00 00 00 00 00 00 00 I..&quot;.R...........I
+1.012: 00000010: 00 00 00 00 00 69 - I.....i I
+1.012: uart: TX Msg (Complete) r=22 [pib-set-common]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="ini-files">
+<h2>ini Files<a class="headerlink" href="#ini-files" title="Permalink to this headline">¶</a></h2>
+<p>The .ini component is documented in the following directory:
+<code class="docutils literal notranslate"><span class="pre">${root}/components/common/inc/ini_file.h</span></code>.</p>
+<div class="section" id="where-the-ini-files-are-used">
+<h3>Where the .ini Files are Used<a class="headerlink" href="#where-the-ini-files-are-used" title="Permalink to this headline">¶</a></h3>
+<p>The Collector Example Applications and the NPIserver2 Example Applications are
+configured through a text file in .ini file format. Both applications read the
+.ini files through the INI common-library component.</p>
+</div>
+<div class="section" id="file-format">
+<h3>File Format<a class="headerlink" href="#file-format" title="Permalink to this headline">¶</a></h3>
+<p>Comments start with a semicolon (;) or a hash mark (#) and extend to the end of
+the line. Sections are denoted by names in brackets [ ]. Values specific to each
+section title are indented and are in the following form <em>name = value</em>. The
+values may strings, Booleans, or numeric values.</p>
+<p>For example, <a class="reference internal" href="#code-collector-cfg"><span class="std std-numref">Listing 17.</span></a> shows a portion of the collector
+configuration file.</p>
+<div class="literal-block-wrapper docutils container" id="code-collector-cfg">
+<div class="code-block-caption"><span class="caption-number">Listing 17. </span><span class="caption-text">Portion of the Collector Configuration File</span><a class="headerlink" href="#code-collector-cfg" title="Permalink to this code">¶</a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>;comment
+[application]
+# Comment
+interface uart
+config-secure true
+config-pan-id Oxacdc
+config-coord-short-addr 1O24
+config-mac-beacon-order 15
+config-mac-superframe-order 15
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>Important API Elements<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="reading-the-ini-file">
+<h4>Reading the .ini File<a class="headerlink" href="#reading-the-ini-file" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference internal" href="#code-read-cfg"><span class="std std-numref">Listing 18.</span></a> shows the primary means to read a configuration file.</p>
+<div class="literal-block-wrapper docutils container" id="code-read-cfg">
+<div class="code-block-caption"><span class="caption-number">Listing 18. </span><span class="caption-text">Read a Configuration File</span><a class="headerlink" href="#code-read-cfg" title="Permalink to this code">¶</a></div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>int INI_read(const char *filename,          \
+    ini_rd_callback *callback_function_ptr, \
+    intptr_t client_cookie);
+</pre></div>
+</div>
+</div>
+<p>The actual content of the file is managed by the callback function.
+<a class="reference internal" href="#code-collector-snip"><span class="std std-numref">Listing 19.</span></a>
+shows a code snippet from the Collector Application. Highlights are as follows:</p>
+<ul class="simple">
+<li>An array of subhandlers to handle various sections</li>
+<li>A simple iteration loop over the array</li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="code-collector-snip">
+<div class="code-block-caption"><span class="caption-number">Listing 19. </span><span class="caption-text">Collector Application Code Snippet</span><a class="headerlink" href="#code-collector-snip" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Callback for parsing the INI file. */</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">cfg_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">ini_parser</span> <span class="o">*</span><span class="n">pINI</span><span class="p">,</span> <span class="kt">bool</span> <span class="o">*</span><span class="n">handled</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">r</span><span class="p">;</span>
+
+    <span class="k">static</span> <span class="n">ini_rd_callback</span> <span class="o">*</span> <span class="k">const</span> <span class="n">ini_cb_table</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">LOG_INI_settings</span><span class="p">,</span>
+        <span class="n">my_UART_INI_settings</span><span class="p">,</span>
+        <span class="n">my_SOCKET_INI_settings</span><span class="p">,</span>
+        <span class="n">my_MT_MSG_INI_settings</span><span class="p">,</span>
+        <span class="n">my_APP_settings</span><span class="p">,</span>
+        <span class="cm">/* NOTE: Add More handlers here */</span>
+        <span class="cm">/* Terminate list */</span>
+        <span class="nb">NULL</span>
+    <span class="p">};</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">ini_cb_table</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">ini_cb_table</span><span class="p">[</span><span class="n">x</span><span class="p">]))(</span><span class="n">pINI</span><span class="p">,</span> <span class="n">handled</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="n">handled</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="cm">/* let the system handle it */</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="handling-values-callback-example">
+<h4>Handling Values – Callback Example<a class="headerlink" href="#handling-values-callback-example" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference internal" href="#code-example-callback"><span class="std std-numref">Listing 20.</span></a> is an example callback function that
+demonstrates how to do the following:</p>
+<ul class="simple">
+<li>Recognize the section and item name</li>
+<li>Print an error message</li>
+<li>Obtain an integer value from the configuration file</li>
+</ul>
+<div class="literal-block-wrapper docutils container" id="code-example-callback">
+<div class="code-block-caption"><span class="caption-number">Listing 20. </span><span class="caption-text">Example Callback Function</span><a class="headerlink" href="#code-example-callback" title="Permalink to this code">¶</a></div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">foobar_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">ini_parser</span> <span class="o">*</span><span class="n">pINI</span><span class="p">,</span> <span class="kt">bool</span> <span class="o">*</span><span class="n">handled</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// this check both the section name, and the item name.</span>
+    <span class="c1">// To match only the [section], pass NULL as the 3rd parameter</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">INI</span> <span class="n">itemMatches</span><span class="p">(</span><span class="n">pINI</span><span class="p">,</span> <span class="s">&quot;foo&quot;</span><span class="p">,</span> <span class="s">&quot;bar&quot;</span><span class="p">))</span> <span class="p">{</span>
+        <span class="c1">// This item is not section: [foo], itern &quot;bar&quot;</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// Print item value as a string...</span>
+    <span class="c1">// Also see: INI isValueBool(), or INI valueAsInt()</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;BAR as a string is: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">pINI</span><span class="o">-&gt;</span><span class="n">item</span> <span class="n">value</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="o">!</span> <span class="n">INI_isValueInt</span><span class="p">(</span><span class="n">pINI</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Also see isValueBool()</span>
+        <span class="n">INI_syntaxError</span><span class="p">(</span><span class="n">pINI</span><span class="p">,</span> <span class="s">&quot;[%s] %s = %s not an integer</span><span class="se">\\</span><span class="s">n&quot;</span><span class="p">,</span>     \
+            <span class="n">pINI</span><span class="o">-&gt;</span><span class="n">cur_section</span><span class="p">,</span> <span class="n">pINI</span><span class="o">-&gt;</span><span class="n">item_name</span><span class="p">,</span> <span class="n">pINI</span><span class="o">-&gt;</span><span class="n">item_value</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// as an integer</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;BAR is: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">INI_valueAsInt</span><span class="p">(</span><span class="n">pINI</span><span class="p">));</span>
+    <span class="o">*</span><span class="n">handled</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<dl class="docutils">
+<dt>Other examples of the handling values feature can be found in the following directories:</dt>
+<dd><code class="docutils literal notranslate"><span class="pre">${root}/components/mt/src/mt_msg_ini.c</span></code>
+<code class="docutils literal notranslate"><span class="pre">${root}/components/common/src/stream_*_ini.c</span></code></dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="linux-troubleshooting.html" class="btn btn-neutral float-right" title="Troubleshooting" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="linux-software-components.html" class="btn btn-neutral" title="Linux® Software Components" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+      <a href="http://www.ti.com/corp/docs/legal/copyright.shtml">2016-2019, Texas Instruments</a>, Texas Instruments Incorporated. All rights reserved. <br>
+      <a href="http://www.ti.com/corp/docs/legal/trademark/trademrk.htm">Trademarks</a> | <a href="http://www.ti.com/corp/docs/legal/privacy.shtml">Privacy policy</a> | <a href="http://www.ti.com/corp/docs/legal/termsofuse.shtml">Terms of use</a> | <a href="http://www.ti.com/lsds/ti/legal/termsofsale.page">Terms of sale</a>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2.12.00.00',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="../_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+        });
+
+      var menuHeight = window.innerHeight;
+
+      var contentOffset = $(".wy-nav-content-wrap").offset();
+      var contentHeight = $(".wy-nav-content-wrap").height();
+      var contentBottom = contentOffset.top + contentHeight;
+
+      function setNavbarTop() {
+          var scrollTop = $(window).scrollTop();
+          var maxTop = scrollTop + menuHeight;
+
+          // If past the header
+          if (scrollTop > contentOffset.top && maxTop < contentBottom) {
+            stickyTop = scrollTop - contentOffset.top;
+          } else if (maxTop > contentBottom) {
+            stickyTop = scrollTop - contentOffset.top - (maxTop - contentBottom);
+          } else {
+            stickyTop = 0;
+          }
+
+          $(".wy-nav-side").css("top", stickyTop);
+      }
+
+      $(document).ready(function() {
+        setNavbarTop();
+        $(window).scroll(function () {
+          setNavbarTop();
+        });
+      });
+  </script>
+  
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $(".toggle > *").hide();
+        $(".toggle .header").show();
+        $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+        })
+    });
+</script>
+
+
+</body>
+</html>

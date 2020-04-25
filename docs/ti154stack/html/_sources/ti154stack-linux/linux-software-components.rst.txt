@@ -1,0 +1,157 @@
+.. _chap-linux-software:
+
+Linux® Software Components
+==========================
+
+Component NonVolatile (NV) Library
+----------------------------------
+
+The documentation for the NV library can be found in the following directory:
+``${root}/components/nv/inc/nvintf.h``
+
+Where the NV Library is Used
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The example Collector Application uses this library component to simulate NV
+storage that would be found on an embedded device.
+
+Key Features and Highlights
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Following are some of the key features and highlights for the Linux software components:
+
+-   In the embedded device, two pages of flash memory are used as the data
+    pages. In the host (Linux) environment, the data page is simulated through
+    a simple file.
+
+-   Updating or creating an item: As items are written, or new items are
+    created, the current NV page is scanned and the old item is marked as
+    invalid.
+
+-   Ping-Pong Pages: Eventually the current page fills; then, the software
+    automatically compacts the data into the other page and erases the current
+    page. A version (sequence number) is used to differentiate the two pages if
+    something goes wrong (for example, a power failure in the middle of
+    compacting the page).
+
+Component MT (Layer) Library
+----------------------------
+
+The documentation for the component MT library can be found in the following
+directory: ``${root}/components/api/inc/mt_msg.h``
+
+.. note:: The MT layer is a portion of the API MAC library; therefore, the MT
+    layer is contained within the API MAC library.
+
+In general, the MT component provides a means to send and receive a message
+(mt\_msg) through an interface (mt\_interface). The interface could be a simple
+serial port or a TCP/IP socket.
+
+A message transmitted across an interface is a byte stream in the following
+format:
+
+#.  An optional frame synchronization byte: 0xFE
+
+#.  A 1- or 2-byte length field
+
+#.  A command 0 byte (contains message type and subsystem ID number)
+
+#.  A command 1 byte (specific to the subsystem)
+
+#.  Zero or more payload bytes specific to the command bytes
+
+#.  An optional Frame Check (XOR-checksum) (present or not present)
+
+Where the Component (MT) Library is Used
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+:numref:`fig-mt-message-example` shows a configuration where the Gateway
+    Application is running on the local x86 Linux host machine and the NPI
+    server is running on a BBB from a remote location.
+
+.. figure:: resources/fig-mt-message-example.png
+    :name: fig-mt-message-example
+    :align: center
+
+    MT Message Example
+
+In the example system shown in :numref:`fig-mt-message-example`, the *MT
+Message* component is used in four distinct places, which are detailed as
+follows:
+
+-   The NPI server provides a Serial (UART) MT interface to the LaunchPad.
+
+-   The NPI server provides an MT TCP/IP Socket interface to the network.
+
+-   The Collector Application communicates with the remote NPI Server
+    through TCP/IP.
+
+-   The Collector Application uses the MT protocol to encapsulate Google®
+    Protobuf messages to and from the Node.js Gateway (Web server) application.
+
+Important API Functions
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The Collector Application and the NPI Application configure the interface
+though the respective config files; this function handles the INI settings for
+an interface (see the example in :numref:`code-ini-settings`). For more
+examples, refer to *linux\_main.c* in the npi\_server and the Collector
+Application.
+
+.. code-block:: c
+    :name: code-ini-settings
+    :caption: INI Message Settings
+
+    int MT_MSG_INI_settings(struct ini_parser *pINI,
+        bool *handled,
+        struct mt_msg_interface *pIface);
+
+The *settings* function handles a configuration file fragment, as shown in
+:numref:`code-cfg-fragment`.
+
+.. code-block:: none
+    :name: code-cfg-fragment
+    :caption: Configuration File Fragment
+
+    [uart-interface]
+        include-chksum = true
+        frame-sync = true
+        fragmentation-size = 240
+        retry-max = 3
+        fragmentation-timeout-msecs = 1000
+        intersymbol-timeout-msecs = l00
+        srsp-timeout-msecs = 1000
+        len-2bytes = false
+        flush-timeout-msecs = 50
+
+Once the data structure is configured, the interface is initialized or created
+through :numref:`code-init-create`.
+
+.. code-block:: c
+    :name: code-init-create
+    :caption: Interface Initialized or Created
+
+    int MT_MSG_interfaceCreate(struct mt_msg_interface *pMI);
+
+As an example of how to send and receive messages, review the function (shown
+in :numref:`code-send-receive`) in the source code:
+
+.. code-block:: c
+    :name: code-send-receive
+    :caption: Interface Send and Receive Message
+
+    int MT_MSG_getVersion(struct mt_msg_interface *pDest,   \
+        struct mt_version_info *pinfo);
+
+API MAC Layer
+-------------
+
+The API MAC interface is documented in the following directory:
+``${root}/components/api/inc/api_mac.h``
+
+Protocol Buffers
+----------------
+
+The TI 15.4-Stack Linux Gateway application takes use of Google's Protocol
+Buffers. This software is maintained outside of Texas Instruments. For more
+information, please see (https://github.com/protobuf-c/protobuf-c).

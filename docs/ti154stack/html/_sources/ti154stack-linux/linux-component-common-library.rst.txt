@@ -1,0 +1,404 @@
+Component Common Library
+========================
+
+This chapter describes at a high level some of the features in the
+${root}/components/common library. The goal of this document is a quick overview
+or introduction with pointers to where to find the detail. The various
+components are documented in detail in their respective header files.
+
+Opaque Types *intptr\_t* versus *void*
+----------------------------------------
+
+Portable code runs across multiple platforms transparently. Another important
+item is the ability to create opaque types. In the past, developers often used
+an integer as an opaque type, or a void pointer as an opaque type.
+
+On a 32-bit Arm target (the BBB), because the compiler uses a 32-bit pointer and
+a 32-bit integer, casting a pointer to an integer is not a problem.
+
+A 64-bit host is a problem, the sizeof(pointer) != sizeof(int), and improper
+handling of opaque types is often a source of bugs.
+
+Solution: The C99 standard introduced an intptr\_t, which is a compiler-supplied
+type that always works for both opaque data types. Hence, all opaque types in
+the common library use *intptr\_t* for opaque values.
+
+OS Abstraction: Semaphores, Mutexes, Threads, and Timers
+--------------------------------------------------------
+
+:numref:`tab-doc-locations` lists the location of the feature documentation.
+
+.. table:: Documentation Locations
+    :name: tab-doc-locations
+
+    +-----------------------+-------------------------------------------------+
+    |     **Description**   |     **Location**                                |
+    +=======================+=================================================+
+    |     Mutex             |     ${root}/components/common/inc/mutex.h       |
+    +-----------------------+-------------------------------------------------+
+    |     Semaphore         |     ${root}/components/common/inc/semaphore.h   |
+    +-----------------------+-------------------------------------------------+
+    |     Thread            |     ${root}/components/common/inc/threads.h     |
+    +-----------------------+-------------------------------------------------+
+    |     Timer             |     ${root}/components/common/inc/timer         |
+    +-----------------------+-------------------------------------------------+
+
+Where the OS Abstractions are Used
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Threads:
+
+    In the Collector Application, the primary *collector* application is a
+    thread; there is also a timer thread. In the NPI server, a unique thread is
+    created for each attached client.
+
+Semaphores:
+
+    Semaphores are used to indicate when messages arrive and require service.
+
+Mutexes:
+
+    Mutexes are used to lock access to shared resources across multiple threads.
+
+Important API Elements
+^^^^^^^^^^^^^^^^^^^^^^
+
+Timers:
+
+-   All time units are in milliseconds and are relative to the request.
+-   The time value –1 (negative) means: wait or block forever.
+-   The time value 0 (zero) means: test, do not block the return fail/error immediately if not successful.
+-   Positive time values represent the time in milliseconds.
+-   Long time-outs (more than 20 days) are not supported.
+
+Mutexes, Semaphores, and Threads:
+
+-   Have a *dbg\_name* element for log identification purposes
+-   Supports recursive locks and a time-out parameter
+-   Synchronization calls such as: Lock, Unlock, Get, Put, and calls are present
+
+Stream Interface
+----------------
+
+:numref:`tab-stream-docs` lists where the stream interfaces are documented.
+
+.. table:: Stream Interface Documentation
+    :name: tab-stream-docs
+
+    +------------------------+---------------------------------------------------------------+
+    |     **Description**    |     **Location**                                              |
+    +========================+===============================================================+
+    |     Stream (generic)   |     ${root}/components/common/inc/stream.h                    |
+    +------------------------+---------------------------------------------------------------+
+    |     Stream (UART)      |     ${root}/components/common/inc/stream\_uart.h              |
+    +------------------------+---------------------------------------------------------------+
+    |     Stream (socket)    |     ${root}/components/common/inc/stream\_socket.h            |
+    +------------------------+---------------------------------------------------------------+
+    |     Socket (common)    |     ${root}/components/common/inc/stream\_socket\_private.h   |
+    +------------------------+---------------------------------------------------------------+
+
+Where the Stream Interface is Used
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The stream module is used for the log files, configuration files, serial ports,
+and sockets. At a high level, streams are simply a stream of bytes that can be
+read or written.
+
+The source (or destination) of a stream can be a file, a memory buffer, memory,
+a serial UART, or a socket. All of these sources are abstracted and can be
+treated as a *generic stream of bytes*.
+
+Important API Elements
+^^^^^^^^^^^^^^^^^^^^^^
+
+Upon successful opening or creation of a stream, the return is a nonzero opaque
+*intptr\_t* result, as shown in :numref:`code-open-stream`.
+
+.. code-block:: c
+    :name: code-open-stream
+    :caption: Opening or Creation of a Stream
+
+    intptr_t STREAM createUart(const struct uart_cfg *pCFG);
+    intptr_t SOCKET_CLIENT create(struct socket_cfg *pCFG);
+    int SOCKET_CLIENT connect(intptr_t h);
+    intptr_t STREAM createWrFile(const char *filename);
+    intptr_t STREAM createRdFile(const char *filename);
+
+
+
+:numref:`code-close-stream` shows the closing of a stream.
+
+.. code-block:: c
+    :name: code-close-stream
+    :caption: Closing a Stream
+
+    void STREAM_close(intptr_t h);
+
+:numref:`code-rw-stram` shows reading and writing bytes.
+
+.. code-block:: c
+    :name: code-rw-stram
+    :caption: Reading and Writing Bytes
+
+    int STREAM_wrBytes(intptr_t h, const void *databytes, size_t nbytes,    \
+        int timeout_mSecs);
+    int STREAM_rdBytes(intptr_t h, void *databytes, size_t nbytes,          \
+        int timeout_mSecs);
+    int STREAM_rxAvail(intptr_t h, int mSecs_timeout);
+
+.. _sec-log-file:
+
+Log File
+--------
+
+The full log facility is documented in the following directory:
+``${root}/components/common/inc/log.h``
+
+Where the Log File is Used
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The library components and applications create files using this log facility.
+
+Important API Elements
+^^^^^^^^^^^^^^^^^^^^^^
+
+Opening a Log file
+""""""""""""""""""
+
+Logs are written to a file specified by the function call shown in
+:numref:`code-log-init`.
+
+.. code-block:: c
+    :name: code-log-init
+    :caption: Function Call for Opening a Log File
+
+    void LOG_init(const char *filename);
+
+Writing to the Log printf() Style
+"""""""""""""""""""""""""""""""""
+
+Logs are written using a ``printf()`` like the function shown in
+:numref:`code-log-printf`.
+
+.. code-block:: c
+    :name: code-log-printf
+    :caption: Writing to the Log printf()
+
+    void LOG_printf(logflags_t whybits, const char *fmt, ...);
+    // Example:
+    LOG_printf( LOG_ALWAYS, "the answer is %d\n", 42 );
+
+Controlling What Is Logged and What Is Not Logged
+"""""""""""""""""""""""""""""""""""""""""""""""""
+
+What exactly is logged (enabled) or not logged (disabled) is controlled by the
+*whybits* parameter. To be clear, the whybits parameter is not a *log level*,
+but instead the whybits parameter is a (64-bit) bit mask and is managed by the
+``LOG_test()`` function, which in pseudocode is shown in
+:numref:`code-log-test`.
+
+.. code-block:: c
+    :name: code-log-test
+    :caption: LOG\_test() Function Pseudocode
+
+    bool LOG_test(logflags_t whybits)
+    {
+        // This is [pseudo-code], not actual code from the module
+        // ie: LOG ALWAYS, or LOG ERROR
+        if( special_case_true( whybits ) ){
+            return true; // log the message
+        if (special case_false(whybits)) {
+            return false; // do not log the message
+        if( whybits & log_cfg.log_flags ){
+            return true; // log the message
+        else {
+            return false; // do nog log.
+        }
+    }
+
+Log Configuration
+"""""""""""""""""
+
+The application logging can be configured through the *ini-configuration* file.
+Included in the ``${root}/components/common`` library is a log/ini-file callback
+function that can be used to configure various aspects of the log feature. See
+the function ``LOG_INI_settings()``.
+
+A small excerpt from a configuration file follows.
+
+.. code-block:: none
+
+    [log]
+
+    filename = collector_log.txt
+    ;----------------------------------------
+    ; The flag name 'everything' is magic, it turns on everything.
+    ; setting all of the log bits to 1.
+    ;---------------------------------------- flag = everything
+    flag = not-sys_dbg_mutex flag = not-sys_dbg_thread
+
+.. note::
+    #.  The name/value pair *filename* specifies the log filename.
+    #.  The value *flag* enables a specific log (bit); for example, *flag = foo* will
+        use a look-up table to determine the value of the foo bit and will set that bit
+        in the log\_cfg.log\_flags.
+    #.  The flag name *everything* turns on (sets) all of the log bits enabling
+        everything. The flag name *everything* turns on (that is, it sets all the
+        log bits; thus, enabling all the log messages defined by the application).
+        For more details on log functionality, see :ref:`sec-log-file`.
+    #.  Otherwise, the *named-bit* is set to 1.
+    #.  If the name is pre-pended with "not-", the bit is cleared (equal 0)
+
+Example Log Output
+^^^^^^^^^^^^^^^^^^
+
+:numref:`code-log-output` shows an example of the log file contents.
+The left column shows the time in seconds and milliseconds since the application
+was started.
+
+.. code-block:: none
+    :name: code-log-output
+    :caption: Log Output Example
+
+    1.012: uart: TX Msg (start) [pib-set-common]
+    1.012: pib-set-common msg(0002) nbytes=22 len=17 [ 0xfe 0x11 0x22 0x09 0x52 0x01 0x00 0x00]
+    1.012: uart: TX 22 bytes
+    1.012: 00000000: fe 11 22 09 52 01 00 00-00 00 00 00 00 00 00 00 I..".R...........I
+    1.012: 00000010: 00 00 00 00 00 69 - I.....i I
+    1.012: uart: TX Msg (Complete) r=22 [pib-set-common]
+
+ini Files
+----------
+
+The .ini component is documented in the following directory:
+``${root}/components/common/inc/ini_file.h``.
+
+Where the .ini Files are Used
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Collector Example Applications and the NPIserver2 Example Applications are
+configured through a text file in .ini file format. Both applications read the
+.ini files through the INI common-library component.
+
+File Format
+^^^^^^^^^^^
+
+Comments start with a semicolon (;) or a hash mark (#) and extend to the end of
+the line. Sections are denoted by names in brackets [ ]. Values specific to each
+section title are indented and are in the following form *name = value*. The
+values may strings, Booleans, or numeric values.
+
+For example, :numref:`code-collector-cfg` shows a portion of the collector
+configuration file.
+
+.. code-block:: none
+    :name: code-collector-cfg
+    :caption: Portion of the Collector Configuration File
+
+    ;comment
+    [application]
+    # Comment
+    interface uart
+    config-secure true
+    config-pan-id Oxacdc
+    config-coord-short-addr 1O24
+    config-mac-beacon-order 15
+    config-mac-superframe-order 15
+
+Important API Elements
+^^^^^^^^^^^^^^^^^^^^^^
+
+Reading the .ini File
+"""""""""""""""""""""
+
+:numref:`code-read-cfg` shows the primary means to read a configuration file.
+
+.. code-block:: none
+    :name: code-read-cfg
+    :caption: Read a Configuration File
+
+    int INI_read(const char *filename,          \
+        ini_rd_callback *callback_function_ptr, \
+        intptr_t client_cookie);
+
+The actual content of the file is managed by the callback function.
+:numref:`code-collector-snip`
+shows a code snippet from the Collector Application. Highlights are as follows:
+
+-   An array of subhandlers to handle various sections
+-   A simple iteration loop over the array
+
+.. code-block:: c
+    :name: code-collector-snip
+    :caption: Collector Application Code Snippet
+
+    /* Callback for parsing the INI file. */
+    static int cfg_callback(struct ini_parser *pINI, bool *handled)
+    {
+        int x;
+        int r;
+
+        static ini_rd_callback * const ini_cb_table[] = {
+            LOG_INI_settings,
+            my_UART_INI_settings,
+            my_SOCKET_INI_settings,
+            my_MT_MSG_INI_settings,
+            my_APP_settings,
+            /* NOTE: Add More handlers here */
+            /* Terminate list */
+            NULL
+        };
+
+        for(x = 0; ini_cb_table[x] ; x++)
+        {
+            r = (*(ini_cb_table[x]))(pINI, handled);
+            if(*handled)
+            {
+                return r;
+            }
+        }
+        /* let the system handle it */
+        return 0;
+    }
+
+Handling Values – Callback Example
+""""""""""""""""""""""""""""""""""
+
+:numref:`code-example-callback` is an example callback function that
+demonstrates how to do the following:
+
+-   Recognize the section and item name
+-   Print an error message
+-   Obtain an integer value from the configuration file
+
+.. code-block:: c
+    :name: code-example-callback
+    :caption: Example Callback Function
+
+    static int foobar_callback(struct ini_parser *pINI, bool *handled)
+    {
+        // this check both the section name, and the item name.
+        // To match only the [section], pass NULL as the 3rd parameter
+        if (!INI itemMatches(pINI, "foo", "bar")) {
+            // This item is not section: [foo], itern "bar"
+            return 0;
+        }
+        // Print item value as a string...
+        // Also see: INI isValueBool(), or INI valueAsInt()
+        printf("BAR as a string is: %s\n", pINI->item value);
+
+        if ( ! INI_isValueInt(pINI) ) {
+            // Also see isValueBool()
+            INI_syntaxError(pINI, "[%s] %s = %s not an integer\\n",     \
+                pINI->cur_section, pINI->item_name, pINI->item_value);
+            return -1;
+        }
+        // as an integer
+        printf("BAR is: %d\n", INI_valueAsInt(pINI));
+        *handled true;
+        return 0;
+    }
+
+Other examples of the handling values feature can be found in the following directories:
+    ``${root}/components/mt/src/mt_msg_ini.c``
+    ``${root}/components/common/src/stream_*_ini.c``

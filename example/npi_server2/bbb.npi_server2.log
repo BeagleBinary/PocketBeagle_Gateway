@@ -1,0 +1,5 @@
+make -f Makefile ARCH=bbb 
+make[1]: Entering directory '/home/matt/ti/BeagleBinary/PocketBeagleApp/example/npi_server2'
+Creating App: (bbb) bbb_npi_server2
+Done.
+make[1]: Leaving directory '/home/matt/ti/BeagleBinary/PocketBeagleApp/example/npi_server2'

@@ -1,0 +1,56 @@
+Introduction
+============
+
+The purpose of this document is to give an overview of the Texas Instruments TI
+15.4-Stack Linux® software development kit (:term:`SDK`). This overview is
+intended to help developers run the out-of-box example applications and create
+custom TI 15.4-Stack applications that run on a Linux host and interface with a
+CC13x0, CC13x2, or CC26x2 device, which runs the |TIMAC| CoProcessor firmware
+for the end products.
+
+TI 15.4-Stack implements the Institute of Electrical and Electronics Engineers
+(IEEE™) standard 802.15.4e/g specification. TI 15.4-Stack also provides an
+implementation of a frequency-hopping scheme derived from the Wi-SUN® field
+area network (:term:`FAN`) specification. Additionally, the SDK provides
+required tools, TI-RTOS, and example applications to help developers quickly
+get started developing star-topology-based wireless network products.
+
+Developers using TI 15.4-Stack have two architectural choices for product
+development. The first option is to implement the entire TI 15.4-Stack
+application on an embedded SimpleLink™ device. The second option is to
+implement the application to run on a Linux host and interface to a SimpleLink™
+ultra-low-power wireless :term:`MCU` running the TI 15.4-Stack CoProcessor
+Application.
+
+This document describes how to use the TI 15.4-Stack Linux SDK to develop
+applications running on a Linux host interfacing through a serial interface
+with the |TIMAC| CoProcessor running on SimpleLink™ CC13xx/CC26x2 device.
+
+TI 15.4-Stack allows for rapid development of low-power and low-cost
+communication networks with limited power and relaxed throughput requirements.
+TI 15.4-Stack is primarily designed to create star-topology wireless networks.
+
+For more details, refer to the IEEE 802.15.4g/e specification documents
+available at `IEEE <http://www.ieee.org>`_.
+
+SimpleLink™, LaunchPad, Sitara, SmartRF, Code Composer Studio, BoosterPack are
+trademarks of Texas Instruments.
+
+Arm is a registered trademark of Arm Ltd.
+
+Ubuntu is a registered trademark of Canonical Limited.
+
+Google is a registered trademark of Google Inc.
+
+Node.js is a trademark of Joyent, Inc.
+
+Linux is a registered trademark of Linus Torvalds.
+
+IEEE is a trademark of The Institute of Electrical and Electronics Engineers,
+Inc.
+
+Wi-SUN is a registered trademark of WI-SUN Alliance.
+
+Zigbee is a registered trademark of Zigbee Alliance.
+
+All other trademarks are the property of their respective owners.
