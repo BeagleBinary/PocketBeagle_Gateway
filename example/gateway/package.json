@@ -5,7 +5,7 @@
   "dependencies": {
     "bytebuffer": "*",
     "events": "*",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fs": "0.0.2",
     "http": "0.0.0",
     "net": "*",
